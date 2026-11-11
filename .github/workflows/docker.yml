@@ -30,6 +30,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Release version
+        run: |
+          app_version=$(cat version.py | sed -ne "s/APP_VERSION\s=\s'v\(.*\)'/\1/gp")
+          echo "app_version=$app_version" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -50,6 +55,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=latest
+            type=raw,value=v${{ env.app_version }}
             type=sha,prefix=sha-
 
       - name: Build and push
