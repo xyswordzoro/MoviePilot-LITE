@@ -1,0 +1,20 @@
+
+.progressive-card-grid[data-v-2d5a1293] {
+  inline-size: 100%;
+}
+.progressive-card-grid__track[data-v-2d5a1293] {
+  inline-size: 100%;
+  min-block-size: 1px;
+  overflow-anchor: none;
+}
+.progressive-card-grid__grid[data-v-2d5a1293] {
+  display: grid;
+}
+.progressive-card-grid__item[data-v-2d5a1293] {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.progressive-card-grid__item[data-v-2d5a1293] >  * {
+  block-size: 100%;
+  inline-size: 100%;
+}

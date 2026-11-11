@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.person-card-hover-area[data-v-c731cae8] {
+  inline-size: 100%;
+}
+.person-card[data-v-c731cae8] {
+  background-image: linear-gradient(45deg, rgb工(var(--v-theme-background), 0.3), rgba(var(--v-theme-surface), 0.3) 60%);
+}
+.person-card[data-v-c731cae8]:hover {
+  background-image: linear-gradient(45deg, rgba(var(--v-theme-background), 0.3), rgba(var(--v-custom-background), 0.3) 60%);
+}

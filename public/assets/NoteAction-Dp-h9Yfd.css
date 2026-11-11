@@ -1,0 +1,6 @@
+.note-card[data-v-bec56f49] {
+  background: linear-gradient(135deg, rgba(var(--v-theme-warning), 0.1) 0%, rgba(var(--v-theme-warning), 0.05) 100%);
+}
+.note-card[data-v-bec56f49]:hover {
+  border-color: rgba(var(--v-theme-warning), 0.4);
+}

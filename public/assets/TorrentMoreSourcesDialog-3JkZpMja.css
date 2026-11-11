@@ -1,0 +1,21 @@
+
+.more-sources-content[data-v-4aa8b232] {
+  max-block-size: 60vh;
+  overflow-y: auto;
+}
+.chip-season[data-v-4aa8b232] {
+  background-color: #3f51b5;
+  color: white;
+}
+.chip-free[data-v-4aa8b232] {
+  background-color: #4caf50;
+  color: white;
+}
+.chip-discount[data-v-4aa8b232] {
+  background-color: #ff5722;
+  color: white;
+}
+.chip-bonus[data-v-4aa8b232] {
+  background-color: #9c27b0;
+  color: white;
+}

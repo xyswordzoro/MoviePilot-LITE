@@ -1,0 +1,304 @@
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable no-descending-specificity */
+/* stylelint-disable scss/at-rule-no-unknown */
+html[data-theme=transparent] {
+  --transparent-opacity: 0.3;
+  --transparent-opacity-light: 0.2;
+  --transparent-opacity-heavy: 0.5;
+  --transparent-blur: 10px;
+  --transparent-blur-light: 6px;
+  --transparent-blur-heavy: 16px;
+  --app-grouped-list-background: rgba(var(--v-theme-surface), var(--transparent-opacity-light));
+  --app-grouped-list-backdrop-filter: blur(var(--transparent-blur));
+  --app-grouped-list-separator-color: rgba(var(--v-theme-on-surface), 0.18);
+  --app-grouped-list-header-color: rgba(var(--v-theme-on-surface), 0.64);
+  --app-grouped-list-chevron-color: rgba(var(--v-theme-on-surface), 0.5);
+  --app-grouped-list-hover-background: rgba(var(--v-theme-primary), 0.08);
+  --app-grouped-list-active-background: rgba(var(--v-theme-primary), 0.14);
+  --app-grouped-list-icon-opacity: 0.88;
+}
+html[data-theme=transparent] .v-application, html[data-theme=transparent] .v-layout, html[data-theme=transparent] .v-main, html[data-theme=transparent] .layout-page-content {
+  background: transparent;
+}
+html[data-theme=transparent] .layout-vertical-nav {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-light));
+  border-inline-end: 1px solid rgba(var(--v-theme-on-surface), 0.05);
+}
+html[data-theme=transparent] .v-list {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-card:not(.no-blur) {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-card:not(.no-blur) .v-list {
+  backdrop-filter: none;
+  background-color: transparent;
+}
+html[data-theme=transparent] .workflow-task-card {
+  --workflow-card-header-content-rgb: var(--v-theme-on-surface);
+  --workflow-card-header-background:
+    linear-gradient(145deg, rgba(var(--v-theme-on-surface), 0.12), transparent 36%),
+    linear-gradient(
+      118deg,
+      rgba(var(--workflow-status-rgb), var(--transparent-opacity-heavy)) 0%,
+      rgba(var(--workflow-status-rgb), var(--transparent-opacity)) 56%,
+      rgba(var(--workflow-status-rgb), var(--transparent-opacity-light)) 100%
+    ),
+    linear-gradient(
+      rgba(var(--v-theme-surface), var(--transparent-opacity-light)),
+      rgba(var(--v-theme-surface), var(--transparent-opacity-light))
+    );
+  --workflow-card-header-shadow: inset 0 1px 0 rgba(var(--v-theme-on-surface), 0.14);
+}
+html[data-theme=transparent] .subscribe-files-dialog {
+  --sfd-accent-opacity: 0.12;
+  --sfd-blur: var(--transparent-blur-heavy);
+  --sfd-dialog-opacity: var(--transparent-opacity-heavy);
+  --sfd-hero-end-opacity: 0.42;
+  --sfd-hero-mid-opacity: 0.2;
+  --sfd-hero-shade-opacity: 0.48;
+  --sfd-hero-start-opacity: 0.52;
+  --sfd-panel-opacity: 0.14;
+  --sfd-panel-strong-opacity: var(--transparent-opacity);
+  --sfd-code-opacity: 0.14;
+}
+html[data-theme=transparent] .subscribe-files-progress__item,
+html[data-theme=transparent] .subscribe-files-stat-card,
+html[data-theme=transparent] .subscribe-files-tab-group {
+  backdrop-filter: blur(var(--transparent-blur-light));
+  background: rgba(var(--v-theme-surface), var(--sfd-panel-opacity));
+}
+html[data-theme=transparent] .subscribe-files-tab-group {
+  background: rgba(var(--v-theme-surface), 0.08) !important;
+}
+html[data-theme=transparent] .subscribe-files-tab-group .v-btn:not(.subscribe-files-tab-group__button--active) {
+  background: transparent !important;
+}
+html[data-theme=transparent] .app-card-colorful {
+  border: 0;
+  background: linear-gradient(135deg, rgba(var(--app-card-accent-rgb), var(--app-card-accent-start-opacity, 0.018)), rgba(var(--app-card-accent-end-rgb, var(--app-card-accent-rgb)), var(--app-card-accent-end-opacity, 0.01)) 46%, rgba(var(--v-theme-surface), 0) 76%), rgba(var(--v-theme-surface), var(--transparent-opacity-light));
+}
+html[data-theme=transparent] .v-toolbar {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-table {
+  border-radius: 0;
+  background-color: rgba(var(--v-theme-surface), 0);
+}
+html[data-theme=transparent] .v-table .v-table__wrapper > table > thead {
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-footer {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-sheet {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .layout-content-wrapper {
+  background: transparent;
+}
+html[data-theme=transparent] .page-content-container {
+  background: transparent;
+}
+html[data-theme=transparent] .v-overlay__scrim {
+  background: rgba(var(--v-overlay-scrim-background), var(--v-overlay-scrim-opacity));
+}
+html[data-theme=transparent] .v-expansion-panel {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-skeleton-loader {
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .v-field {
+  background-color: rgba(var(--v-theme-surface), 0);
+}
+html[data-theme=transparent] .v-overlay__content {
+  border-radius: var(--app-surface-radius);
+  backdrop-filter: blur(var(--transparent-blur));
+}
+html[data-theme=transparent] .v-overlay__content .v-card:not(.bg-primary) {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent] .v-overlay__content .v-list {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent] .v-overlay__content .v-table__wrapper table thead {
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .theme-customizer-panel-host {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy)) !important;
+  border-inline-start: 1px solid rgba(var(--v-theme-on-surface), 0.08) !important;
+}
+html[data-theme=transparent] .theme-customizer-panel {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: transparent;
+}
+html[data-theme=transparent] .theme-customizer-border-scene,
+html[data-theme=transparent] .theme-customizer-radius-scene,
+html[data-theme=transparent] .theme-customizer-shadow-slider,
+html[data-theme=transparent] .theme-customizer-shadow-slider__sample {
+  background: linear-gradient(180deg, rgba(var(--v-theme-on-surface), 0.02), rgba(var(--v-theme-on-surface), 0.05)), rgba(var(--v-theme-surface), var(--transparent-opacity-light));
+}
+html[data-theme=transparent] .theme-customizer-preview-option.is-active .theme-customizer-border-scene,
+html[data-theme=transparent] .theme-customizer-preview-option.is-active .theme-customizer-radius-scene {
+  background: rgba(var(--v-theme-primary), 0.04);
+}
+html[data-theme=transparent] .theme-customizer-border-scene__card,
+html[data-theme=transparent] .theme-customizer-border-scene__dialog,
+html[data-theme=transparent] .theme-customizer-border-scene__menu,
+html[data-theme=transparent] .theme-customizer-radius-scene__card {
+  background: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent] .agent-assistant-panel {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy)) !important;
+  border-inline-start: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+}
+html[data-theme=transparent] .agent-assistant-shell {
+  --agent-assistant-panel-bg: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+  --agent-assistant-panel-blur: var(--transparent-blur);
+  --agent-assistant-assistant-bg: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent] .agent-assistant-fab {
+  background-color: transparent;
+}
+html[data-theme=transparent] .agent-assistant-fab__bubble {
+  backdrop-filter: blur(var(--transparent-blur));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent] .Vue-Toastification__toast {
+  backdrop-filter: blur(var(--transparent-blur));
+  background: linear-gradient(135deg, rgba(var(--mp-toast-accent-rgb), 0.16), rgba(var(--mp-toast-accent-rgb), 0.06) 44%, rgba(var(--v-theme-surface), var(--transparent-opacity-heavy))), rgba(var(--v-theme-surface), var(--transparent-opacity-heavy)) !important;
+}
+
+html[data-theme=transparent].transparent-background-blur-disabled .global-blur-layer,
+html[data-theme=transparent].transparent-background-blur-disabled .background-image.active {
+  backdrop-filter: none;
+  filter: none;
+  transform: none;
+}
+
+html[data-theme=transparent].transparent-glass-lightweight {
+  --app-grouped-list-backdrop-filter: none;
+}
+html[data-theme=transparent].transparent-glass-lightweight .global-blur-layer {
+  display: none !important;
+  backdrop-filter: none !important;
+}
+html[data-theme=transparent].transparent-glass-lightweight .layout-vertical-nav,
+html[data-theme=transparent].transparent-glass-lightweight .v-toolbar,
+html[data-theme=transparent].transparent-glass-lightweight .v-footer,
+html[data-theme=transparent].transparent-glass-lightweight .theme-customizer-panel-host,
+html[data-theme=transparent].transparent-glass-lightweight .theme-customizer-panel,
+html[data-theme=transparent].transparent-glass-lightweight .agent-assistant-panel,
+html[data-theme=transparent].transparent-glass-lightweight .agent-assistant-fab__bubble,
+html[data-theme=transparent].transparent-glass-lightweight .nav-button {
+  backdrop-filter: blur(var(--transparent-blur));
+}
+html[data-theme=transparent].transparent-glass-lightweight .layout-vertical-nav,
+html[data-theme=transparent].transparent-glass-lightweight .theme-customizer-panel-host,
+html[data-theme=transparent].transparent-glass-lightweight .agent-assistant-panel {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+}
+html[data-theme=transparent].transparent-glass-lightweight .v-list,
+html[data-theme=transparent].transparent-glass-lightweight .v-card:not(.no-blur, .bg-primary),
+html[data-theme=transparent].transparent-glass-lightweight .v-sheet,
+html[data-theme=transparent].transparent-glass-lightweight .v-expansion-panel {
+  backdrop-filter: none;
+}
+html[data-theme=transparent].transparent-glass-lightweight .v-card:not(.no-blur, .bg-primary),
+html[data-theme=transparent].transparent-glass-lightweight .v-sheet,
+html[data-theme=transparent].transparent-glass-lightweight .v-expansion-panel,
+html[data-theme=transparent].transparent-glass-lightweight .v-list {
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity));
+}
+html[data-theme=transparent].transparent-glass-lightweight .footer-nav-card.v-card {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent].transparent-glass-lightweight .plugin-quick-access.v-card {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+}
+html[data-theme=transparent].transparent-glass-lightweight .v-overlay__content,
+html[data-theme=transparent].transparent-glass-lightweight .v-overlay__content .v-card:not(.bg-primary),
+html[data-theme=transparent].transparent-glass-lightweight .v-overlay__content .v-list {
+  backdrop-filter: blur(var(--transparent-blur));
+}
+html[data-theme=transparent].transparent-glass-lightweight .v-overlay__content .v-card:not(.bg-primary),
+html[data-theme=transparent].transparent-glass-lightweight .v-overlay__content .v-list {
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent].transparent-glass-lightweight .app-card-colorful {
+  backdrop-filter: none;
+}
+
+html[data-theme=transparent].transparent-glass-realtime {
+  --app-grouped-list-backdrop-filter: none;
+}
+html[data-theme=transparent].transparent-glass-realtime .background-image.active {
+  filter: none;
+  transform: none;
+}
+html[data-theme=transparent].transparent-glass-realtime .v-list,
+html[data-theme=transparent].transparent-glass-realtime .v-card:not(.no-blur, .bg-primary),
+html[data-theme=transparent].transparent-glass-realtime .v-sheet,
+html[data-theme=transparent].transparent-glass-realtime .v-expansion-panel {
+  backdrop-filter: none;
+}
+html[data-theme=transparent].transparent-glass-realtime .layout-vertical-nav,
+html[data-theme=transparent].transparent-glass-realtime .v-toolbar,
+html[data-theme=transparent].transparent-glass-realtime .v-footer,
+html[data-theme=transparent].transparent-glass-realtime .theme-customizer-panel-host,
+html[data-theme=transparent].transparent-glass-realtime .theme-customizer-panel,
+html[data-theme=transparent].transparent-glass-realtime .agent-assistant-panel,
+html[data-theme=transparent].transparent-glass-realtime .agent-assistant-fab__bubble,
+html[data-theme=transparent].transparent-glass-realtime .nav-button,
+html[data-theme=transparent].transparent-glass-realtime .v-overlay__content,
+html[data-theme=transparent].transparent-glass-realtime .v-overlay__content .v-card:not(.bg-primary),
+html[data-theme=transparent].transparent-glass-realtime .v-overlay__content .v-list {
+  backdrop-filter: blur(var(--transparent-blur));
+}
+html[data-theme=transparent].transparent-glass-realtime .footer-nav-card.v-card {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+  background-color: rgba(var(--v-theme-surface), var(--transparent-opacity-heavy));
+}
+html[data-theme=transparent].transparent-glass-realtime .plugin-quick-access.v-card {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+}
+html[data-theme=transparent].transparent-glass-realtime .layout-vertical-nav,
+html[data-theme=transparent].transparent-glass-realtime .theme-customizer-panel-host,
+html[data-theme=transparent].transparent-glass-realtime .agent-assistant-panel {
+  backdrop-filter: blur(var(--transparent-blur-heavy));
+}
+
+html[data-theme=transparent].transparent-blur-disabled {
+  --app-grouped-list-backdrop-filter: none;
+}
+html[data-theme=transparent].transparent-blur-disabled .layout-vertical-nav,
+html[data-theme=transparent].transparent-blur-disabled .v-list,
+html[data-theme=transparent].transparent-blur-disabled .v-card:not(.no-blur),
+html[data-theme=transparent].transparent-blur-disabled .v-toolbar,
+html[data-theme=transparent].transparent-blur-disabled .v-footer,
+html[data-theme=transparent].transparent-blur-disabled .v-sheet,
+html[data-theme=transparent].transparent-blur-disabled .v-expansion-panel,
+html[data-theme=transparent].transparent-blur-disabled .v-overlay__content,
+html[data-theme=transparent].transparent-blur-disabled .v-overlay__content .v-card:not(.bg-primary),
+html[data-theme=transparent].transparent-blur-disabled .v-overlay__content .v-list,
+html[data-theme=transparent].transparent-blur-disabled .theme-customizer-panel-host,
+html[data-theme=transparent].transparent-blur-disabled .theme-customizer-panel,
+html[data-theme=transparent].transparent-blur-disabled .agent-assistant-panel,
+html[data-theme=transparent].transparent-blur-disabled .agent-assistant-fab__bubble,
+html[data-theme=transparent].transparent-blur-disabled .nav-button,
+html[data-theme=transparent].transparent-blur-disabled .layout-navbar {
+  backdrop-filter: none !important;
+}

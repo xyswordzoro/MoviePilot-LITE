@@ -1,0 +1,74 @@
+
+.statistics-overview[data-v-d984f0d5] {
+  background: linear-gradient(135deg, var(--v-theme-surface) 0%, var(--v-theme-surface-variant) 100%);
+  border-block-end: 1px solid var(--v-border-color);
+}
+.stat-card[data-v-d984f0d5] {
+  padding: 16px;
+  background: var(--v-theme-surface);
+  min-inline-size: 100px;
+  text-align: center;
+}
+.stat-number[data-v-d984f0d5] {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  margin-block-end: 4px;
+}
+.stat-label[data-v-d984f0d5] {
+  color: var(--v-theme-on-surface-variant);
+  font-size: 12px;
+}
+.sites-list[data-v-d984f0d5] {
+  background: var(--v-theme-surface);
+}
+.site-item[data-v-d984f0d5] {
+  transition: background-color 0.2s ease;
+}
+.site-item[data-v-d984f0d5]:hover {
+  background: var(--v-theme-surface-variant);
+}
+.status-indicator[data-v-d984f0d5] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--v-theme-surface-variant);
+  block-size: 40px;
+  inline-size: 40px;
+}
+.status-indicator.success[data-v-d984f0d5] {
+  background: rgba(var(--v-theme-success), 0.1);
+  color: rgb(var(--v-theme-success));
+}
+.status-indicator.warning[data-v-d984f0d5] {
+  background: rgba(var(--v-theme-warning), 0.1);
+  color: rgb(var(--v-theme-warning));
+}
+.status-indicator.error[data-v-d984f0d5] {
+  background: rgba(var(--v-theme-error), 0.1);
+  color: rgb(var(--v-theme-error));
+}
+.status-indicator.secondary[data-v-d984f0d5] {
+  background: rgba(var(--v-theme-secondary), 0.1);
+  color: rgb(var(--v-theme-secondary));
+}
+.stat-item[data-v-d984f0d5] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stat-item .stat-label[data-v-d984f0d5] {
+  color: var(--v-theme-on-surface-variant);
+  font-weight: 500;
+}
+.stat-value[data-v-d984f0d5] {
+  font-weight: bold;
+}
+.time-records[data-v-d984f0d5] {
+  max-block-size: 300px;
+  overflow-y: auto;
+}
+.time-record-item[data-v-d984f0d5] {
+  transition: all 0.2s ease;
+}

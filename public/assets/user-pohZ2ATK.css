@@ -1,0 +1,95 @@
+
+.user-card-hover-area[data-v-d11704f2] {
+  inline-size: 100%;
+}
+.user-card-hover-area:hover .user-card[data-v-d11704f2] {
+  transform: translate3d(0, -0.25rem, 0);
+}
+.user-card[data-v-d11704f2] {
+  block-size: 100%;
+}
+
+/* 让邮箱和订阅统计固定在卡片底部，保证同一行用户卡片视觉等高。 */
+.user-card__footer[data-v-d11704f2] {
+  flex-shrink: 0;
+  margin-block-start: auto;
+}
+.admin-decoration[data-v-d11704f2] {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  inset-block-start: 0;
+  padding-block: 8px;
+  padding-inline: 12px;
+}
+.admin-header[data-v-d11704f2] {
+  background: linear-gradient(to bottom, rgba(var(--v-theme-warning), 0.05), transparent);
+}
+.admin-avatar[data-v-d11704f2]::after {
+  position: absolute;
+  border: 1px solid rgba(var(--v-theme-warning), 0.3);
+  border-radius: 12px;
+  animation: pulse-d11704f2 2.5s infinite;
+  content: '';
+  inset: -5px;
+  pointer-events: none;
+}
+.admin-stats-container[data-v-d11704f2] {
+  background-color: rgba(var(--v-theme-warning), 0.1);
+}
+.user-stats-container[data-v-d11704f2] {
+  background-color: rgba(var(--v-theme-primary), 0.1);
+}
+@keyframes pulse-d11704f2 {
+0% {
+    opacity: 0.6;
+    transform: scale(0.95);
+}
+70% {
+    opacity: 0.2;
+    transform: scale(1.05);
+}
+100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+}
+}
+.admin-crown[data-v-d11704f2] {
+  position: absolute;
+  z-index: 5;
+  animation: float-d11704f2 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 40%));
+  inset-block-start: -10px;
+  inset-inline-start: -6px;
+  transform: rotate(-25deg);
+}
+@keyframes float-d11704f2 {
+0% {
+    transform: rotate(-25deg) translateY(0);
+}
+50% {
+    transform: rotate(-25deg) translateY(-3px);
+}
+100% {
+    transform: rotate(-25deg) translateY(0);
+}
+}
+.animate-pulse[data-v-d11704f2] {
+  animation: pulse-nickname-d11704f2 2s ease infinite;
+}
+@keyframes pulse-nickname-d11704f2 {
+0%,
+  100% {
+    opacity: 0.9;
+    transform: scale(1);
+}
+50% {
+    opacity: 1;
+    transform: scale(1.2);
+}
+}
+.grayscale-50[data-v-d11704f2] {
+  filter: grayscale(50%);
+}

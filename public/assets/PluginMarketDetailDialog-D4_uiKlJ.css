@@ -1,0 +1,159 @@
+
+.plugin-rating-display[data-v-2aafffa7] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-inline-size: 0;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.75rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+.plugin-rating-display__stars[data-v-2aafffa7] {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 0;
+}
+.plugin-rating-display__value[data-v-2aafffa7] {
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  font-weight: 600;
+}
+.plugin-rating-display__count[data-v-2aafffa7] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plugin-market-detail__content[data-v-0a3249e0] {
+  padding: 1.75rem 1.25rem 1.25rem;
+}
+.plugin-market-detail__header[data-v-0a3249e0] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.plugin-market-detail__avatar[data-v-0a3249e0] {
+  flex: 0 0 auto;
+}
+.plugin-market-detail__title[data-v-0a3249e0] {
+  max-inline-size: 100%;
+  margin: 0.75rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.plugin-market-detail__description[data-v-0a3249e0] {
+  max-inline-size: 24rem;
+  margin: 0.25rem 0 0;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+.plugin-market-detail__header-rating[data-v-0a3249e0] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-block: 0.75rem 0.375rem;
+}
+.plugin-market-detail__metadata[data-v-0a3249e0] {
+  display: grid;
+  gap: 0.625rem;
+  margin: 1.125rem 0;
+}
+.plugin-market-detail__metadata-row[data-v-0a3249e0] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.625rem;
+  min-inline-size: 0;
+}
+.plugin-market-detail__metadata dt[data-v-0a3249e0] {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: end;
+  white-space: nowrap;
+}
+.plugin-market-detail__metadata dd[data-v-0a3249e0] {
+  min-inline-size: 0;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+.plugin-market-detail__author[data-v-0a3249e0] {
+  max-inline-size: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+.plugin-market-detail__author[data-v-0a3249e0]:hover,
+.plugin-market-detail__author[data-v-0a3249e0]:focus-visible {
+  color: rgb(var(--v-theme-primary));
+  text-decoration: underline;
+}
+.plugin-market-detail__warning[data-v-0a3249e0] {
+  margin-block-start: 1rem;
+}
+.plugin-market-detail-actions[data-v-0a3249e0] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+.plugin-market-detail-actions__buttons[data-v-0a3249e0] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  inline-size: 100%;
+}
+.plugin-market-detail-actions__downloads[data-v-0a3249e0] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.plugin-market-detail-user-rating[data-v-0a3249e0] {
+  margin-block-start: 1.25rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+.plugin-market-detail-user-rating__title[data-v-0a3249e0] {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+.plugin-market-detail-user-rating__controls[data-v-0a3249e0] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-inline-size: 0;
+}
+@media (width < 360px) {
+.plugin-market-detail__content[data-v-0a3249e0] {
+    padding-inline: 1rem;
+}
+.plugin-market-detail-actions__buttons[data-v-0a3249e0] {
+    flex-direction: column;
+}
+.plugin-market-detail-actions__buttons[data-v-0a3249e0] .v-btn {
+    inline-size: 100%;
+}
+}

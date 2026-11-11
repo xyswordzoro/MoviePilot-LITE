@@ -1,0 +1,21 @@
+
+.dashboard-work-card[data-v-340a5110] {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 0;
+}
+.dashboard-work-content[data-v-340a5110] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-block-size: 0;
+  overflow: hidden;
+}
+.dashboard-work-chart[data-v-340a5110] {
+  flex: 1 1 auto;
+  min-block-size: 0;
+}
+.dashboard-weekly-count[data-v-340a5110] {
+  font-variant-numeric: tabular-nums;
+}

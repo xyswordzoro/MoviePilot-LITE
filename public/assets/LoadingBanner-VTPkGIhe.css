@@ -1,0 +1,54 @@
+
+/* 初始的加载状态 */
+.initial-loading-container[data-v-c900c21d] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 20vh;
+}
+.initial-loading-content[data-v-c900c21d] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.wave-loader[data-v-c900c21d] {
+  display: flex;
+  align-items: center;
+  block-size: 40px;
+  gap: 6px;
+}
+.wave-dot[data-v-c900c21d] {
+  border-radius: 50%;
+  animation: wave-c900c21d 1.5s ease-in-out infinite;
+  background-color: rgb(var(--v-theme-primary));
+  block-size: 8px;
+  inline-size: 8px;
+}
+.wave-dot[data-v-c900c21d]:nth-child(1) {
+  animation-delay: 0s;
+}
+.wave-dot[data-v-c900c21d]:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.wave-dot[data-v-c900c21d]:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.wave-dot[data-v-c900c21d]:nth-child(4) {
+  animation-delay: 0.6s;
+}
+@keyframes wave-c900c21d {
+0%,
+  100% {
+    transform: translateY(0);
+}
+50% {
+    transform: translateY(-15px);
+}
+}
+.initial-loading-text[data-v-c900c21d] {
+  color: rgb(var(--v-theme-primary));
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

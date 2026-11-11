@@ -1,0 +1,192 @@
+
+.workflow-task-card-hover-area[data-v-e802528d] {
+  inline-size: 100%;
+}
+.workflow-task-card[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-info);
+  --workflow-status-on-rgb: var(--v-theme-on-info);
+  --workflow-card-header-content-rgb: var(--workflow-status-on-rgb);
+  --workflow-card-header-background: linear-gradient(
+    118deg,
+    color-mix(in srgb, rgb(var(--workflow-status-rgb)) 88%, rgb(var(--v-theme-on-surface)) 12%) 0%,
+    rgb(var(--workflow-status-rgb)) 52%,
+    color-mix(in srgb, rgb(var(--workflow-status-rgb)) 78%, rgb(var(--v-theme-surface)) 22%) 100%
+  );
+  --workflow-card-header-shadow: none;
+
+  display: flex;
+  min-block-size: 226px;
+  flex-direction: column;
+  overflow: hidden;
+}
+.workflow-task-card--status-primary[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-primary);
+  --workflow-status-on-rgb: var(--v-theme-on-primary);
+}
+.workflow-task-card--status-secondary[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-secondary);
+  --workflow-status-on-rgb: var(--v-theme-on-secondary);
+}
+.workflow-task-card--status-info[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-info);
+  --workflow-status-on-rgb: var(--v-theme-on-info);
+}
+.workflow-task-card--status-success[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-success);
+  --workflow-status-on-rgb: var(--v-theme-on-success);
+}
+.workflow-task-card--status-warning[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-warning);
+  --workflow-status-on-rgb: var(--v-theme-on-warning);
+}
+.workflow-task-card--status-error[data-v-e802528d] {
+  --workflow-status-rgb: var(--v-theme-error);
+  --workflow-status-on-rgb: var(--v-theme-on-error);
+}
+.workflow-task-card__header[data-v-e802528d] {
+  flex: 0 0 auto;
+  padding: 6px 10px !important;
+  background: var(--workflow-card-header-background);
+  box-shadow: var(--workflow-card-header-shadow);
+}
+.workflow-task-card__trigger-icon[data-v-e802528d] {
+  flex: 0 0 auto;
+  color: rgb(var(--workflow-card-header-content-rgb)) !important;
+}
+.workflow-task-card__title[data-v-e802528d] {
+  display: -webkit-box;
+  min-inline-size: 0;
+  overflow: hidden;
+  color: rgb(var(--workflow-card-header-content-rgb));
+  font-weight: 500;
+  line-height: 20px !important;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.workflow-task-card__trigger-text[data-v-e802528d] {
+  min-inline-size: 0;
+  margin-block-start: 1px;
+  overflow: hidden;
+  color: rgba(var(--workflow-card-header-content-rgb), 0.78);
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  line-height: 16px !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workflow-task-card__menu[data-v-e802528d] {
+  flex: 0 0 auto;
+  color: rgb(var(--workflow-card-header-content-rgb)) !important;
+}
+.workflow-task-card__body[data-v-e802528d] {
+  display: flex;
+  min-inline-size: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  padding: 11px 12px !important;
+}
+.workflow-task-card__status-row[data-v-e802528d] {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.workflow-task-card__metrics[data-v-e802528d] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.workflow-task-card__metric[data-v-e802528d] {
+  display: grid;
+  min-inline-size: 0;
+  gap: 1px;
+  padding-inline-end: 10px;
+}
+.workflow-task-card__metric + .workflow-task-card__metric[data-v-e802528d] {
+  padding-inline: 10px 0;
+  border-inline-start: 1px solid rgba(var(--v-theme-on-surface), var(--v-border-opacity));
+}
+.workflow-task-card__metric span[data-v-e802528d],
+.workflow-task-card__progress-label span[data-v-e802528d] {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+.workflow-task-card__metric strong[data-v-e802528d],
+.workflow-task-card__progress-label strong[data-v-e802528d] {
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.workflow-task-card__progress[data-v-e802528d] {
+  min-inline-size: 0;
+}
+.workflow-task-card__progress-label[data-v-e802528d] {
+  display: flex;
+  min-inline-size: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.workflow-task-card__action-track[data-v-e802528d] {
+  display: flex;
+  min-inline-size: 0;
+  gap: 4px;
+  margin-block-start: 6px;
+}
+.workflow-task-card__action-segment[data-v-e802528d] {
+  block-size: 6px;
+  min-inline-size: 2px;
+  flex: 1 1 0;
+  border-radius: var(--app-control-radius);
+  background: rgba(var(--v-theme-on-surface), 0.12);
+}
+.workflow-task-card__action-segment--complete[data-v-e802528d] {
+  background: rgb(var(--workflow-status-rgb));
+}
+.workflow-task-card__action-segment--active[data-v-e802528d] {
+  background: rgba(var(--workflow-status-rgb), 0.22);
+  box-shadow: inset 0 0 0 1px rgb(var(--workflow-status-rgb));
+}
+.workflow-task-card__action-segment--failed[data-v-e802528d] {
+  background: rgb(var(--v-theme-error));
+}
+.workflow-task-card__action-segment--empty[data-v-e802528d] {
+  background: rgba(var(--v-theme-on-surface), 0.08);
+}
+.workflow-task-card__execution-status[data-v-e802528d] {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 7px;
+  margin-block-start: auto;
+  padding-block-start: 9px;
+  border-block-start: 1px solid rgba(var(--v-theme-on-surface), var(--v-border-opacity));
+}
+.workflow-task-card__execution-status .v-icon[data-v-e802528d] {
+  flex: 0 0 auto;
+}
+.workflow-task-card__execution-status span[data-v-e802528d] {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (width <= 599.98px) {
+.workflow-task-card[data-v-e802528d] {
+    min-block-size: 222px;
+}
+.workflow-task-card__header[data-v-e802528d],
+  .workflow-task-card__body[data-v-e802528d] {
+    padding-inline: 10px !important;
+}
+.workflow-task-card__body[data-v-e802528d] {
+    gap: 9px;
+}
+}
+
+.content-window[data-v-6ade6f16] {
+  margin-block-start: 0;
+}

@@ -1,0 +1,41 @@
+
+@media (hover: none), (pointer: coarse) {
+.dashboard-retry-button--deferred[data-v-5093e25c] {
+    display: none;
+}
+}
+@media (hover: hover) and (pointer: fine) {
+.dashboard-retry-button--deferred[data-v-5093e25c] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+.v-card:hover .dashboard-retry-button--deferred,.v-card:focus-within .dashboard-retry-button--deferred {
+    opacity: 1;
+    pointer-events: auto;
+}
+}
+@media (prefers-reduced-motion: reduce) {
+.dashboard-retry-button--deferred[data-v-5093e25c] {
+    transition: none;
+}
+}
+
+.dashboard-media-state[data-v-f06df9c2] {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 10rem;
+}
+.dashboard-media-state-header[data-v-f06df9c2] {
+  padding-block-end: 0.25rem;
+}
+.dashboard-media-state-content[data-v-f06df9c2] {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-block-size: 0;
+  text-align: center;
+}

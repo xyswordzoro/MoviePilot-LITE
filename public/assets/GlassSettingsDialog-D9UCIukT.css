@@ -1,0 +1,129 @@
+.glass-settings-dialog__body[data-v-da8058b3] {
+  display: grid;
+  align-content: start;
+  gap: 24px;
+  grid-auto-rows: max-content;
+  padding: 20px 24px 24px;
+}
+.glass-settings-dialog__actions[data-v-da8058b3] {
+  flex: none;
+  padding: 16px 24px;
+}
+.glass-settings-dialog__label[data-v-da8058b3] {
+  margin: 0 0 10px;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.glass-settings-dialog__hint[data-v-da8058b3] {
+  margin: 8px 0 0;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+.glass-settings-dialog__group-label[data-v-da8058b3] {
+  margin: 0 0 14px;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.glass-settings-dialog__slider-header[data-v-da8058b3] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.glass-settings-dialog__slider-header .glass-settings-dialog__label[data-v-da8058b3] {
+  margin-block-end: 0;
+}
+.glass-settings-dialog__slider-header output[data-v-da8058b3] {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.glass-settings-dialog__slider-header--spaced[data-v-da8058b3],
+.glass-settings-dialog__slider-header + .glass-settings-dialog__slider-header[data-v-da8058b3] {
+  margin-block-start: 18px;
+}
+.glass-settings-dialog__live-controls[data-v-da8058b3] {
+  border-block-start: 1px solid rgba(var(--v-theme-on-surface), 0.1);
+  margin-block-start: 24px;
+  padding-block-start: 20px;
+}
+.glass-settings-dialog__live-controls[data-v-da8058b3] .v-slider {
+  margin-block-start: 4px;
+}
+.glass-settings-dialog__preset-header[data-v-da8058b3] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.glass-settings-dialog__preset-header .glass-settings-dialog__label[data-v-da8058b3] {
+  margin-block-end: 0;
+}
+.glass-settings-dialog__appearance[data-v-da8058b3],
+.glass-settings-dialog__dynamics-mode[data-v-da8058b3],
+.glass-settings-dialog__quality[data-v-da8058b3],
+.glass-settings-dialog__preset[data-v-da8058b3] {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.12);
+  border-radius: 10px;
+  background: rgba(var(--v-theme-on-surface), 0.035);
+  gap: 4px;
+  inline-size: 100%;
+  padding: 4px;
+}
+.glass-settings-dialog__appearance[data-v-da8058b3] {
+  block-size: 42px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.glass-settings-dialog__dynamics-mode[data-v-da8058b3] {
+  block-size: 42px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.glass-settings-dialog__quality[data-v-da8058b3] {
+  block-size: 42px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.glass-settings-dialog__preset[data-v-da8058b3] {
+  block-size: 42px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block-start: 10px;
+}
+.glass-settings-dialog__appearance-option[data-v-da8058b3] {
+  block-size: 32px !important;
+  inline-size: 100%;
+  letter-spacing: 0;
+}
+.glass-settings-dialog__appearance-option[data-v-da8058b3],
+.glass-settings-dialog__dynamics-mode-option[data-v-da8058b3],
+.glass-settings-dialog__quality-option[data-v-da8058b3],
+.glass-settings-dialog__preset-option[data-v-da8058b3] {
+  border: 0 !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
+  min-inline-size: 0;
+  inline-size: 100%;
+  letter-spacing: 0;
+  padding-inline: 8px;
+}
+.glass-settings-dialog__quality-option[data-v-da8058b3] {
+  block-size: 32px !important;
+}
+.glass-settings-dialog__dynamics-mode-option[data-v-da8058b3] {
+  block-size: 32px !important;
+}
+.glass-settings-dialog__preset-option[data-v-da8058b3] {
+  block-size: 32px !important;
+}
+.glass-settings-dialog__appearance-option[data-v-da8058b3] .v-btn--active,
+.glass-settings-dialog__dynamics-mode-option[data-v-da8058b3] .v-btn--active,
+.glass-settings-dialog__quality-option[data-v-da8058b3] .v-btn--active,
+.glass-settings-dialog__preset-option[data-v-da8058b3] .v-btn--active {
+  background-color: rgba(var(--v-theme-primary), 0.14) !important;
+  box-shadow: inset 0 0 0 1px rgba(var(--v-theme-primary), 0.38) !important;
+}

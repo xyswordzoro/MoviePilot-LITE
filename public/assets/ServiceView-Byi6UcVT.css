@@ -1,0 +1,221 @@
+
+.desktop-scheduler-empty[data-v-8a4e7335] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--v-theme-on-surface), 0.52);
+  gap: 12px;
+  min-block-size: 260px;
+}
+.desktop-scheduler-empty p[data-v-8a4e7335] {
+  margin: 0;
+  font-size: 15px;
+}
+.scheduler-task-cell[data-v-8a4e7335] {
+  min-inline-size: 220px;
+}
+.scheduler-progress[data-v-8a4e7335] {
+  margin-block-start: 8px;
+  max-inline-size: 320px;
+}
+.scheduler-progress-meta[data-v-8a4e7335] {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 11px;
+  gap: 12px;
+  margin-block-start: 4px;
+}
+.scheduler-progress-meta span[data-v-8a4e7335] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.scheduler-progress-meta strong[data-v-8a4e7335] {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+.mobile-scheduler-view[data-v-8a4e7335] {
+  --mobile-scheduler-card-backdrop-filter: none;
+  --mobile-scheduler-card-background: rgb(var(--v-theme-surface));
+  --mobile-scheduler-card-border: 0;
+  --mobile-scheduler-card-shadow: none;
+
+  background: transparent;
+  min-block-size: 100%;
+  padding-block: 12px calc(22px + env(safe-area-inset-bottom));
+  padding-inline: 18px;
+}
+.mobile-scheduler-list[data-v-8a4e7335] {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.mobile-scheduler-card[data-v-8a4e7335] {
+  display: grid;
+  align-items: center;
+  padding: 18px;
+  border: var(--mobile-scheduler-card-border);
+  border-radius: var(--app-surface-radius);
+  backdrop-filter: var(--mobile-scheduler-card-backdrop-filter);
+  background: var(--mobile-scheduler-card-background);
+  box-shadow: var(--mobile-scheduler-card-shadow);
+  -moz-column-gap: 14px;
+       column-gap: 14px;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+}
+.mobile-scheduler-icon[data-v-8a4e7335] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(var(--scheduler-accent-rgb), 0.14);
+  block-size: 58px;
+  color: var(--scheduler-accent);
+  inline-size: 58px;
+}
+.mobile-scheduler-content[data-v-8a4e7335] {
+  min-inline-size: 0;
+}
+.mobile-scheduler-content h3[data-v-8a4e7335] {
+  overflow: hidden;
+  margin: 0;
+  color: rgba(var(--v-theme-on-surface), 0.92);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mobile-scheduler-content p[data-v-8a4e7335] {
+  overflow: hidden;
+  min-inline-size: 0;
+  color: rgba(var(--v-theme-on-surface), 0.58);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  margin-block: 0;
+  margin-inline: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mobile-scheduler-meta[data-v-8a4e7335] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-block-start: 6px;
+  min-inline-size: 0;
+}
+.mobile-scheduler-actions[data-v-8a4e7335] {
+  display: inline-flex;
+  align-items: center;
+}
+.mobile-scheduler-progress[data-v-8a4e7335] {
+  grid-column: 2 / -1;
+  margin-block-start: 2px;
+  min-inline-size: 0;
+}
+.mobile-scheduler-status[data-v-8a4e7335] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(var(--v-theme-on-surface), 0.06);
+  color: rgba(var(--v-theme-on-surface), 0.62);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  padding-block: 5px;
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+.mobile-scheduler-status--running[data-v-8a4e7335] {
+  background: rgba(var(--v-theme-success), 0.14);
+  color: rgb(var(--v-theme-success));
+}
+.mobile-scheduler-status--stopped[data-v-8a4e7335] {
+  background: rgba(var(--v-theme-error), 0.12);
+  color: rgb(var(--v-theme-error));
+}
+.mobile-scheduler-run-btn[data-v-8a4e7335] {
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff4f87, #e91e63) !important;
+  block-size: 46px;
+  box-shadow: 0 10px 22px rgba(233, 30, 99, 28%);
+  color: #fff !important;
+  inline-size: 46px;
+}
+.mobile-scheduler-run-btn.v-btn--disabled[data-v-8a4e7335] {
+  background: rgba(var(--v-theme-on-surface), 0.12) !important;
+  box-shadow: none;
+  color: rgba(var(--v-theme-on-surface), 0.42) !important;
+}
+.mobile-scheduler-empty[data-v-8a4e7335] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--v-theme-on-surface), 0.52);
+  gap: 12px;
+  min-block-size: 42vh;
+}
+.mobile-scheduler-empty p[data-v-8a4e7335] {
+  margin: 0;
+  font-size: 15px;
+}
+.mobile-scheduler-footer[data-v-8a4e7335] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--v-theme-on-surface), 0.55);
+  font-size: 14px;
+  gap: 8px;
+  padding-block: 28px 4px;
+}
+.mobile-scheduler-loading[data-v-8a4e7335] {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(var(--v-theme-on-surface), 0.72);
+  font-size: 16px;
+  font-weight: 600;
+  gap: 10px;
+}
+.v-theme--transparent .mobile-scheduler-card[data-v-8a4e7335],
+html[data-theme='transparent'] .mobile-scheduler-card[data-v-8a4e7335] {
+  backdrop-filter: blur(var(--transparent-blur, 10px));
+  background: rgba(var(--v-theme-surface), var(--transparent-opacity-light, 0.2));
+}
+@media (width <= 480px) {
+.mobile-scheduler-view[data-v-8a4e7335] {
+    padding-inline: 14px;
+}
+.mobile-scheduler-card[data-v-8a4e7335] {
+    padding: 16px;
+    -moz-column-gap: 12px;
+         column-gap: 12px;
+    grid-template-columns: 54px minmax(0, 1fr) auto;
+}
+.mobile-scheduler-icon[data-v-8a4e7335] {
+    block-size: 50px;
+    inline-size: 50px;
+}
+.mobile-scheduler-content h3[data-v-8a4e7335] {
+    font-size: 16px;
+}
+.mobile-scheduler-content p[data-v-8a4e7335] {
+    font-size: 13px;
+}
+.mobile-scheduler-status[data-v-8a4e7335] {
+    font-size: 12px;
+    padding-block: 5px;
+    padding-inline: 9px;
+}
+.mobile-scheduler-run-btn[data-v-8a4e7335] {
+    block-size: 42px;
+    inline-size: 42px;
+}
+}

@@ -1,0 +1,103 @@
+
+.heading[data-v-2d349451] {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+
+  --tw-text-opacity: 1;
+}
+.section[data-v-2d349451] {
+  margin-block: 0.5rem 2.5rem;
+}
+.version-stat-summary[data-v-2d349451] {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+}
+.version-stat-number[data-v-2d349451] {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+.markdown-body[data-v-2d349451] h1,
+.markdown-body[data-v-2d349451] h2,
+.markdown-body[data-v-2d349451] h3 {
+  font-weight: 600;
+  margin-block: 0.5rem;
+}
+.markdown-body[data-v-2d349451] h1 {
+  font-size: 1.5rem;
+}
+.markdown-body[data-v-2d349451] h2 {
+  font-size: 1.25rem;
+}
+.markdown-body[data-v-2d349451] h3 {
+  font-size: 1.1rem;
+}
+.markdown-body[data-v-2d349451] ul,
+.markdown-body[data-v-2d349451] ol {
+  margin-block: 0.5rem;
+  padding-inline-start: 1.5rem;
+}
+.markdown-body[data-v-2d349451] li {
+  margin-block: 0.25rem;
+}
+.markdown-body[data-v-2d349451] p {
+  margin-block: 0.5rem;
+}
+.markdown-body[data-v-2d349451] a {
+  color: rgb(99 102 241);
+  text-decoration: none;
+}
+.markdown-body[data-v-2d349451] a:hover {
+  text-decoration: underline;
+}
+.markdown-body[data-v-2d349451] code {
+  border-radius: 0.25rem;
+  background-color: rgba(127, 127, 127, 15%);
+  font-size: 0.875em;
+  padding-block: 0.15rem;
+  padding-inline: 0.4rem;
+}
+.markdown-body[data-v-2d349451] pre {
+  border-radius: 0.375rem;
+  background-color: rgba(127, 127, 127, 15%);
+  margin-block: 0.5rem;
+  overflow-x: auto;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+}
+.markdown-body[data-v-2d349451] pre code {
+  padding: 0;
+  background-color: transparent;
+}
+.markdown-body[data-v-2d349451] blockquote {
+  border-inline-start: 3px solid rgba(127, 127, 127, 40%);
+  color: rgba(127, 127, 127, 80%);
+  margin-block: 0.5rem;
+  padding-inline-start: 1rem;
+}
+.markdown-body[data-v-2d349451] hr {
+  border: none;
+  border-block-start: 1px solid rgba(127, 127, 127, 30%);
+  margin-block: 1rem;
+}
+.markdown-body[data-v-2d349451] table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  margin-block: 0.5rem;
+}
+.markdown-body[data-v-2d349451] th,
+.markdown-body[data-v-2d349451] td {
+  border: 1px solid rgba(127, 127, 127, 30%);
+  padding-block: 0.4rem;
+  padding-inline: 0.75rem;
+}
+.markdown-body[data-v-2d349451] th {
+  background-color: rgba(127, 127, 127, 10%);
+  font-weight: 600;
+}
+.markdown-body[data-v-2d349451] img {
+  block-size: auto;
+  max-inline-size: 100%;
+}

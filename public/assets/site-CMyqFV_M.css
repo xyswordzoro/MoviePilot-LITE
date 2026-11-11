@@ -1,0 +1,201 @@
+
+.site-card-hover-area[data-v-36740a42] {
+  inline-size: 100%;
+}
+.site-card-hover-area:hover .site-card--hoverable[data-v-36740a42] {
+  transform: translate3d(0, -0.25rem, 0);
+}
+.site-status-indicator[data-v-36740a42] {
+  position: absolute;
+  z-index: 1;
+  block-size: 2px;
+  inset-block-start: 0;
+  inset-inline: 0;
+  opacity: 0.5;
+  transition:
+    block-size 0.3s ease,
+    opacity 0.3s ease;
+}
+.site-status-indicator.error[data-v-36740a42] {
+  background: linear-gradient(90deg, transparent, rgba(var(--v-theme-error), 0.7), transparent);
+  box-shadow: 0 0 8px rgba(var(--v-theme-error), 0.3);
+}
+.site-status-indicator.warning[data-v-36740a42] {
+  background: linear-gradient(90deg, transparent, rgba(var(--v-theme-warning), 0.7), transparent);
+  box-shadow: 0 0 8px rgba(var(--v-theme-warning), 0.3);
+}
+.site-status-indicator.success[data-v-36740a42] {
+  background: linear-gradient(90deg, transparent, rgba(var(--v-theme-success), 0.7), transparent);
+  box-shadow: 0 0 8px rgba(var(--v-theme-success), 0.3);
+}
+.site-status-indicator.secondary[data-v-36740a42] {
+  background: linear-gradient(90deg, transparent, rgba(var(--v-theme-secondary), 0.7), transparent);
+  box-shadow: 0 0 8px rgba(var(--v-theme-secondary), 0.3);
+}
+
+/* 站点卡片悬停时状态指示器变化 */
+.site-card-hover-area:hover .site-card:not(.site-card--sortable) .site-status-indicator[data-v-36740a42] {
+  block-size: 2px;
+  opacity: 0.8;
+}
+
+/* 上传下载条样式 */
+.upload-bar[data-v-36740a42] {
+  animation: pulse-width-36740a42 2s infinite;
+  background: linear-gradient(90deg, #4d79ff, #07f);
+  box-shadow: 0 0 4px rgba(0, 119, 255, 50%);
+}
+.download-bar[data-v-36740a42] {
+  animation: pulse-width-36740a42 2s infinite;
+  background: linear-gradient(90deg, #42d392, #00b77e);
+  box-shadow: 0 0 4px rgba(0, 183, 126, 50%);
+}
+
+/* 测试状态点样式 */
+.pulse-dot[data-v-36740a42]::before {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  block-size: 70%;
+  content: '';
+  inline-size: 70%;
+  inset-block-start: 15%;
+  inset-inline-start: 15%;
+}
+.pulse-dot[data-v-36740a42]::after {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  block-size: 100%;
+  content: '';
+  inline-size: 100%;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+.pulse-dot.error[data-v-36740a42]::before {
+  background-color: rgba(var(--v-theme-error), 1);
+  box-shadow: 0 0 10px rgba(var(--v-theme-error), 0.8);
+}
+.pulse-dot.error[data-v-36740a42]::after {
+  animation: pulse-animation-error-36740a42 2s infinite;
+  box-shadow: 0 0 0 2px rgba(var(--v-theme-error), 0.3);
+}
+.pulse-dot.warning[data-v-36740a42]::before {
+  background-color: rgba(var(--v-theme-warning), 1);
+  box-shadow: 0 0 10px rgba(var(--v-theme-warning), 0.8);
+}
+.pulse-dot.warning[data-v-36740a42]::after {
+  animation: pulse-animation-warning-36740a42 2s infinite;
+  box-shadow: 0 0 0 2px rgba(var(--v-theme-warning), 0.3);
+}
+.pulse-dot.success[data-v-36740a42]::before {
+  background-color: rgba(var(--v-theme-success), 1);
+  box-shadow: 0 0 10px rgba(var(--v-theme-success), 0.8);
+}
+.pulse-dot.success[data-v-36740a42]::after {
+  animation: pulse-animation-success-36740a42 2s infinite;
+  box-shadow: 0 0 0 2px rgba(var(--v-theme-success), 0.3);
+}
+.pulse-dot.secondary[data-v-36740a42]::before {
+  background-color: rgba(var(--v-theme-secondary), 1);
+  box-shadow: 0 0 10px rgba(var(--v-theme-secondary), 0.8);
+}
+.pulse-dot.secondary[data-v-36740a42]::after {
+  animation: pulse-animation-secondary-36740a42 2s infinite;
+  box-shadow: 0 0 0 2px rgba(var(--v-theme-secondary), 0.3);
+}
+
+/* 加载动画 */
+.spinner-circle[data-v-36740a42] {
+  position: absolute;
+  border: 1px solid rgba(var(--v-theme-primary), 0.2);
+  border-radius: 50%;
+  animation: spin-36740a42 0.8s linear infinite;
+  block-size: 100%;
+  border-block-start-color: rgba(var(--v-theme-primary), 1);
+  inline-size: 100%;
+}
+
+/* 动画关键帧 */
+@keyframes pulse-width-36740a42 {
+0%,
+  100% {
+    opacity: 0.85;
+    transform: scaleX(0.95);
+}
+50% {
+    opacity: 1;
+    transform: scaleX(1.05);
+}
+}
+@keyframes pulse-animation-error-36740a42 {
+0% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-error), 0.6);
+}
+70% {
+    box-shadow: 0 0 0 10px rgba(var(--v-theme-error), 0);
+}
+100% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-error), 0);
+}
+}
+@keyframes pulse-animation-warning-36740a42 {
+0% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-warning), 0.6);
+}
+70% {
+    box-shadow: 0 0 0 10px rgba(var(--v-theme-warning), 0);
+}
+100% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-warning), 0);
+}
+}
+@keyframes pulse-animation-success-36740a42 {
+0% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-success), 0.6);
+}
+70% {
+    box-shadow: 0 0 0 10px rgba(var(--v-theme-success), 0);
+}
+100% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-success), 0);
+}
+}
+@keyframes pulse-animation-secondary-36740a42 {
+0% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-secondary), 0.6);
+}
+70% {
+    box-shadow: 0 0 0 10px rgba(var(--v-theme-secondary), 0);
+}
+100% {
+    box-shadow: 0 0 0 0 rgba(var(--v-theme-secondary), 0);
+}
+}
+@keyframes spin-36740a42 {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
+@keyframes fade-in-36740a42 {
+from {
+    opacity: 0;
+}
+to {
+    opacity: 1;
+}
+}
+.site-card-actions[data-v-36740a42] {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  visibility: hidden;
+}
+.site-card-hover-area:hover .site-card-actions[data-v-36740a42] {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+}

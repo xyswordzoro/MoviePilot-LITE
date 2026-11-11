@@ -1,0 +1,181 @@
+
+.shortcut-workbench[data-v-e1158158] {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  padding-block-start: 0.5rem;
+}
+.shortcut-panel[data-v-e1158158] {
+  padding: 1rem;
+  border: var(--app-surface-border);
+  border-radius: var(--app-surface-radius);
+  backdrop-filter: var(--app-grouped-list-backdrop-filter);
+  background: var(--app-grouped-list-background);
+  box-shadow: var(--app-surface-shadow);
+}
+.shortcut-form[data-v-e1158158] {
+  margin: 0;
+}
+.shortcut-form-col[data-v-e1158158] {
+  padding-inline: 0;
+}
+.shortcut-form-col[data-v-e1158158]:first-child {
+  padding-block-start: 0;
+}
+.shortcut-form-col[data-v-e1158158]:last-child {
+  padding-block-end: 0;
+}
+.custom-words-toolbar[data-v-e1158158] {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: 0.5rem;
+}
+.result-stack[data-v-e1158158] {
+  display: grid;
+  gap: 1rem;
+}
+.result-hero[data-v-e1158158] {
+  display: grid;
+  align-items: center;
+  padding: 0.75rem;
+  border: var(--app-surface-border);
+  border-radius: var(--app-surface-radius);
+  background: rgba(var(--v-theme-primary), 0.08);
+  gap: 0.85rem;
+  grid-template-columns: 5rem minmax(0, 1fr);
+}
+.result-hero--failed[data-v-e1158158] {
+  background: rgba(var(--v-theme-error), 0.08);
+}
+.hero-poster[data-v-e1158158] {
+  overflow: hidden;
+  border: var(--app-surface-border);
+  border-radius: var(--app-control-radius);
+  aspect-ratio: 2 / 3;
+  background: rgba(var(--v-theme-surface-variant), 0.35);
+}
+.hero-poster--empty[data-v-e1158158] {
+  display: grid;
+  place-items: center;
+}
+.hero-body[data-v-e1158158] {
+  min-inline-size: 0;
+}
+.hero-heading[data-v-e1158158] {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-title-text[data-v-e1158158] {
+  min-inline-size: 0;
+}
+.hero-chips[data-v-e1158158] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.hero-chip[data-v-e1158158] {
+  max-inline-size: 100%;
+}
+.hero-overview[data-v-e1158158] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.5;
+}
+.pipeline[data-v-e1158158] {
+  display: flex;
+  flex-direction: column;
+}
+.pipeline-step[data-v-e1158158] {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+}
+.pipeline-marker[data-v-e1158158] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-block-size: 100%;
+}
+.pipeline-connector[data-v-e1158158] {
+  flex: 1;
+  background: rgba(var(--v-theme-primary), 0.25);
+  inline-size: 2px;
+  margin-block-start: 0.3rem;
+}
+.pipeline-body[data-v-e1158158] {
+  min-inline-size: 0;
+  padding-block-end: 0.9rem;
+}
+.pipeline-step:last-child .pipeline-body[data-v-e1158158] {
+  padding-block-end: 0;
+}
+.pipeline-label[data-v-e1158158] {
+  letter-spacing: 0.02em;
+}
+.pipeline-value[data-v-e1158158] {
+  margin-block-start: 0.2rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.media-id-link[data-v-e1158158] {
+  color: rgb(var(--v-theme-primary));
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.media-source-display[data-v-e1158158] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.media-source-logo[data-v-e1158158] {
+  flex: 0 0 1.4rem;
+  block-size: 1.4rem;
+  inline-size: 1.4rem;
+}
+.applied-words[data-v-e1158158] {
+  display: grid;
+  border-block-start: var(--app-surface-border);
+  gap: 0.5rem;
+  padding-block: 0.4rem;
+}
+.applied-words-label[data-v-e1158158] {
+  letter-spacing: 0.02em;
+}
+.words-chips[data-v-e1158158] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.empty-state[data-v-e1158158] {
+  display: grid;
+  align-content: center;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  gap: 0.75rem;
+  min-block-size: 14rem;
+  place-items: center;
+  text-align: center;
+}
+@media (width <= 760px) {
+.shortcut-workbench[data-v-e1158158] {
+    grid-template-columns: minmax(0, 1fr);
+}
+.hero-heading[data-v-e1158158] {
+    flex-wrap: wrap;
+}
+.hero-title-text[data-v-e1158158] {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+}
+}
+@media (width <= 420px) {
+.shortcut-panel[data-v-e1158158] {
+    padding: 0.8rem;
+}
+.result-hero[data-v-e1158158] {
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+}
+}

@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>站点日志 · MoviePilot-Lite</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: light-dark(#f3f4f7, #141519);
+    color: light-dark(#26282e, #e7e8eb);
+    font: 14px/1.5 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  .app { max-width: 860px; margin: 0 auto; padding: 14px 14px 40px; }
+  .topbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .title { font-size: 17px; font-weight: 600; }
+  .spacer { flex: 1; }
+  .seg { display: inline-flex; gap: 4px; }
+  .segbtn {
+    border: none; background: transparent; color: light-dark(#8a8f99, #98a0ab);
+    border-radius: 999px; padding: 4px 12px; font-size: 12.5px; cursor: pointer;
+  }
+  .segbtn.on {
+    background: light-dark(#e9e3ff, #3a3358); color: light-dark(#4b3ba8, #c4b5ff); font-weight: 500;
+  }
+  .search {
+    display: flex; align-items: center; gap: 6px; flex: 1 1 200px; max-width: 300px;
+    border: 1px solid light-dark(#e3e5ea, #33363f); border-radius: 999px; padding: 5px 12px;
+    background: light-dark(#fff, #1e2027);
+  }
+  .search input { border: none; outline: none; background: transparent; color: inherit; width: 100%; font-size: 12.5px; }
+  .live { font-size: 11.5px; color: light-dark(#52c41a, #4cc766); white-space: nowrap; }
+  .live.off { color: light-dark(#8a8f99, #98a0ab); }
+  .sites { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .chip {
+    border: 1px solid light-dark(#e3e5ea, #33363f); background: light-dark(#fff, #1e2027);
+    color: inherit; border-radius: 999px; padding: 5px 14px; font-size: 13px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip:hover { border-color: light-dark(#6a7ce0, #8fa3ff); }
+  .chip.on {
+    background: light-dark(#dde6ff, #2b3a5e); border-color: transparent;
+    color: light-dark(#2447c9, #9fb5ff); font-weight: 500;
+  }
+  .chip .sub { font-size: 11px; color: light-dark(#8a8f99, #98a0ab); font-weight: 400; }
+  .groupbar {
+    display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+    background: light-dark(#eef0f4, #232630); border-radius: 8px;
+    padding: 5px 12px; margin: 10px 0 2px; font-size: 12px;
+    color: light-dark(#5a5f6a, #aab1bb);
+  }
+  .groupbar b { font-size: 12.5px; font-weight: 600; color: inherit; }
+  .entry {
+    display: flex; gap: 10px; padding: 7px 4px 7px 2px;
+    border-bottom: 1px dashed light-dark(#e3e5ea, #2c2f37);
+  }
+  .bar { flex: none; width: 4px; border-radius: 4px; align-self: stretch; }
+  .bar.ok { background: light-dark(#52c41a, #4cc766); }
+  .bar.fail { background: light-dark(#f5222d, #ef7373); }
+  .main { flex: 1; min-width: 0; }
+  .raw { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: light-dark(#8a8f99, #98a0ab); word-break: break-all; }
+  .rec { margin-top: 2px; font-size: 13.5px; font-weight: 600; word-break: break-all; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .rec-tail { margin-left: auto; display: inline-flex; gap: 8px; align-items: center; font-weight: 400; white-space: nowrap; }
+  .extra { font-size: 11.5px; font-weight: 400; color: light-dark(#8a8f99, #98a0ab); }
+  .chiplet { font-size: 11px; border-radius: 6px; padding: 1px 8px; white-space: nowrap; font-weight: 400; }
+  .chiplet.ok { background: light-dark(#eaf7e8, #1d3324); color: light-dark(#3fa545, #4cc766); }
+  .chiplet.fail { background: light-dark(#fdeaea, #3c2226); color: light-dark(#e14b4b, #ef7373); }
+  .chiplet.word { background: light-dark(#fdf3e4, #3a2f1e); color: light-dark(#c77c11, #e3a63d); }
+  .eventrow { padding: 4px 6px; font-size: 12px; color: light-dark(#c03434, #ef9d9d); }
+  .eventrow.info { color: light-dark(#8a8f99, #98a0ab); }
+  .pager { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 0 4px; }
+  .pager button {
+    border: 1px solid light-dark(#e3e5ea, #33363f); background: light-dark(#fff, #1e2027);
+    color: inherit; border-radius: 8px; padding: 5px 14px; font-size: 12.5px; cursor: pointer;
+  }
+  .pager button:disabled { opacity: 0.4; cursor: default; }
+  .pager .info { font-size: 12px; color: light-dark(#8a8f99, #98a0ab); }
+  .empty { text-align: center; color: light-dark(#8a8f99, #98a0ab); padding: 50px 0; font-size: 13px; }
+  .login {
+    position: fixed; inset: 0; background: light-dark(#f3f4f7, #141519);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .loginbox {
+    background: light-dark(#fff, #1e2027); border: 1px solid light-dark(#e3e5ea, #33363f);
+    border-radius: 12px; padding: 24px; width: 300px;
+  }
+  .loginbox h3 { margin: 0 0 14px; }
+  .loginbox input {
+    width: 100%; margin-bottom: 10px; padding: 8px 10px; font-size: 13px;
+    border: 1px solid light-dark(#e3e5ea, #33363f); border-radius: 8px;
+    background: transparent; color: inherit;
+  }
+  .loginbox button {
+    width: 100%; padding: 8px 0; border: none; border-radius: 8px; cursor: pointer;
+    background: light-dark(#4b3ba8, #6a5bd8); color: #fff; font-size: 13px;
+  }
+  .loginerr { color: light-dark(#e14b4b, #ef7373); font-size: 12px; margin-top: 8px; min-height: 16px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <span class="title">站点日志</span>
+    <span class="spacer"></span>
+    <span class="seg" role="group" aria-label="识别状态筛选">
+      <button class="segbtn on" data-level="all" type="button">全部</button>
+      <button class="segbtn" data-level="fail" type="button">未识别</button>
+      <button class="segbtn" data-level="word" type="button">识别词调整</button>
+    </span>
+    <span class="search">
+      <input id="kw" type="text" placeholder="搜索种子 / 识别名 / 站点" aria-label="搜索">
+    </span>
+    <span class="live" id="live">● 15s 自动刷新</span>
+  </div>
+  <div class="sites" id="sites"></div>
+  <div id="list"><div class="empty">加载中...</div></div>
+  <div class="pager" id="pager" style="display:none">
+    <button id="prev" type="button">上一页</button>
+    <span class="info" id="pageinfo"></span>
+    <button id="next" type="button">下一页</button>
+  </div>
+</div>
+
+<div class="login" id="login" style="display:none">
+  <div class="loginbox">
+    <h3>登录 MoviePilot</h3>
+    <input id="username" type="text" placeholder="用户名" autocomplete="username">
+    <input id="password" type="password" placeholder="密码" autocomplete="current-password">
+    <button id="dologin" type="button">登 录</button>
+    <div class="loginerr" id="loginerr"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var TOKEN_KEY = '__MP_SiteLog_Token__';
+  var PAGE_SIZE = 100;      // 每页展示的种子条数
+  var FETCH_LIMIT = 500;    // 每次从服务端拉取的最大记录数
+  var authMode = ''; // 'api' | 'jwt'
+  var token = '';
+  var level = 'all';
+  var keyword = '';
+  var selected = 'all';
+  var sites = [];
+  var records = [];
+  var page = 1;
+
+  function getToken() {
+    // 1. URL 参数携带令牌：JWT 三段式走 Bearer 头，否则按 API_TOKEN 走查询参数
+    var q = new URLSearchParams(location.search);
+    var t = q.get('token');
+    if (t) {
+      authMode = t.split('.').length === 3 ? 'jwt' : 'api';
+      return t;
+    }
+    // 2. 本页保存的登录令牌
+    t = localStorage.getItem(TOKEN_KEY);
+    if (t) { authMode = 'jwt'; return t; }
+    // 3. 复用前端页面同一来源下已登录的令牌
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        var val = localStorage.getItem(key) || '';
+        // 3.1 键名含 token 的独立值
+        if (/token/i.test(key) && val.length > 50 && val.indexOf('.') > 0) {
+          authMode = 'jwt';
+          return val;
+        }
+        // 3.2 pinia persist 格式：{"token":"eyJ..."}
+        if (val.charAt(0) === '{') {
+          var obj = JSON.parse(val);
+          if (obj && typeof obj.token === 'string'
+            && obj.token.length > 50 && obj.token.indexOf('.') > 0) {
+            authMode = 'jwt';
+            return obj.token;
+          }
+        }
+      }
+    } catch (e) { /* 非法 JSON 等场景忽略，继续回退登录 */ }
+    return '';
+  }
+
+  function apiUrl(path, params) {
+    var qs = params ? '?' + params : '';
+    if (authMode === 'api') qs = (params ? qs + '&' : '?') + 'token=' + encodeURIComponent(token);
+    return '/api/v1' + path + qs;
+  }
+
+  function apiFetch(path, params) {
+    var headers = {};
+    if (authMode === 'jwt') headers['Authorization'] = 'Bearer ' + token;
+    return fetch(apiUrl(path, params), { headers: headers });
+  }
+
+  function showLogin(show) {
+    document.getElementById('login').style.display = show ? 'flex' : 'none';
+  }
+
+  function doLogin() {
+    var username = document.getElementById('username').value.trim();
+    var password = document.getElementById('password').value;
+    fetch('/api/v1/login/access-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
+    }).then(function (res) { return res.json(); }).then(function (data) {
+      if (data.access_token) {
+        token = data.access_token;
+        authMode = 'jwt';
+        localStorage.setItem(TOKEN_KEY, token);
+        showLogin(false);
+        loadAll();
+      } else {
+        document.getElementById('loginerr').textContent = data.detail || '登录失败，请检查用户名密码';
+      }
+    }).catch(function (err) {
+      document.getElementById('loginerr').textContent = '请求异常：' + err;
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function renderSites() {
+    var html = '<button class="chip ' + (selected === 'all' ? 'on' : '') + '" data-site="all" type="button">'
+      + '全部站点</button>';
+    html += sites.map(function (s) {
+      var sub = s.last_time ? '<span class="sub">' + esc(s.last_time.slice(5, 16)) + '</span>' : '';
+      return '<button class="chip ' + (selected === s.domain ? 'on' : '') + '" data-site="' + esc(s.domain)
+        + '" type="button">' + esc(s.site) + sub + '</button>';
+    }).join('');
+    var box = document.getElementById('sites');
+    box.innerHTML = html || '<span class="empty" style="padding:6px 0">暂无站点日志，等待 RSS 刷新任务产生记录</span>';
+    Array.prototype.forEach.call(box.querySelectorAll('.chip'), function (btn) {
+      btn.addEventListener('click', function () {
+        selected = btn.getAttribute('data-site');
+        page = 1;
+        renderSites();
+        loadRecords();
+      });
+    });
+  }
+
+  function statusLabel(r) {
+    if (r.status === 'ok') {
+      var extra = [];
+      if (r.year) extra.push(esc(r.year));
+      if (r.tmdb_id) extra.push('TMDB ' + r.tmdb_id);
+      else if (r.douban_id) extra.push('豆瓣 ' + r.douban_id);
+      else if (r.bangumi_id) extra.push('BG ' + r.bangumi_id);
+      var rec = esc(r.title || '识别成功');
+      if (extra.length) rec += '<span class="extra">' + extra.join(' · ') + '</span>';
+      rec += '<span class="chiplet ok">识别成功</span>';
+      if (r.adjusted) rec += '<span class="chiplet word">识别词调整</span>';
+      return rec;
+    }
+    return '<span class="extra">未识别到媒体信息</span><span class="chiplet fail">未识别</span>'
+      + (r.adjusted ? '<span class="chiplet word">识别词调整</span>' : '');
+  }
+
+  function passKeyword(r) {
+    if (!keyword) return true;
+    var hay = [r.raw, r.title, r.site, r.message || ''].join(' ').toLowerCase();
+    return hay.indexOf(keyword) >= 0;
+  }
+
+  function renderRecords() {
+    var visible = records.filter(passKeyword);
+    var totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+    if (page > totalPages) page = totalPages;
+    if (page < 1) page = 1;
+    var pageRecords = visible.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+    var html = pageRecords.map(function (r) {
+      if (r.type === 'summary') {
+        // 新种子为 0 的轮次不单独占行，直接隐藏
+        if (!r.new) return '';
+        return '<div class="groupbar"><b>' + esc(r.site) + '</b><span>本轮汇总</span>'
+          + '<span>抓取 ' + (r.total || 0) + '</span>'
+          + '<span>新种子 ' + (r.new || 0) + '</span>'
+          + '<span>识别成功 ' + (r.ok || 0) + '</span>'
+          + '<span>未识别 ' + (r.fail || 0) + '</span>'
+          + (r.word ? '<span>识别词调整 ' + r.word + '</span>' : '')
+          + '<span>耗时 ' + (r.cost || 0) + 's</span>'
+          + '<span>' + esc(r.time || '') + '</span></div>';
+      }
+      if (r.type === 'event') {
+        return '<div class="eventrow ' + (r.level === 'error' ? '' : 'info') + '">'
+          + esc(r.time || '') + ' · ' + esc(r.message || '') + '</div>';
+      }
+      // 种子卡片固定两行：原始种子名 + 识别结果（时间与站点后置）
+      var tail = '';
+      if (selected === 'all') tail += '<span class="extra">' + esc(r.site || '') + '</span>';
+      tail += '<span class="extra">' + esc(r.time || '') + '</span>';
+      return '<div class="entry">'
+        + '<span class="bar ' + (r.status === 'ok' ? 'ok' : 'fail') + '"></span>'
+        + '<div class="main">'
+        + '<div class="raw">' + esc(r.raw || '') + '</div>'
+        + '<div class="rec">' + statusLabel(r) + '<span class="rec-tail">' + tail + '</span></div>'
+        + '</div></div>';
+    }).join('');
+    document.getElementById('list').innerHTML = html
+      || '<div class="empty">当前条件下暂无记录</div>';
+
+    var pager = document.getElementById('pager');
+    if (totalPages > 1 || visible.length > PAGE_SIZE) {
+      pager.style.display = 'flex';
+      document.getElementById('pageinfo').textContent =
+        '第 ' + page + ' / ' + totalPages + ' 页 · 共 ' + visible.length + ' 条';
+      document.getElementById('prev').disabled = page <= 1;
+      document.getElementById('next').disabled = page >= totalPages;
+    } else {
+      pager.style.display = 'none';
+    }
+  }
+
+  function loadSites() {
+    return apiFetch('/site_log/sites').then(function (res) {
+      if (res.status === 401) { showLogin(true); throw new Error('unauthorized'); }
+      return res.json();
+    }).then(function (data) {
+      sites = data || [];
+      renderSites();
+    }).catch(function (err) {
+      if (err && err.message === 'unauthorized') return;
+      document.getElementById('live').textContent = '● 加载失败';
+      document.getElementById('live').className = 'live off';
+    });
+  }
+
+  function loadRecords() {
+    var params = 'limit=' + FETCH_LIMIT + '&level=' + encodeURIComponent(level);
+    return apiFetch('/site_log/' + encodeURIComponent(selected) + '/records', params)
+      .then(function (res) {
+        if (res.status === 401) { showLogin(true); throw new Error('unauthorized'); }
+        return res.json();
+      }).then(function (data) {
+        records = data || [];
+        renderRecords();
+      }).catch(function (err) {
+        if (err && err.message === 'unauthorized') return;
+        throw err;
+      });
+  }
+
+  function loadAll() {
+    document.getElementById('live').textContent = '● 15s 自动刷新';
+    document.getElementById('live').className = 'live';
+    loadSites();
+    loadRecords();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.segbtn'), function (btn) {
+    btn.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('.segbtn'), function (b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      level = btn.getAttribute('data-level');
+      page = 1;
+      loadRecords();
+    });
+  });
+  document.getElementById('kw').addEventListener('input', function (e) {
+    keyword = e.target.value.trim().toLowerCase();
+    page = 1;
+    renderRecords();
+  });
+  document.getElementById('prev').addEventListener('click', function () {
+    if (page > 1) { page -= 1; renderRecords(); }
+  });
+  document.getElementById('next').addEventListener('click', function () {
+    page += 1;
+    renderRecords();
+  });
+  document.getElementById('dologin').addEventListener('click', doLogin);
+  document.getElementById('password').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  token = getToken();
+  if (token) {
+    showLogin(false);
+    loadAll();
+  } else {
+    showLogin(true);
+  }
+  setInterval(function () {
+    if (token && document.visibilityState === 'visible') loadAll();
+  }, 15000);
+})();
+</script>
+</body>
+</html>

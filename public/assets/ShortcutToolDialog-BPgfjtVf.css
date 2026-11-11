@@ -1,0 +1,52 @@
+
+.system-health-dialog-card[data-v-1715a4c6] {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+}
+.system-health-dialog-body[data-v-1715a4c6] {
+  /* 弹窗正文本身不滚动，滚动只交给健康检查结果列表。 */
+  display: flex;
+  overflow: hidden !important;
+  flex: 1 1 auto;
+  block-size: min(42rem, calc(100dvh - 8rem - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  min-block-size: 0;
+}
+.system-health-dialog-body--fullscreen[data-v-1715a4c6] {
+  block-size: auto;
+}
+@media (max-width: 959.98px) {
+.words-shortcut-dialog-card[data-v-1715a4c6] {
+    display: flex;
+    overflow: hidden !important;
+    flex-direction: column;
+}
+.words-shortcut-dialog-body[data-v-1715a4c6] {
+    display: flex;
+    overflow: hidden !important;
+    flex: 1 1 auto;
+    inline-size: 100%;
+    min-block-size: 0;
+    padding: 0 !important;
+}
+.scheduler-shortcut-dialog-card--transparent[data-v-1715a4c6] {
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+}
+.cache-shortcut-dialog-card[data-v-1715a4c6] {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    backdrop-filter: var(--app-grouped-list-backdrop-filter);
+    background: var(--app-grouped-list-background);
+}
+.cache-shortcut-dialog-body[data-v-1715a4c6] {
+    display: flex;
+    overflow: hidden !important;
+    flex: 1 1 auto;
+    inline-size: 100%;
+    min-block-size: 0;
+    padding: 0 !important;
+}
+}

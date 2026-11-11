@@ -1,0 +1,146 @@
+
+.cursor-pointer[data-v-3ced1b40] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cursor-pointer[data-v-3ced1b40]:hover {
+  transform: translateY(-2px);
+}
+.cursor-pointer[data-v-3ced1b40]:active {
+  transform: translateY(0);
+}
+
+/* 选中状态的样式 */
+.v-card--variant-tonal.v-theme--light[data-v-3ced1b40] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.12);
+}
+.v-card--variant-tonal.v-theme--dark[data-v-3ced1b40] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.2);
+}
+
+.cursor-pointer[data-v-760842e8] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cursor-pointer[data-v-760842e8]:hover {
+  transform: translateY(-2px);
+}
+.cursor-pointer[data-v-760842e8]:active {
+  transform: translateY(0);
+}
+
+/* 选中状态的样式 */
+.v-card--variant-tonal.v-theme--light[data-v-760842e8] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.12);
+}
+.v-card--variant-tonal.v-theme--dark[data-v-760842e8] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.2);
+}
+
+.cursor-pointer[data-v-1c853e54] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cursor-pointer[data-v-1c853e54]:hover {
+  transform: translateY(-2px);
+}
+.cursor-pointer[data-v-1c853e54]:active {
+  transform: translateY(0);
+}
+
+/* 选中状态的样式 */
+.v-card--variant-tonal.v-theme--light[data-v-1c853e54] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.12);
+}
+.v-card--variant-tonal.v-theme--dark[data-v-1c853e54] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.2);
+}
+
+.cursor-pointer[data-v-ffc80164] {
+  cursor: pointer;
+}
+.preset-card-hover-area:hover .preset-card[data-v-ffc80164] {
+  transform: translate3d(0, -0.25rem, 0);
+}
+.preset-card[data-v-ffc80164]:active {
+  transform: translateY(-2px);
+}
+
+/* 预设卡片选中状态的样式 */
+.v-card--variant-tonal.v-theme--light[data-v-ffc80164] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.12);
+}
+.v-card--variant-tonal.v-theme--dark[data-v-ffc80164] {
+  border: 2px solid rgb(var(--v-theme-primary));
+  background-color: rgb(var(--v-theme-primary), 0.2);
+}
+
+/* 规则代码样式 */
+.v-code[data-v-ffc80164] {
+  padding: 12px;
+  border-radius: 8px;
+  background-color: rgba(var(--v-theme-surface-variant), 0.3);
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 展开面板样式 */
+.v-expansion-panel-title[data-v-ffc80164] {
+  font-weight: 500;
+}
+.v-expansion-panel-text[data-v-ffc80164] {
+  padding-block-start: 16px;
+}
+
+/* 开关组件样式优化 */
+.v-switch[data-v-ffc80164] {
+  margin-block-end: 8px;
+}
+
+/* 芯片组样式 */
+.v-chip-group[data-v-ffc80164] {
+  gap: 8px;
+}
+.v-chip[data-v-ffc80164] {
+  margin-block: 4px;
+  margin-inline: 0;
+}
+
+/* 旋转动画 */
+.rotating[data-v-ba16f16c] {
+  animation: rotate-ba16f16c 2s linear infinite;
+}
+@keyframes rotate-ba16f16c {
+from {
+    transform: rotate(0deg);
+}
+to {
+    transform: rotate(360deg);
+}
+}
+
+.setup-wizard-fullscreen[data-v-ab9a95dc] {
+  position: fixed;
+  background-color: rgb(var(--v-theme-background));
+  inset: 0;
+  overflow-y: auto;
+}
+.setup-wizard-header[data-v-ab9a95dc] {
+  position: sticky;
+  z-index: 2000;
+  background-color: rgb(var(--v-theme-surface));
+  border-block-end: 1px solid rgb(var(--v-theme-outline-variant));
+  box-shadow: 0 0 5px rgba(0, 0, 0, 4%);
+  inset-block-start: 0;
+  padding-block: calc(16px + env(safe-area-inset-top)) 16px;
+}

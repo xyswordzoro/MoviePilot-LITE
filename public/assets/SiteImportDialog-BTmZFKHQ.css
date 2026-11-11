@@ -1,0 +1,27 @@
+
+.upload-area[data-v-57985777] {
+  padding: 2rem;
+}
+.upload-zone[data-v-57985777] {
+  padding: 2rem;
+  border: 2px dashed #ccc;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.upload-zone.dragging[data-v-57985777] {
+  border-color: rgb(var(--v-theme-primary));
+  background-color: rgba(var(--v-theme-primary), 0.05);
+}
+.error-details[data-v-57985777] {
+  margin-block: 1rem;
+  margin-inline: 0;
+}
+.error-details .v-expansion-panels[data-v-57985777] {
+  background: transparent;
+}
+.border-success[data-v-57985777] {
+  border-inline-start: 4px solid rgb(var(--v-theme-success));
+}
+.border-error[data-v-57985777] {
+  border-inline-start: 4px solid rgb(var(--v-theme-error));
+}

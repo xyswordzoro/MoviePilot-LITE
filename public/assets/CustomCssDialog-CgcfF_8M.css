@@ -1,0 +1,45 @@
+
+.custom-css-dialog[data-v-569f93b7] {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  max-block-size: calc(100dvh - 2rem);
+}
+.custom-css-header[data-v-569f93b7] {
+  flex: 0 0 auto;
+  border-block-end: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+}
+.custom-css-editor-body[data-v-569f93b7] {
+  flex: 1 1 auto;
+  min-block-size: 240px;
+}
+.custom-css-editor[data-v-569f93b7] {
+  overflow: hidden;
+  background: rgb(var(--v-theme-surface));
+  block-size: min(62vh, 34rem);
+  inline-size: 100%;
+}
+.custom-css-actions[data-v-569f93b7] {
+  flex: 0 0 auto;
+  border-block-start: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+  padding-block: 0.875rem;
+  padding-inline: 1rem;
+}
+@media (width <= 960px) {
+.custom-css-dialog[data-v-569f93b7] {
+    block-size: 100dvh;
+    max-block-size: 100dvh;
+}
+.custom-css-editor-body[data-v-569f93b7] {
+    display: flex;
+    flex-direction: column;
+}
+.custom-css-editor[data-v-569f93b7] {
+    flex: 1 1 auto;
+    block-size: auto;
+    min-block-size: 0;
+}
+.custom-css-actions[data-v-569f93b7] {
+    padding-block-end: max(0.875rem, calc(env(safe-area-inset-bottom) + 0.75rem));
+}
+}
