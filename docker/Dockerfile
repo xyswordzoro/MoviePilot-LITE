@@ -100,6 +100,8 @@ COPY . .
 # LITE 版优先使用仓库内置的前端产物（public/），缺失时回退下载官方前端
 RUN if [ -f /app/public/index.html ]; then \
         echo "使用仓库内置的 MoviePilot-Lite 前端"; \
+        cp -r /app/public /public \
+        && rm -rf /app/public; \
     else \
         FRONTEND_VERSION=$(sed -n "s/^FRONTEND_VERSION\s*=\s*'\([^']*\)'/\1/p" /app/version.py) \
         && curl -sL "https://github.com/jxxghp/MoviePilot-Frontend/releases/download/${FRONTEND_VERSION}/dist.zip" | busybox unzip -d / - \
