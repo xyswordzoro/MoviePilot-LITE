@@ -20,7 +20,6 @@ from sqlalchemy.orm import Session
 from app import schemas
 from app.chain import ChainBase
 from app.chain.mediaserver import MediaServerChain
-from app.chain.recommend import RecommendChain
 from app.chain.site import SiteChain
 from app.chain.subscribe import SubscribeChain
 from app.chain.transfer import TransferChain
@@ -478,11 +477,6 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                     "func": SiteChain().refresh_userdatas,
                     "running": False,
                 },
-                "recommend_refresh": {
-                    "name": "推荐缓存",
-                    "func": RecommendChain().refresh_recommend,
-                    "running": False,
-                },
                 "plugin_market_refresh": {
                     "name": "插件市场缓存",
                     "func": PluginManager().async_get_online_plugins,
@@ -685,17 +679,6 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                     minutes=settings.SITEDATA_REFRESH_INTERVAL * 60,
                     kwargs={"job_id": "sitedata_refresh"},
                 )
-
-            # 推荐缓存
-            self._scheduler.add_job(
-                self.start,
-                "interval",
-                id="recommend_refresh",
-                name="推荐缓存",
-                hours=24,
-                next_run_time=datetime.now(pytz.timezone(settings.TZ)) + timedelta(seconds=5),
-                kwargs={"job_id": "recommend_refresh"},
-            )
 
             # 插件市场缓存
             self._scheduler.add_job(

@@ -28,7 +28,6 @@ def test_meta_cache_expire_does_not_schedule_bulk_cache_clear(monkeypatch):
     generic_chain = Mock()
     for name in [
         "MediaServerChain",
-        "RecommendChain",
         "SchedulerChain",
         "SiteChain",
         "SubscribeChain",
