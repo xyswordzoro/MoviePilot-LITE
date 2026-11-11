@@ -121,7 +121,9 @@ RUN if [ -f /app/public/index.html ]; then \
 # final 阶段: 安装运行时依赖和配置最终镜像
 FROM prepare_package AS final
 
+# jemalloc：加快脏页归还系统内存，降低 Python 长驻进程的 RSS 峰值
 ENV LD_PRELOAD="/usr/local/lib/libjemalloc.so" \
+    MALLOC_CONF="dirty_decay_ms:2000,muzzy_decay_ms:2000" \
     MOVIEPILOT_DOCKER_KEEPALIVE_ON_FAILURE="true"
 
 # 引入支持 amr 编码的静态 ffmpeg

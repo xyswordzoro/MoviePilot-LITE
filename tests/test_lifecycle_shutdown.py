@@ -224,14 +224,12 @@ def test_command_restart_failure_does_not_publish_stop_request(monkeypatch):
 
 def test_stop_modules_continues_after_internal_owner_failures(monkeypatch):
     """模块关闭编排中的多个失败不能阻断其余清理"""
-    stop_agent = AsyncMock(side_effect=RuntimeError("agent failed"))
-    monkeypatch.setattr(modules_initializer, "stop_agent", stop_agent)
     dependencies = _patch_module_shutdown_dependencies(monkeypatch)
     dependencies["module"].side_effect = RuntimeError("module failed")
+    dependencies["event"].side_effect = RuntimeError("event failed")
 
     asyncio.run(modules_initializer.stop_modules())
 
-    stop_agent.assert_awaited_once_with()
     for dependency in dependencies.values():
         _assert_completed_once(dependency)
 
