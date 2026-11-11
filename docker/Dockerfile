@@ -133,8 +133,10 @@ COPY --from=prepare_venv --chmod=777 ${VENV_PATH} ${VENV_PATH}
 COPY --from=prepare_venv /usr/local/bin/uv /usr/local/bin/uv
 COPY --from=prepare_venv /usr/local/bin/uv-pip-compat /usr/local/bin/uv-pip-compat
 
-# 浏览器运行依赖
-RUN playwright install-deps chromium \
+# 浏览器运行依赖（libatomic1 为 playwright driver 的 node 依赖）
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libatomic1 \
+    && playwright install-deps chromium \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf \
