@@ -6,6 +6,7 @@ import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -47,6 +48,8 @@ class LogConfigModel(BaseModel):
     BATCH_WRITE_SIZE: int = 50
     # 写入超时时间（秒）
     WRITE_TIMEOUT: float = 3.0
+    # 是否在主日志中输出站点 RSS 刷新日志（关闭后种子识别明细只看站点日志，ERROR 仍会输出）
+    RSS_LOG_ENABLE: bool = True
 
 
 class LogSettings(BaseSettings, LogConfigModel):
@@ -341,6 +344,45 @@ class LoggerManager:
     _lock = threading.Lock()
     # 非阻塞文件处理器
     _file_handler = NonBlockingFileHandler()
+    # 站点 RSS 刷新日志静默范围计数（进程内共享，兼容线程池并发）
+    _rss_log_depth = 0
+    _rss_log_lock = threading.Lock()
+    # 刷新期间可被静默的日志来源（对应日志前缀中的调用者文件名）
+    _rss_log_callers = {
+        "torrents.py",
+        "torrent.py",
+        "rss.py",
+        "spider.py",
+        "indexer",
+        "parser",
+        "media.py",
+        "themoviedb",
+    }
+
+    @contextmanager
+    def rss_log_scope(self):
+        """
+        标记进入站点 RSS 刷新流程。
+
+        在关闭 RSS_LOG_ENABLE 时，该范围内的种子抓取/识别日志只写入站点日志，
+        不再刷屏主日志；ERROR 及以上级别始终保留。
+        """
+        with self._rss_log_lock:
+            self._rss_log_depth += 1
+        try:
+            yield
+        finally:
+            with self._rss_log_lock:
+                self._rss_log_depth = max(0, self._rss_log_depth - 1)
+
+    def _is_rss_log_suppressed(self, caller_name: Optional[str]) -> bool:
+        """
+        判断当前日志是否属于需要静默的 RSS 刷新明细。
+        """
+        if not caller_name or caller_name not in self._rss_log_callers:
+            return False
+        with self._rss_log_lock:
+            return self._rss_log_depth > 0
 
     def get_logger(self, name: str) -> logging.Logger:
         """
@@ -380,9 +422,11 @@ class LoggerManager:
         while frame:
             filepath = Path(frame.f_code.co_filename)
             parts = filepath.parts
-            # 设定调用者文件名称
+            # 设定调用者文件名称（跳过日志模块自身的转发帧，如 warn -> warning）
             if not caller_name:
-                if parts[-1] == "__init__.py" and len(parts) >= 2:
+                if parts[-1] == Path(__file__).name:
+                    pass
+                elif parts[-1] == "__init__.py" and len(parts) >= 2:
                     caller_name = parts[-2]
                 else:
                     caller_name = parts[-1]
@@ -492,6 +536,14 @@ class LoggerManager:
 
         # 获取调用者文件名和插件名
         caller_name, plugin_name = self.__get_caller()
+
+        # RSS 刷新明细默认只写入站点日志，关闭开关后不再刷屏主日志（错误仍保留）
+        if (
+            not log_settings.RSS_LOG_ENABLE
+            and method_level < logging.ERROR
+            and self._is_rss_log_suppressed(caller_name)
+        ):
+            return
 
         # 格式化消息
         formatted_msg = f"{caller_name} - {msg}"

@@ -1,6 +1,0 @@
-release: v2.15.7
-
-- MoviePilot-LITE 首个发布版本（基于官方 v2.15.6）
-- 移除 AI Agent / 推荐探索 / 分享上报
-- 新增站点日志、今日更新卡片、LITE 轻量皮肤
-- 内存优化（jemalloc 调优、BIG_MEMORY_MODE 关闭）

@@ -494,7 +494,22 @@ class TorrentsChain(ChainBase):
             progress_callback: Optional[Callable[..., None]] = None,
     ) -> Dict[str, List[Context]]:
         """
-        刷新站点最新资源，识别并缓存起来
+        刷新站点最新资源，识别并缓存起来。
+
+        刷新期间的种子抓取与识别明细会自动让位给站点日志：
+        关闭 RSS_LOG_ENABLE 后主日志不再刷屏，错误日志仍会照常输出。
+        """
+        with logger.rss_log_scope():
+            return self._refresh(stype=stype, sites=sites, progress_callback=progress_callback)
+
+    def _refresh(
+            self,
+            stype: Optional[str] = None,
+            sites: List[int] = None,
+            progress_callback: Optional[Callable[..., None]] = None,
+    ) -> Dict[str, List[Context]]:
+        """
+        刷新站点最新资源的实际实现。
         :param stype: 强制指定缓存类型，spider:爬虫缓存，rss:rss缓存
         :param sites: 强制指定站点ID列表，为空则读取设置的订阅站点
         :param progress_callback: 资源刷新进度更新回调
