@@ -1,5 +1,0 @@
-feat(v2.15.9): 精简高级设置 + RSS 日志默认关闭自更新
-
-- config: MOVIEPILOT_AUTO_UPDATE 默认改为 false，避免容器内自更新覆盖发布版本
-- 同步 public/ 前端产物（高级设置精简、新增站点 RSS 日志开关）
-- 版本号升至 v2.15.9
