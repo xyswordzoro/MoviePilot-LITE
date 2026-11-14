@@ -1627,6 +1627,9 @@ class SubscribeChain(ChainBase):
         """
         订阅刷新
 
+        刷新与匹配期间的种子识别明细会自动让位给站点日志：
+        关闭 RSS_LOG_ENABLE 后主日志不再刷屏，错误日志仍会照常输出。
+
         :param progress_callback: 定时服务进度更新回调
         """
         # 触发刷新站点资源，从缓存中匹配订阅
@@ -1635,6 +1638,13 @@ class SubscribeChain(ChainBase):
             if progress_callback:
                 progress_callback(value=100, text="没有订阅需要刷新")
             return
+        with logger.rss_log_scope():
+            self._refresh(sites=sites, progress_callback=progress_callback)
+
+    def _refresh(self, sites: List[int], progress_callback: Optional[Callable[..., None]] = None) -> None:
+        """
+        订阅刷新的实际实现
+        """
         def _update_refresh_progress(
                 value: Optional[float] = None,
                 text: Optional[str] = None,
@@ -2112,7 +2122,16 @@ class SubscribeChain(ChainBase):
         """
         定时检查订阅，更新订阅信息
 
+        识别明细会自动让位给站点日志：关闭 RSS_LOG_ENABLE 后主日志不再刷屏，错误日志仍会照常输出。
+
         :param progress_callback: 定时服务进度更新回调
+        """
+        with logger.rss_log_scope():
+            return self._check(progress_callback=progress_callback)
+
+    def _check(self, progress_callback: Optional[Callable[..., None]] = None) -> None:
+        """
+        定时检查订阅的实际实现
         """
         # 查询所有订阅
         subscribeoper = SubscribeOper()
@@ -2253,7 +2272,17 @@ class SubscribeChain(ChainBase):
         """
         刷新follow的用户分享，并自动添加订阅
 
+        识别明细会自动让位给站点日志：关闭 RSS_LOG_ENABLE 后主日志不再刷屏，错误日志仍会照常输出。
+
         :param progress_callback: 定时服务进度更新回调
+        """
+        with logger.rss_log_scope():
+            return SubscribeChain._follow(progress_callback=progress_callback)
+
+    @staticmethod
+    def _follow(progress_callback: Optional[Callable[..., None]] = None) -> None:
+        """
+        刷新follow用户分享的实际实现
         """
         follow_users: List[str] = SystemConfigOper().get(SystemConfigKey.FollowSubscribers)
         if not follow_users:
