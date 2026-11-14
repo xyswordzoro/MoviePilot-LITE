@@ -646,6 +646,29 @@ class Settings(BaseSettings, ConfigModel, LogConfigModel):
             app_env_path = self.CONFIG_PATH / "app.env"
             if not app_env_path.exists():
                 SystemUtils.copy(self.INNER_CONFIG_PATH / "app.env", app_env_path)
+        self._persist_resource_secret()
+
+    def _persist_resource_secret(self) -> None:
+        """
+        持久化资源签名密钥 RESOURCE_SECRET_KEY。
+
+        该密钥默认每次启动随机生成，用于媒体服务器图片代理等资源 URL 签名；
+        重启后密钥变化会使浏览器/Service Worker 缓存的旧签名 URL 全部失效，
+        在主日志产生大量 `invalid_signature` 阻断告警。这里把生成的密钥落盘到
+        配置目录复用；显式通过环境变量或 app.env 指定的值保持优先。
+        """
+        if os.environ.get("RESOURCE_SECRET_KEY"):
+            return
+        secret_file = self.CONFIG_PATH / ".resource_secret"
+        try:
+            if secret_file.exists():
+                persisted = secret_file.read_text(encoding="utf-8").strip()
+                if persisted:
+                    self.RESOURCE_SECRET_KEY = persisted
+            else:
+                secret_file.write_text(self.RESOURCE_SECRET_KEY, encoding="utf-8")
+        except Exception as err:
+            logger.debug(f"资源签名密钥持久化失败：{str(err)}")
 
     @staticmethod
     def validate_api_token(value: Any, original_value: Any) -> Tuple[Any, bool]:

@@ -931,10 +931,11 @@ async def get_logging(
             async with aiofiles.open(
                 log_path, mode="r", encoding="utf-8", errors="replace"
             ) as f:
-                # 优化大文件读取策略
-                if file_size > 100 * 1024:
-                    # 只读取最后100KB的内容
-                    bytes_to_read = min(file_size, 100 * 1024)
+                # 按请求行数放大历史读取窗口（默认至少 100KB），避免长日志只显示末尾少量行
+                read_window = max(100 * 1024, max(length, 50) * 1024)
+                if file_size > read_window:
+                    # 只读取窗口范围内的内容
+                    bytes_to_read = read_window
                     position = file_size - bytes_to_read
                     await f.seek(position)
                     content = await f.read()
