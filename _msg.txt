@@ -1,0 +1,4 @@
+feat(subscribe): 订阅列表返回媒体分类（动漫/电视剧分组）
+
+- 订阅列表端点自动填充 media_category（TMDB genre 与 ANIME_GENREIDS 比对）
+- 同步 public/ 前端构建产物（订阅分组视图 + 暗色皮肤）

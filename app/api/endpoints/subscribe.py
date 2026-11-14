@@ -12,6 +12,7 @@ from app.core.context import MediaInfo
 from app.core.event import eventmanager
 from app.core.metainfo import MetaInfo
 from app.core.security import verify_token, verify_apitoken
+from app.chain.media import MediaChain
 from app.db import get_async_db, get_db
 from app.db.models.subscribe import Subscribe
 from app.db.models.subscribehistory import SubscribeHistory
@@ -143,8 +144,11 @@ async def read_subscribes(
     查询所有订阅
     """
     if not current_user.is_superuser:
-        return await Subscribe.async_list_by_username(db, current_user.name)
-    return await Subscribe.async_list(db)
+        subs = await Subscribe.async_list_by_username(db, current_user.name)
+    else:
+        subs = await Subscribe.async_list(db)
+    await _ensure_media_categories(subs)
+    return subs
 
 
 @router.get(
@@ -154,8 +158,41 @@ async def list_subscribes(_: Annotated[str, Depends(verify_apitoken)]) -> Any:
     """
     查询所有订阅 API_TOKEN认证（?token=xxx）
     """
-    return await Subscribe.async_list()
+    subs = await Subscribe.async_list()
+    await _ensure_media_categories(subs)
+    return subs
 
+
+
+async def _ensure_media_categories(subscriptions):
+    """
+    为缺少 media_category 的订阅补充分类信息。
+
+    使用 TMDB 缓存的 genre_ids 与 ANIME_GENREIDS 比对，
+    判断订阅属于「动漫」还是「电视剧」。
+    """
+    anime_ids = set(settings.ANIME_GENREIDS or [16])
+    for sub in subscriptions:
+        if getattr(sub, "media_category", None):
+            continue
+        if not getattr(sub, "tmdbid", None) or not getattr(sub, "type", None):
+            continue
+        try:
+            mtype = MediaType(sub.type)
+        except ValueError:
+            continue
+        try:
+            from app.chain.media import MediaChain
+            mediainfo = await MediaChain().async_recognize_media(
+                mtype=mtype, tmdbid=sub.tmdbid, cache=True,
+            )
+            if mediainfo and mediainfo.genre_ids:
+                if any(int(gid) in anime_ids for gid in mediainfo.genre_ids):
+                    sub.media_category = "动漫"
+                else:
+                    sub.media_category = "电视剧"
+        except Exception as e:
+            logger.debug(f"获取订阅 {sub.name} 分类失败: {e}")
 
 @router.post("/", summary="新增订阅", response_model=schemas.Response)
 async def create_subscribe(
