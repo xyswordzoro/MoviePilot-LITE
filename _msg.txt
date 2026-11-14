@@ -1,4 +1,5 @@
-feat(subscribe): 订阅列表返回媒体分类（动漫/电视剧分组）
+feat(v2.16.0): 订阅卡片 backdrop 设计 + 前端产物同步
 
-- 订阅列表端点自动填充 media_category（TMDB genre 与 ANIME_GENREIDS 比对）
-- 同步 public/ 前端构建产物（订阅分组视图 + 暗色皮肤）
+- 订阅卡片使用 backdrop 背景图铺满，左侧叠加标题/集数信息
+- 底部进度条 + 状态角标
+- 版本号升至 v2.16.0
