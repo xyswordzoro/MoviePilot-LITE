@@ -2416,58 +2416,59 @@ class SubscribeChain(ChainBase):
         :param progress_callback: 定时服务进度更新回调
         """
         logger.info(f'开始预缓存订阅日历 ...')
-        subscribes = await SubscribeOper().async_list()
-        total_num = len(subscribes)
-        if progress_callback:
-            progress_callback(
-                value=0,
-                text=f"开始预缓存订阅日历，共 {total_num} 个订阅 ...",
-                data={"total": total_num, "finished": 0},
-            )
-        for index, subscribe in enumerate(subscribes, start=1):
-            if global_vars.is_system_stopped:
-                break
+        with logger.rss_log_scope():
+            subscribes = await SubscribeOper().async_list()
+            total_num = len(subscribes)
             if progress_callback:
                 progress_callback(
-                    value=(index - 1) / total_num * 100 if total_num else 100,
-                    text=f"正在预缓存订阅日历（{index}/{total_num}）{subscribe.name} ...",
-                    data={
-                        "total": total_num,
-                        "finished": index - 1,
-                        "current": subscribe.id,
-                    },
+                    value=0,
+                    text=f"开始预缓存订阅日历，共 {total_num} 个订阅 ...",
+                    data={"total": total_num, "finished": 0},
                 )
-            try:
-                mtype = MediaType(subscribe.type)
-            except ValueError:
-                logger.error(f'订阅 {subscribe.name} 类型错误：{subscribe.type}')
-                continue
-            # 先按订阅的主媒体身份预热对应数据源，再对 TMDB 额外预热分集接口。
-            mediainfo: MediaInfo = await self.async_recognize_media(
-                mtype=mtype,
-                **_subscribe_recognize_kwargs(subscribe),
-                episode_group=subscribe.episode_group,
-                cache=False,
-            )
-            if not mediainfo:
-                logger.warn(
-                    f'未识别到媒体信息，标题：{subscribe.name}，'
-                    f'媒体源：{subscribe.media_source}，媒体ID：{subscribe.media_id}')
-                continue
-            if mtype == MediaType.TV and mediainfo.source == "themoviedb" and mediainfo.tmdb_id:
-                episodes = await TmdbChain().async_tmdb_episodes(tmdbid=mediainfo.tmdb_id,
-                                                                 season=subscribe.season,
-                                                                 episode_group=subscribe.episode_group)
-                if not episodes:
-                    logger.warn(
-                        f'未识别到季集信息，标题：{subscribe.name}，tmdbid：{mediainfo.tmdb_id}，季：{subscribe.season}')
+            for index, subscribe in enumerate(subscribes, start=1):
+                if global_vars.is_system_stopped:
+                    break
+                if progress_callback:
+                    progress_callback(
+                        value=(index - 1) / total_num * 100 if total_num else 100,
+                        text=f"正在预缓存订阅日历（{index}/{total_num}）{subscribe.name} ...",
+                        data={
+                            "total": total_num,
+                            "finished": index - 1,
+                            "current": subscribe.id,
+                        },
+                    )
+                try:
+                    mtype = MediaType(subscribe.type)
+                except ValueError:
+                    logger.error(f'订阅 {subscribe.name} 类型错误：{subscribe.type}')
                     continue
-            if progress_callback:
-                progress_callback(
-                    value=index / total_num * 100 if total_num else 100,
-                    text=f"订阅日历（{index}/{total_num}）预缓存完成",
-                    data={"total": total_num, "finished": index},
+                # 先按订阅的主媒体身份预热对应数据源，再对 TMDB 额外预热分集接口。
+                mediainfo: MediaInfo = await self.async_recognize_media(
+                    mtype=mtype,
+                    **_subscribe_recognize_kwargs(subscribe),
+                    episode_group=subscribe.episode_group,
+                    cache=False,
                 )
+                if not mediainfo:
+                    logger.warn(
+                        f'未识别到媒体信息，标题：{subscribe.name}，'
+                        f'媒体源：{subscribe.media_source}，媒体ID：{subscribe.media_id}')
+                    continue
+                if mtype == MediaType.TV and mediainfo.source == "themoviedb" and mediainfo.tmdb_id:
+                    episodes = await TmdbChain().async_tmdb_episodes(tmdbid=mediainfo.tmdb_id,
+                                                                     season=subscribe.season,
+                                                                     episode_group=subscribe.episode_group)
+                    if not episodes:
+                        logger.warn(
+                            f'未识别到季集信息，标题：{subscribe.name}，tmdbid：{mediainfo.tmdb_id}，季：{subscribe.season}')
+                        continue
+                if progress_callback:
+                    progress_callback(
+                        value=index / total_num * 100 if total_num else 100,
+                        text=f"订阅日历（{index}/{total_num}）预缓存完成",
+                        data={"total": total_num, "finished": index},
+                    )
         logger.info(f'订阅日历预缓存完成')
         if progress_callback:
             progress_callback(value=100, text="订阅日历预缓存完成")

@@ -114,7 +114,8 @@ class MoviePilotServerHelper:
         """
         user_uid = cls.get_user_uid()
         if user_uid:
-            logger.info(f"当前用户UUID: {user_uid}")
+            # 每次前端轮询全局配置都会走到这里，避免刷屏，仅调试级别输出
+            logger.debug(f"当前用户UUID: {user_uid}")
         return user_uid or ""
 
     @classmethod
