@@ -357,6 +357,12 @@ class LoggerManager:
         "parser",
         "media.py",
         "themoviedb",
+        # 订阅匹配/元数据更新流程的明细（由订阅刷新等静默范围统一收口）
+        "subscribe.py",
+        # 媒体库存在检测的季集清单明细
+        "emby",
+        "jellyfin",
+        "plex",
     }
 
     @contextmanager

@@ -1506,6 +1506,7 @@ class SubscribeChain(ChainBase):
                             downloader=subscribe.downloader,
                             source=self.get_subscribe_source_keyword(subscribe)
                         )
+                        downloaded_count += len(downloads or [])
 
                         # 同步外部修改，更新订阅信息
                         subscribe = subscribeoper.get(subscribe.id)
@@ -1639,9 +1640,10 @@ class SubscribeChain(ChainBase):
                 progress_callback(value=100, text="没有订阅需要刷新")
             return
         with logger.rss_log_scope():
-            self._refresh(sites=sites, progress_callback=progress_callback)
+            downloaded = self._refresh(sites=sites, progress_callback=progress_callback)
+        logger.info(f"订阅刷新完成：本轮新增下载 {downloaded} 个")
 
-    def _refresh(self, sites: List[int], progress_callback: Optional[Callable[..., None]] = None) -> None:
+    def _refresh(self, sites: List[int], progress_callback: Optional[Callable[..., None]] = None) -> int:
         """
         订阅刷新的实际实现
         """
@@ -1675,12 +1677,13 @@ class SubscribeChain(ChainBase):
             sites=sites,
             progress_callback=_update_refresh_progress if progress_callback else None,
         )
-        self.match(
+        downloaded = self.match(
             torrents,
             progress_callback=_update_match_progress if progress_callback else None,
         )
         if progress_callback:
             progress_callback(value=100, text="订阅刷新完成")
+        return downloaded
 
     @staticmethod
     def get_sub_sites(subscribe: Subscribe) -> List[int]:
@@ -1729,10 +1732,11 @@ class SubscribeChain(ChainBase):
             self,
             torrents: Dict[str, List[Context]],
             progress_callback: Optional[Callable[..., None]] = None,
-    ) -> None:
+    ) -> int:
         """
         从缓存中匹配订阅，并自动下载
 
+        :return: 本轮成功下载的种子数
         :param torrents: 按站点分组的资源上下文
         :param progress_callback: 订阅匹配进度更新回调
         """
@@ -1740,7 +1744,10 @@ class SubscribeChain(ChainBase):
             logger.warn('没有缓存资源，无法匹配订阅')
             if progress_callback:
                 progress_callback(value=100, text="没有缓存资源，跳过订阅匹配")
-            return
+            return 0
+
+        # 本轮成功下载计数（供订阅刷新汇总输出）
+        downloaded_count = 0
 
         if progress_callback:
             progress_callback(value=0, text="正在预处理订阅资源 ...")
@@ -2094,6 +2101,7 @@ class SubscribeChain(ChainBase):
                         downloader=subscribe.downloader,
                         source=self.get_subscribe_source_keyword(subscribe)
                     )
+                    downloaded_count += len(downloads or [])
 
                     # 同步外部修改，更新订阅信息
                     subscribe = SubscribeOper().get(subscribe.id)
@@ -2117,6 +2125,7 @@ class SubscribeChain(ChainBase):
             if lock_acquired:
                 self._rlock.release()
                 logger.debug(f"match Lock released at {datetime.now()}")
+        return downloaded_count
 
     def check(self, progress_callback: Optional[Callable[..., None]] = None) -> None:
         """
@@ -2127,11 +2136,15 @@ class SubscribeChain(ChainBase):
         :param progress_callback: 定时服务进度更新回调
         """
         with logger.rss_log_scope():
-            return self._check(progress_callback=progress_callback)
+            total = self._check(progress_callback=progress_callback)
+        if total:
+            logger.info(f"订阅元数据更新完成：共 {total} 个订阅")
 
-    def _check(self, progress_callback: Optional[Callable[..., None]] = None) -> None:
+    def _check(self, progress_callback: Optional[Callable[..., None]] = None) -> int:
         """
         定时检查订阅的实际实现
+
+        :return: 处理的订阅数量
         """
         # 查询所有订阅
         subscribeoper = SubscribeOper()
@@ -2248,6 +2261,7 @@ class SubscribeChain(ChainBase):
                 )
         if progress_callback:
             progress_callback(value=100, text="订阅元数据更新完成")
+        return total_num
 
     def get_subscribe_by_source(self, source: str) -> Optional[Subscribe]:
         """
@@ -2595,7 +2609,7 @@ class SubscribeChain(ChainBase):
             return {"scene": scene, "updated": False, "fields": [], "reason": "unsupported_subscribe_type"}
 
         self.__apply_subscribe_update(subscribe, update_data)
-        logger.info(
+        logger.debug(
             f"订阅 {subscribe.id} 进度刷新：scene={scene}，fields={list(update_data)}，"
             f"lack_episode {old_lack_episode}->{subscribe.lack_episode}，"
             f"current_priority {old_current_priority}->{subscribe.current_priority}，reason=updated"
