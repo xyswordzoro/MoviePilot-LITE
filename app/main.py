@@ -36,9 +36,13 @@ elif SystemUtils.is_frozen():
 from app.factory import app
 from app.core.config import global_vars, settings
 from app.db.init import init_db, update_db
+from app.log import write_startup_separator
 
 # 设置进程名
 setproctitle.setproctitle(settings.PROJECT_NAME)
+
+# 主日志写入重启分隔线，用于在前端日志视图中区分本次启动前后的日志
+write_startup_separator()
 
 
 class MoviePilotServer(uvicorn.Server):

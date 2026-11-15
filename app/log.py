@@ -633,3 +633,21 @@ class LoggerManager:
 
 # 初始化日志管理
 logger = LoggerManager()
+
+
+def write_startup_separator() -> None:
+    """
+    在主日志文件追加一条原始重启分隔线（不带日志级别前缀）。
+
+    前端实时日志视图会识别该分隔线并渲染为醒目横幅，
+    用于区分本次启动之前与之后的日志。
+    """
+    try:
+        log_file = Path(log_settings.LOG_PATH) / "moviepilot.log"
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        separator = f"════════════ 系统启动 · {timestamp} ════════════"
+        with open(log_file, 'a', encoding='utf-8') as f:
+            f.write(f"\n{separator}\n")
+    except Exception:
+        # 分隔线写入失败不影响启动
+        pass
