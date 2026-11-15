@@ -5,18 +5,31 @@
 
 简体中文 | 基于 [MoviePilot](https://github.com/jxxghp/MoviePilot) v2 的精简定制版。
 
-聚焦自动化核心流程（订阅、搜索、下载、整理、刮削、媒体库刷新、消息通知），移除 AI Agent / LLM 子系统与分享上报，并加入站点日志、今日更新等轻量增强。
+聚焦自动化核心流程（订阅、搜索、下载、整理、刮削、媒体库刷新、消息通知），移除 AI Agent / LLM 子系统与分享上报，并加入站点日志、订阅分类分组、今日更新等轻量增强。
 
 > 仅用于学习交流使用，请勿在任何国内平台宣传该项目。
+
+## 界面预览
+
+| | |
+| --- | --- |
+| ![仪表盘](docs/screenshots/dashboard.jpg) | ![电视剧订阅](docs/screenshots/subscribe.jpg) |
+| **仪表盘**：媒体统计、今日更新、最新入库 | **订阅分组**：动漫 / 电视剧按分类自动分组，进度一目了然 |
+| ![站点日志](docs/screenshots/site-log.jpg) | ![登录页](docs/screenshots/login.jpg) |
+| **站点日志**：按站点记录每次 RSS 刷新与识别明细 | **登录页**：Bing 每日壁纸 + 暗色 LITE 皮肤 |
 
 ## 主要特性
 
 - 前后端一体：后端 FastAPI，前端 Vue 3 + Vuetify，构建产物随仓库分发
 - 订阅 / 搜索 / 下载 / 整理 / 刮削 / 媒体库刷新 / 消息通知完整保留
 - 下载器、媒体服务器、元数据源、消息渠道、插件与工作流能力保持兼容
-- **站点日志**：按站点记录每次 RSS 刷新的种子名称与识别结果，支持站点切换、分页与自动刷新
+- **订阅分类分组**：订阅页按媒体分类（动漫 / 电视剧）自动分组展示，卡片采用 backdrop 背景 + 进度条设计
+- **站点日志**：按站点记录每次 RSS 刷新的种子名称与识别结果，支持站点切换、分页与自动刷新；RSS 刷新明细自动让位给站点日志，主日志保持清爽
 - **今日更新**：仪表盘卡片直接对接订阅日历，展示当天更新的剧集与集数，已入库条目显示绿点
-- **LITE 轻量界面**：扁平化亮色皮肤，白底细边卡片、紧凑顶栏、淡紫选中态
+- **LITE 轻量界面**：扁平化亮 / 暗色皮肤，细边卡片、紧凑顶栏、淡紫选中态；日志 / 站点日志一键直达
+- **登录页壁纸**：支持 Bing 每日壁纸（`WALLPAPER=bing`）、媒体服务器海报、TMDB 趋势与自定义接口
+- **日志精简**：订阅刷新、媒体库同步、插件加载等仅保留单行汇总，明细降为 DEBUG；主日志内置重启分隔线
+- **会话稳定**：签名密钥持久化，容器重启后登录态与图片签名 URL 不失效
 
 ## 与上游的差异
 
@@ -30,7 +43,9 @@
 
 - `app/helper/site_log.py` 与 `app/assets/site_log.html`：站点日志系统
 - `GET /api/v1/dashboard/today`：今日更新数据（含入库状态）
+- 订阅列表媒体分类（动漫 / 电视剧）与分组卡片视图
 - 仪表盘「今日更新」卡片与前端 LITE 皮肤
+- RSS 日志静默范围与单行汇总（`RSS_LOG_ENABLE` 开关控制）
 - `start-lite.cmd` / `scripts/start_lite.py`：本地启动脚本，固定配置目录并载入 `app.env`
 
 ## 快速开始
@@ -56,6 +71,7 @@ AUTH_SITE="iyuu"
 IYUU_SIGN="your-iyuu-sign"
 API_TOKEN="your-api-token"
 PROXY_HOST=""   # 可选，按需填写代理地址
+WALLPAPER="bing"   # 登录页壁纸：bing / mediaserver / tmdb / customize
 ```
 
 ### 本地运行
@@ -91,6 +107,7 @@ docker build -f docker/Dockerfile -t moviepilot-lite:latest .
 | --- | --- |
 | `app/` | 后端主程序（FastAPI） |
 | `app/assets/site_log.html` | 站点日志独立页面 |
+| `docs/screenshots/` | README 界面截图 |
 | `public/` | 构建好的 LITE 前端产物 |
 | `docker/` | Dockerfile 与容器启动脚本 |
 | `scripts/` | 本地启动、站点适配采集等工具 |
