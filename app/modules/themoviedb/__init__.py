@@ -424,12 +424,12 @@ class TheMovieDbModule(_ModuleBase):
         mediainfo.set_category(cat)
 
         if meta:
-            logger.info(f"{meta.name} TMDB识别结果：{mediainfo.type.value} "
-                        f"{mediainfo.title_year} "
-                        f"{mediainfo.tmdb_id}")
+            logger.debug(f"{meta.name} TMDB识别结果：{mediainfo.type.value} "
+                         f"{mediainfo.title_year} "
+                         f"{mediainfo.tmdb_id}")
         else:
-            logger.info(f"{tmdbid} TMDB识别结果：{mediainfo.type.value} "
-                        f"{mediainfo.title_year}")
+            logger.debug(f"{tmdbid} TMDB识别结果：{mediainfo.type.value} "
+                         f"{mediainfo.title_year}")
 
         # 处理剧集组信息
         return self._process_episode_groups(mediainfo, episode_group, group_seasons)
@@ -450,12 +450,12 @@ class TheMovieDbModule(_ModuleBase):
         mediainfo.set_category(cat)
 
         if meta:
-            logger.info(f"{meta.name} TMDB识别结果：{mediainfo.type.value} "
-                        f"{mediainfo.title_year} "
-                        f"{mediainfo.tmdb_id}")
+            logger.debug(f"{meta.name} TMDB识别结果：{mediainfo.type.value} "
+                         f"{mediainfo.title_year} "
+                         f"{mediainfo.tmdb_id}")
         else:
-            logger.info(f"{tmdbid} TMDB识别结果：{mediainfo.type.value} "
-                        f"{mediainfo.title_year}")
+            logger.debug(f"{tmdbid} TMDB识别结果：{mediainfo.type.value} "
+                         f"{mediainfo.title_year}")
 
         # 处理剧集组信息
         return await self._async_process_episode_groups(mediainfo, episode_group, group_seasons)

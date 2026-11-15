@@ -1344,7 +1344,7 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                         kwargs={"job_id": job_id},
                         replace_existing=True,
                     )
-                    logger.info(
+                    logger.debug(
                         f"注册插件{plugin_name}服务：{service['name']} - {service['trigger']}"
                     )
                 except Exception as e:

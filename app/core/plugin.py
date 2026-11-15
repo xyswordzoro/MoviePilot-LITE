@@ -108,7 +108,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
                 plugin_obj.init_plugin(self.get_plugin_config(plugin_id))
                 # 存储运行实例
                 self._running_plugins[plugin_id] = plugin_obj
-                logger.info(f"加载插件：{plugin_id} 版本：{plugin_obj.plugin_version}")
+                logger.debug(f"加载插件：{plugin_id} 版本：{plugin_obj.plugin_version}")
                 # 启用的插件才设置事件注册状态可用
                 if plugin_obj.get_state():
                     eventmanager.enable_event_handler(plugin)
