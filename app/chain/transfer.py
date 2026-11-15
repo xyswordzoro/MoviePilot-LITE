@@ -968,7 +968,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         """
         self._queue_active = True
         for i in range(settings.TRANSFER_THREADS):
-            logger.info(f"启动文件整理线程 {i + 1} ...")
+            logger.debug(f"启动文件整理线程 {i + 1} ...")
             thread = threading.Thread(
                 target=self.__start_transfer, name=f"transfer-{i}", daemon=True
             )
@@ -2254,7 +2254,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                     progress_callback(value=100, text="未配置下载器监控目录，跳过整理")
                 return True
 
-            logger.info("开始整理下载器中已经完成下载的文件 ...")
+            logger.debug("开始整理下载器中已经完成下载的文件 ...")
             if progress_callback:
                 progress_callback(value=0, text="正在查询已完成下载任务 ...")
 
@@ -2273,7 +2273,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 torrents = []
 
             if not torrents:
-                logger.info("没有已完成下载但未整理的任务")
+                logger.debug("没有已完成下载但未整理的任务")
                 if progress_callback:
                     progress_callback(value=100, text="没有已完成下载但未整理的任务")
                 return False
