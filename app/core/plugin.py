@@ -89,6 +89,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
         plugins = self._load_selective_plugins(pid, installed_plugins, check_module)
         # 排序
         plugins.sort(key=lambda x: x.plugin_order if hasattr(x, "plugin_order") else 0)
+        loaded_count = 0
         for plugin in plugins:
             plugin_id = plugin.__name__
             if pid and plugin_id != pid:
@@ -108,6 +109,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
                 plugin_obj.init_plugin(self.get_plugin_config(plugin_id))
                 # 存储运行实例
                 self._running_plugins[plugin_id] = plugin_obj
+                loaded_count += 1
                 logger.debug(f"加载插件：{plugin_id} 版本：{plugin_obj.plugin_version}")
                 # 启用的插件才设置事件注册状态可用
                 if plugin_obj.get_state():
@@ -116,6 +118,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
                     eventmanager.disable_event_handler(plugin)
             except Exception as err:
                 logger.error(f"加载插件 {plugin_id} 出错：{str(err)} - {traceback.format_exc()}")
+        logger.info(f"插件加载完成：共 {loaded_count} 个")
         self.clear_plugin_agent_tools_cache()
 
     def init_plugin(self, plugin_id: str, conf: dict):

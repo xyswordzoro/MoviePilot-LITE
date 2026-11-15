@@ -2425,6 +2425,8 @@ class SubscribeChain(ChainBase):
                     text=f"开始预缓存订阅日历，共 {total_num} 个订阅 ...",
                     data={"total": total_num, "finished": 0},
                 )
+            # 识别成功计数，用于汇总日志
+            recognized_count = 0
             for index, subscribe in enumerate(subscribes, start=1):
                 if global_vars.is_system_stopped:
                     break
@@ -2455,6 +2457,7 @@ class SubscribeChain(ChainBase):
                         f'未识别到媒体信息，标题：{subscribe.name}，'
                         f'媒体源：{subscribe.media_source}，媒体ID：{subscribe.media_id}')
                     continue
+                recognized_count += 1
                 if mtype == MediaType.TV and mediainfo.source == "themoviedb" and mediainfo.tmdb_id:
                     episodes = await TmdbChain().async_tmdb_episodes(tmdbid=mediainfo.tmdb_id,
                                                                      season=subscribe.season,
@@ -2469,7 +2472,7 @@ class SubscribeChain(ChainBase):
                         text=f"订阅日历（{index}/{total_num}）预缓存完成",
                         data={"total": total_num, "finished": index},
                     )
-        logger.info(f'订阅日历预缓存完成')
+        logger.info(f'订阅日历预缓存完成：共 {total_num} 个订阅，识别成功 {recognized_count} 个')
         if progress_callback:
             progress_callback(value=100, text="订阅日历预缓存完成")
 

@@ -1322,6 +1322,7 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
             # 获取插件名称
             plugin_name = plugin_manager.get_plugin_attr(pid, "plugin_name")
             # 开始注册插件服务
+            registered_count = 0
             for service in plugin_services:
                 try:
                     sid = f"{pid}_{service['id']}"
@@ -1344,6 +1345,7 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                         kwargs={"job_id": job_id},
                         replace_existing=True,
                     )
+                    registered_count += 1
                     logger.debug(
                         f"注册插件{plugin_name}服务：{service['name']} - {service['trigger']}"
                     )
@@ -1354,6 +1356,8 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                         message=str(e),
                         role="system",
                     )
+            if registered_count:
+                logger.info(f"插件 {plugin_name} 服务注册完成：共 {registered_count} 个")
 
     def list(self) -> List[schemas.ScheduleInfo]:
         """
