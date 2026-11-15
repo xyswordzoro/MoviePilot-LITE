@@ -854,35 +854,31 @@ class Settings(BaseSettings, ConfigModel, LogConfigModel):
             message = f"配置项 '{field_name}' 的值 '{original_value}' 无效，已替换为 '{converted_value}'"
             logger.warning(message)
 
-        if field_name in os.environ:
-            message = (
-                f"配置项 '{field_name}' 已在环境变量中设置，请手动更新以保持一致性"
-            )
-            logger.warning(message)
-            return False, message
-        else:
-            # 当值为 None 时，从 env 文件中删除该键，恢复为默认值
-            if converted_value is None:
-                unset_key(
-                    dotenv_path=SystemUtils.get_env_path(),
-                    key_to_unset=field_name,
-                )
-                logger.info(f"配置项 '{field_name}' 已清空，从 'app.env' 中移除")
-                return True, message
-            # 如果是列表、字典或集合类型，将其转换为JSON字符串
-            if isinstance(converted_value, (list, dict, set)):
-                value_to_write = json.dumps(converted_value)
-            else:
-                value_to_write = str(converted_value)
-
-            set_key(
+        # 统一回写 app.env 并同步进程环境变量（docker -e 注入的变量也会被 UI 保存覆盖）
+        if converted_value is None:
+            unset_key(
                 dotenv_path=SystemUtils.get_env_path(),
-                key_to_set=field_name,
-                value_to_set=value_to_write,
-                quote_mode="always",
+                key_to_unset=field_name,
             )
-            if is_converted:
-                logger.info(f"配置项 '{field_name}' 已自动修正并写入到 'app.env' 文件")
+            os.environ.pop(field_name, None)
+            logger.info(f"配置项 '{field_name}' 已清空，从 'app.env' 中移除")
+            return True, message
+        # 如果是列表、字典或集合类型，将其转换为JSON字符串
+        if isinstance(converted_value, (list, dict, set)):
+            value_to_write = json.dumps(converted_value)
+        else:
+            value_to_write = str(converted_value)
+
+        set_key(
+            dotenv_path=SystemUtils.get_env_path(),
+            key_to_set=field_name,
+            value_to_set=value_to_write,
+            quote_mode="always",
+        )
+        # 同步进程环境变量，保证运行期一致
+        os.environ[field_name] = value_to_write
+        if is_converted:
+            logger.info(f"配置项 '{field_name}' 已自动修正并写入到 'app.env' 文件")
         return True, message
 
     def update_setting(self, key: str, value: Any) -> Tuple[Optional[bool], str]:

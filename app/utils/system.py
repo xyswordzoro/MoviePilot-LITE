@@ -24,7 +24,6 @@ import psutil
 from app import schemas
 from version import APP_VERSION
 
-
 # Linux amd64/arm64 UAPI: _IOR(BTRFS_IOCTL_MAGIC, 31, struct btrfs_ioctl_fs_info_args)
 _BTRFS_IOC_FS_INFO = 0x8400941F
 _BTRFS_FS_INFO_SIZE = 1024
