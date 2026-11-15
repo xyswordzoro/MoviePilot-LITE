@@ -167,18 +167,10 @@ class SystemChain(ChainBase):
         获取版本信息文本
         """
         server_release_version = self.__get_server_release_version()
-        front_release_version = self.__get_front_release_version()
         server_local_version = self.get_server_local_version()
-        front_local_version = self.get_frontend_version()
         if server_release_version == server_local_version:
-            title = f"当前后端版本：{server_local_version}，已是最新版本\n"
-        else:
-            title = f"当前后端版本：{server_local_version}，远程版本：{server_release_version or '获取失败'}\n"
-        if front_release_version == front_local_version:
-            title += f"当前前端版本：{front_local_version}，已是最新版本"
-        else:
-            title += f"当前前端版本：{front_local_version}，远程版本：{front_release_version or '获取失败'}"
-        return title
+            return f"当前版本：{server_local_version}，已是最新版本"
+        return f"当前版本：{server_local_version}，远程版本：{server_release_version or '获取失败'}"
 
     def version(self, channel: MessageChannel, userid: Union[int, str], source: Optional[str] = None):
         """

@@ -277,11 +277,16 @@ class TelegramModule(_ModuleBase, _MessageBase[Telegram]):
                 )
                 return None
 
+            # 只保留消息主要内容：来源、用户与文本（附件计数在调试场景才有意义）
+            attach_part = (
+                f"，附件: 图片{len(images) if images else 0}/语音{len(audio_refs) if audio_refs else 0}"
+                f"/文件{len(files) if files else 0}"
+                if (images or audio_refs or files)
+                else ""
+            )
             logger.info(
-                f"收到来自 {client_config.name} 的Telegram消息："
-                f"userid={user_id}, username={user_name}, chat_id={chat_id}, text={text}, "
-                f"images={len(images) if images else 0}, audios={len(audio_refs) if audio_refs else 0}, "
-                f"files={len(files) if files else 0}"
+                f"收到Telegram消息[{client_config.name}] 用户 {user_name or user_id}："
+                f"{text or '(无文本)'}{attach_part}"
             )
 
             cleaned_text = (

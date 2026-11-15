@@ -97,7 +97,8 @@ async def user_message(
         )
         if marker in body_text
     ]
-    logger.info(
+    # 入口诊断信息（含原始报文形态），调试级别输出避免刷屏
+    logger.debug(
         "消息入口收到请求: source=%s, content_type=%s, body_bytes=%s, form_keys=%s, image_markers=%s",
         source,
         content_type,

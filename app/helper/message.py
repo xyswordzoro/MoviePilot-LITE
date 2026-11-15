@@ -719,7 +719,7 @@ class MessageQueueManager(metaclass=SingletonClass):
                 "args": args,
                 "kwargs": kwargs
             })
-            logger.info(f"消息已加入队列，当前队列长度：{self.queue.qsize()}")
+            logger.debug(f"消息已加入队列，当前队列长度：{self.queue.qsize()}")
 
     async def async_send_message(self, *args, **kwargs) -> None:
         """
@@ -741,7 +741,26 @@ class MessageQueueManager(metaclass=SingletonClass):
             "args": args,
             "kwargs": kwargs
         })
-        logger.info(f"消息已加入队列，当前队列长度：{self.queue.qsize()}")
+        logger.debug(f"消息已加入队列，当前队列长度：{self.queue.qsize()}")
+
+    @staticmethod
+    def _summarize_message(kwargs: dict, max_length: int = 60) -> str:
+        """
+        提取消息主要内容用于日志：消息类型与标题/正文摘要（截断），避免整包参数刷屏。
+        """
+        message = kwargs.get("message")
+        if message is None:
+            return ""
+        mtype = getattr(message, "mtype", None)
+        mtype = getattr(mtype, "value", mtype)
+        title = str(getattr(message, "title", "") or "").replace("\n", " ").strip()
+        text = str(getattr(message, "text", "") or "").replace("\n", " ").strip()
+        content = title
+        if text and text != title:
+            content = f"{content}：{text}" if content else text
+        if len(content) > max_length:
+            content = content[:max_length] + "…"
+        return f"[{mtype}] {content}" if mtype else content
 
     def _send(self, *args, **kwargs) -> None:
         """
@@ -749,7 +768,8 @@ class MessageQueueManager(metaclass=SingletonClass):
         """
         if self.send_callback:
             try:
-                logger.info(f"发送消息：{kwargs}")
+                summary = self._summarize_message(kwargs)
+                logger.info(f"发送消息：{summary}" if summary else "发送消息")
                 self.send_callback(*args, **kwargs)
             except Exception as e:
                 logger.error(f"发送消息错误：{str(e)}")
@@ -769,7 +789,7 @@ class MessageQueueManager(metaclass=SingletonClass):
                     try:
                         message = self.queue.get_nowait()
                         self._send(*message['args'], **message['kwargs'])
-                        logger.info(f"队列剩余消息：{self.queue.qsize()}")
+                        logger.debug(f"队列剩余消息：{self.queue.qsize()}")
                     except queue.Empty:
                         break
             if self._stop_event.wait(self.check_interval):
