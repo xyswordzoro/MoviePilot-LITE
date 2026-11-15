@@ -1031,7 +1031,7 @@ async def latest_version(_: schemas.TokenPayload = Depends(verify_token)):
     """
     version_res = await AsyncRequestUtils(
         proxies=settings.PROXY, headers=settings.GITHUB_HEADERS
-    ).get_res(f"https://api.github.com/repos/jxxghp/MoviePilot/releases")
+    ).get_res(f"https://api.github.com/repos/xyswordzoro/MoviePilot-LITE/releases")
     if version_res is not None and version_res.status_code == 200:
         ver_json = version_res.json()
         if ver_json:

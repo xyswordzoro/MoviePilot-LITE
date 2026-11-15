@@ -173,11 +173,11 @@ class SystemChain(ChainBase):
         if server_release_version == server_local_version:
             title = f"当前后端版本：{server_local_version}，已是最新版本\n"
         else:
-            title = f"当前后端版本：{server_local_version}，远程版本：{server_release_version}\n"
+            title = f"当前后端版本：{server_local_version}，远程版本：{server_release_version or '获取失败'}\n"
         if front_release_version == front_local_version:
             title += f"当前前端版本：{front_local_version}，已是最新版本"
         else:
-            title += f"当前前端版本：{front_local_version}，远程版本：{front_release_version}"
+            title += f"当前前端版本：{front_local_version}，远程版本：{front_release_version or '获取失败'}"
         return title
 
     def version(self, channel: MessageChannel, userid: Union[int, str], source: Optional[str] = None):
@@ -219,19 +219,19 @@ class SystemChain(ChainBase):
     @staticmethod
     def __get_server_release_version():
         """
-        获取后端V2最新版本
+        获取 MoviePilot-LITE 最新发布版本
         """
         try:
             # 获取所有发布的版本列表
             response = RequestUtils(
                 proxies=settings.PROXY,
                 headers=settings.GITHUB_HEADERS
-            ).get_res("https://api.github.com/repos/jxxghp/MoviePilot/releases")
+            ).get_res("https://api.github.com/repos/xyswordzoro/MoviePilot-LITE/releases")
             if response:
                 releases = [release['tag_name'] for release in response.json()]
                 v2_releases = [tag for tag in releases if re.match(r"^v2\.", tag)]
                 if not v2_releases:
-                    logger.warn("获取v2后端最新版本版本出错！")
+                    logger.warn("获取 MoviePilot-LITE 最新版本出错！")
                 else:
                     # 找到最新的v2版本
                     latest_v2 = sorted(v2_releases, key=lambda s: list(map(int, re.findall(r'\d+', s))))[-1]
@@ -246,14 +246,14 @@ class SystemChain(ChainBase):
     @staticmethod
     def __get_front_release_version():
         """
-        获取前端V2最新版本
+        获取前端最新发布版本（LITE 前端与后端同仓库发布，与后端版本一致）
         """
         try:
             # 获取所有发布的版本列表
             response = RequestUtils(
                 proxies=settings.PROXY,
                 headers=settings.GITHUB_HEADERS
-            ).get_res("https://api.github.com/repos/jxxghp/MoviePilot-Frontend/releases")
+            ).get_res("https://api.github.com/repos/xyswordzoro/MoviePilot-LITE/releases")
             if response:
                 releases = [release['tag_name'] for release in response.json()]
                 v2_releases = [tag for tag in releases if re.match(r"^v2\.", tag)]
