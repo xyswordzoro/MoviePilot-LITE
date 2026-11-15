@@ -650,25 +650,44 @@ class Settings(BaseSettings, ConfigModel, LogConfigModel):
 
     def _persist_resource_secret(self) -> None:
         """
-        持久化资源签名密钥 RESOURCE_SECRET_KEY。
+        持久化密钥：RESOURCE_SECRET_KEY（资源签名）与 SECRET_KEY（登录会话签名）。
 
-        该密钥默认每次启动随机生成，用于媒体服务器图片代理等资源 URL 签名；
-        重启后密钥变化会使浏览器/Service Worker 缓存的旧签名 URL 全部失效，
-        在主日志产生大量 `invalid_signature` 阻断告警。这里把生成的密钥落盘到
-        配置目录复用；显式通过环境变量或 app.env 指定的值保持优先。
+        两个密钥默认每次启动随机生成：
+        - RESOURCE_SECRET_KEY 重启变化会使浏览器缓存的旧签名 URL 失效，
+          在主日志产生大量 `invalid_signature` 阻断告警；
+        - SECRET_KEY 重启变化会使所有登录会话失效，每次重启后都需要重新登录。
+
+        这里把生成的密钥落盘到配置目录复用；显式通过环境变量或 app.env 指定的值保持优先。
         """
-        if os.environ.get("RESOURCE_SECRET_KEY"):
-            return
         secret_file = self.CONFIG_PATH / ".resource_secret"
         try:
+            persisted: Dict[str, str] = {}
             if secret_file.exists():
-                persisted = secret_file.read_text(encoding="utf-8").strip()
-                if persisted:
-                    self.RESOURCE_SECRET_KEY = persisted
-            else:
-                secret_file.write_text(self.RESOURCE_SECRET_KEY, encoding="utf-8")
+                for line in secret_file.read_text(encoding="utf-8").splitlines():
+                    if "=" in line:
+                        key, value = line.split("=", 1)
+                        persisted[key.strip()] = value.strip()
+                # 兼容旧格式：单行裸 RESOURCE_SECRET_KEY
+                if not persisted:
+                    legacy = secret_file.read_text(encoding="utf-8").strip()
+                    if legacy:
+                        persisted["RESOURCE_SECRET_KEY"] = legacy
+            changed = False
+            for key in ("SECRET_KEY", "RESOURCE_SECRET_KEY"):
+                if os.environ.get(key):
+                    continue
+                if persisted.get(key):
+                    setattr(self, key, persisted[key])
+                else:
+                    persisted[key] = getattr(self, key)
+                    changed = True
+            if changed:
+                secret_file.write_text(
+                    "\n".join(f"{key}={value}" for key, value in persisted.items()),
+                    encoding="utf-8",
+                )
         except Exception as err:
-            logger.debug(f"资源签名密钥持久化失败：{str(err)}")
+            logger.debug(f"密钥持久化失败：{str(err)}")
 
     @staticmethod
     def validate_api_token(value: Any, original_value: Any) -> Tuple[Any, bool]:
