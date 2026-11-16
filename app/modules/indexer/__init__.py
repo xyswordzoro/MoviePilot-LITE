@@ -152,9 +152,9 @@ class IndexerModule(_ModuleBase):
         解析搜索结果为 TorrentInfo 对象
         """
         if not result_array or len(result_array) == 0:
-            logger.warn(f"{site.get('name')} 未搜索到数据，耗时 {seconds} 秒")
+            logger.debug(f"{site.get('name')} 未搜索到数据，耗时 {seconds} 秒")
             return []
-        logger.info(
+        logger.debug(
             f"{site.get('name')} 搜索完成，耗时 {seconds} 秒，返回数据：{len(result_array)}")
         return [TorrentInfo(site=site.get("id"),
                             site_name=site.get("name"),
@@ -171,9 +171,9 @@ class IndexerModule(_ModuleBase):
         解析字幕搜索结果为 SubtitleInfo 对象。
         """
         if not result_array or len(result_array) == 0:
-            logger.warn(f"{site.get('name')} 未搜索到字幕，耗时 {seconds} 秒")
+            logger.debug(f"{site.get('name')} 未搜索到字幕，耗时 {seconds} 秒")
             return []
-        logger.info(
+        logger.debug(
             f"{site.get('name')} 字幕搜索完成，耗时 {seconds} 秒，返回数据：{len(result_array)}")
         return [SubtitleInfo(site=site.get("id"),
                              site_name=site.get("name"),

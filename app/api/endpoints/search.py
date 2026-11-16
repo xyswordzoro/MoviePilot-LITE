@@ -294,7 +294,7 @@ async def _stream_search_events(request: Request, event_source: AsyncIterator[di
     last_event_type = "none"
     last_stage = "none"
     termination_reason = "source_exhausted"
-    logger.info(f"渐进式搜索流已建立，搜索ID：{search_id}，路径：{request_path}")
+    logger.debug(f"渐进式搜索流已建立，搜索ID：{search_id}，路径：{request_path}")
     try:
         has_sent_final_replace = False
         async for event in _iter_batched_search_events(event_source):
@@ -343,9 +343,7 @@ async def _stream_search_events(request: Request, event_source: AsyncIterator[di
     finally:
         elapsed = time.monotonic() - started_at
         logger.info(
-            f"渐进式搜索流结束，搜索ID：{search_id}，路径：{request_path}，"
-            f"状态：{termination_reason}，事件数：{event_count}，"
-            f"发送字节：{transmitted_bytes}，耗时：{elapsed:.2f}秒"
+            f"渐进式搜索完成，状态：{termination_reason}，事件数：{event_count}，耗时：{elapsed:.2f}秒"
         )
 
 

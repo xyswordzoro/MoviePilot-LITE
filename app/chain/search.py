@@ -983,13 +983,13 @@ class SearchChain(ChainBase):
         if not rule_groups:
             return torrents
 
-        logger.info(f'开始过滤标题搜索结果，使用规则组：{rule_groups} ...')
+        logger.debug(f'开始过滤标题搜索结果，使用规则组：{rule_groups} ...')
         filtered_torrents = self.filter_torrents(
             rule_groups=rule_groups,
             torrent_list=torrents,
             mediainfo=None,
         ) or []
-        logger.info(f'标题搜索过滤完成，剩余 {len(filtered_torrents)} 个资源')
+        logger.debug(f'标题搜索过滤完成，剩余 {len(filtered_torrents)} 个资源')
         return filtered_torrents
 
     async def async_search_by_id_stream(
@@ -1181,19 +1181,19 @@ class SearchChain(ChainBase):
         progress.update(value=0, text=f'开始过滤，总 {len(torrents)} 个资源，请稍候...')
         # 匹配订阅附加参数
         if filter_params:
-            logger.info(f'开始附加参数过滤，附加参数：{filter_params} ...')
+            logger.debug(f'开始附加参数过滤，附加参数：{filter_params} ...')
         # 开始过滤规则过滤
         if rule_groups is None:
             # 取搜索过滤规则
             rule_groups: List[str] = SystemConfigOper().get(SystemConfigKey.SearchFilterRuleGroups)
         if rule_groups:
-            logger.info(f'开始过滤规则/剧集过滤，使用规则组：{rule_groups} ...')
+            logger.debug(f'开始过滤规则/剧集过滤，使用规则组：{rule_groups} ...')
         torrents = __do_parallel_filter(torrents)
         if rule_groups:
             if not torrents:
                 logger.warn(f'{keyword or mediainfo.title} 没有符合过滤规则的资源')
                 return []
-            logger.info(f"过滤规则/剧集过滤完成，剩余 {len(torrents)} 个资源")
+            logger.debug(f"过滤规则/剧集过滤完成，剩余 {len(torrents)} 个资源")
 
         # 过滤完成
         progress.update(value=50, text=f'过滤完成，剩余 {len(torrents)} 个资源')
@@ -1207,7 +1207,7 @@ class SearchChain(ChainBase):
         _match_torrents = []
         try:
             # 英文标题应该在别名/原标题中，不需要再匹配
-            logger.info(f"开始匹配结果 标题：{mediainfo.title}，原标题：{mediainfo.original_title}，别名：{mediainfo.names}")
+            logger.debug(f"开始匹配结果 标题：{mediainfo.title}，原标题：{mediainfo.original_title}，别名：{mediainfo.names}")
             progress.update(value=51, text=f'开始匹配，总 {_total} 个资源 ...')
             for torrent in torrents:
                 if global_vars.is_system_stopped:
@@ -1233,7 +1233,7 @@ class SearchChain(ChainBase):
                 if torrent.imdbid \
                         and mediainfo.imdb_id \
                         and torrent.imdbid == mediainfo.imdb_id:
-                    logger.info(f'{mediainfo.title} 通过IMDBID匹配到资源：{torrent.site_name} - {torrent.title}')
+                    logger.debug(f'{mediainfo.title} 通过IMDBID匹配到资源：{torrent.site_name} - {torrent.title}')
                     _match_torrents.append((torrent, torrent_meta, "imdbid"))
                     continue
 
@@ -1245,7 +1245,7 @@ class SearchChain(ChainBase):
                     _match_torrents.append((torrent, torrent_meta, "title"))
                     continue
             # 匹配完成
-            logger.info(f"匹配完成，共匹配到 {len(_match_torrents)} 个资源")
+            logger.debug(f"匹配完成，共匹配到 {len(_match_torrents)} 个资源")
             progress.update(value=97,
                             text=f'匹配完成，共匹配到 {len(_match_torrents)} 个资源')
 
@@ -1275,7 +1275,7 @@ class SearchChain(ChainBase):
         contexts = TorrentHelper.sort_torrents(contexts)
 
         # 结束进度
-        logger.info(f'搜索完成，共 {len(contexts)} 个资源')
+        logger.debug(f'搜索完成，共 {len(contexts)} 个资源')
         progress.update(value=100,
                         text=f'搜索完成，共 {len(contexts)} 个资源')
         progress.end()
@@ -1346,7 +1346,7 @@ class SearchChain(ChainBase):
         for search_word in keywords:
             # 强制休眠 1-10 秒
             if search_count > 0:
-                logger.info(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
+                logger.debug(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
                 time.sleep(random.randint(1, 10))
 
             # 搜索站点
@@ -1363,7 +1363,7 @@ class SearchChain(ChainBase):
 
             # 有结果则停止
             if not settings.SEARCH_MULTIPLE_NAME and torrents:
-                logger.info(f"共搜索到 {len(torrents)} 个资源，停止搜索")
+                logger.debug(f"共搜索到 {len(torrents)} 个资源，停止搜索")
                 break
 
         # 处理结果
@@ -1430,7 +1430,7 @@ class SearchChain(ChainBase):
         for search_word in keywords:
             # 强制休眠 1-10 秒
             if search_count > 0:
-                logger.info(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
+                logger.debug(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
                 await asyncio.sleep(random.randint(1, 10))
             # 搜索站点
             torrents.extend(
@@ -1444,7 +1444,7 @@ class SearchChain(ChainBase):
             search_count += 1
             # 未开启多名称搜索时，有结果则停止
             if not settings.SEARCH_MULTIPLE_NAME and torrents:
-                logger.info(f"共搜索到 {len(torrents)} 个资源，停止搜索")
+                logger.debug(f"共搜索到 {len(torrents)} 个资源，停止搜索")
                 break
 
         # 处理结果
@@ -1505,7 +1505,7 @@ class SearchChain(ChainBase):
 
         for search_word in keywords:
             if search_count > 0:
-                logger.info(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
+                logger.debug(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
                 await asyncio.sleep(random.randint(1, 10))
 
             async for event in self.__async_search_all_sites_stream(
@@ -1536,7 +1536,7 @@ class SearchChain(ChainBase):
 
             search_count += 1
             if not settings.SEARCH_MULTIPLE_NAME and torrents:
-                logger.info(f"共搜索到 {len(torrents)} 个资源，停止搜索")
+                logger.debug(f"共搜索到 {len(torrents)} 个资源，停止搜索")
                 break
 
         yield {
@@ -1666,7 +1666,7 @@ class SearchChain(ChainBase):
             return []
 
         match_subtitles = []
-        logger.info(f"开始匹配字幕 标题：{mediainfo.title}，原标题：{mediainfo.original_title}，别名：{mediainfo.names}")
+        logger.debug(f"开始匹配字幕 标题：{mediainfo.title}，原标题：{mediainfo.original_title}，别名：{mediainfo.names}")
         for subtitle in subtitles:
             if global_vars.is_system_stopped:
                 break
@@ -1697,7 +1697,7 @@ class SearchChain(ChainBase):
                     match_subtitles.append(subtitle)
                     break
 
-        logger.info(f"字幕匹配完成，共匹配到 {len(match_subtitles)} 个字幕")
+        logger.debug(f"字幕匹配完成，共匹配到 {len(match_subtitles)} 个字幕")
         return self.__remove_duplicate_subtitles(match_subtitles)
 
     @staticmethod
@@ -1766,7 +1766,7 @@ class SearchChain(ChainBase):
         search_count = 0
         for search_word in keywords:
             if search_count > 0:
-                logger.info(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
+                logger.debug(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
                 await asyncio.sleep(random.randint(1, 10))
             subtitles.extend(
                 await self.__async_search_subtitles_all_sites(
@@ -1776,7 +1776,7 @@ class SearchChain(ChainBase):
             )
             search_count += 1
             if not settings.SEARCH_MULTIPLE_NAME and subtitles:
-                logger.info(f"共搜索到 {len(subtitles)} 个字幕，停止搜索")
+                logger.debug(f"共搜索到 {len(subtitles)} 个字幕，停止搜索")
                 break
 
         return await run_in_threadpool(
@@ -1852,7 +1852,7 @@ class SearchChain(ChainBase):
         search_count = 0
         for search_word in keywords:
             if search_count > 0:
-                logger.info(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
+                logger.debug(f"已搜索 {search_count} 次，强制休眠 1-10 秒 ...")
                 await asyncio.sleep(random.randint(1, 10))
 
             async for event in self.__async_search_subtitles_all_sites_stream(
@@ -1870,7 +1870,7 @@ class SearchChain(ChainBase):
 
             search_count += 1
             if not settings.SEARCH_MULTIPLE_NAME and subtitles:
-                logger.info(f"共搜索到 {len(subtitles)} 个字幕，停止搜索")
+                logger.debug(f"共搜索到 {len(subtitles)} 个字幕，停止搜索")
                 break
 
         yield {
@@ -2001,7 +2001,7 @@ class SearchChain(ChainBase):
                             logger.debug(
                                 f"{site.get('name')} 第 {search_page} 页返回 {len(result or [])} 条，停止继续翻页"
                             )
-                        logger.info(f"站点搜索进度：{finish_count} / {total_num}")
+                        logger.debug(f"站点搜索进度：{finish_count} / {total_num}")
                         progress.update(value=finish_count / total_num * 100,
                                         text=f"正在搜索{keyword or ''}，已完成 {finish_count} / {total_num} 个请求 ...")
             finally:
@@ -2121,7 +2121,7 @@ class SearchChain(ChainBase):
                         logger.debug(
                             f"{site.get('name')} 第 {search_page} 页返回 {len(result or [])} 条，停止继续翻页"
                         )
-                    logger.info(f"站点搜索进度：{finish_count} / {total_num}")
+                    logger.debug(f"站点搜索进度：{finish_count} / {total_num}")
                     progress.update(value=finish_count / total_num * 100,
                                     text=f"正在搜索{keyword or ''}，已完成 {finish_count} / {total_num} 个请求 ...")
         finally:
@@ -2253,7 +2253,7 @@ class SearchChain(ChainBase):
                         logger.debug(
                             f"{site.get('name')} 第 {search_page} 页返回 {len(result)} 条，停止继续翻页"
                         )
-                    logger.info(f"站点搜索进度：{finish_count} / {total_num}")
+                    logger.debug(f"站点搜索进度：{finish_count} / {total_num}")
                     progress_value = finish_count / total_num * 100
                     progress_text = f"正在搜索{keyword or ''}，已完成 {finish_count} / {total_num} 个请求 ..."
                     progress.update(value=progress_value, text=progress_text)
@@ -2363,7 +2363,7 @@ class SearchChain(ChainBase):
                         logger.debug(
                             f"{site.get('name')} 字幕第 {search_page} 页返回 {len(result or [])} 条，停止继续翻页"
                         )
-                    logger.info(f"站点字幕搜索进度：{finish_count} / {total_num}")
+                    logger.debug(f"站点字幕搜索进度：{finish_count} / {total_num}")
                     progress.update(value=finish_count / total_num * 100,
                                     text=f"正在搜索字幕{keyword or ''}，已完成 {finish_count} / {total_num} 个请求 ...")
         finally:
@@ -2478,7 +2478,7 @@ class SearchChain(ChainBase):
                         logger.debug(
                             f"{site.get('name')} 字幕第 {search_page} 页返回 {len(result)} 条，停止继续翻页"
                         )
-                    logger.info(f"站点字幕搜索进度：{finish_count} / {total_num}")
+                    logger.debug(f"站点字幕搜索进度：{finish_count} / {total_num}")
                     progress_value = finish_count / total_num * 100
                     progress_text = f"正在搜索字幕{keyword or ''}，已完成 {finish_count} / {total_num} 个请求 ..."
                     progress.update(value=progress_value, text=progress_text)

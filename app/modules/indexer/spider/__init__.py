@@ -294,7 +294,7 @@ class SiteSpider:
         # 获取搜索URL
         searchurl = self.__get_search_url()
 
-        logger.info(f"开始异步请求：{searchurl}")
+        logger.debug(f"开始异步请求：{searchurl}")
 
         # httpx请求
         ret = await AsyncRequestUtils(
