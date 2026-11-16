@@ -1,5 +1,6 @@
 import inspect
 import sys
+import time
 from typing import Callable
 
 from app.helper.redis import RedisHelper, AsyncRedisHelper
@@ -97,16 +98,25 @@ def clear_package_tool_cache():
 def user_auth():
     """
     用户认证检查
+
+    启动或定时触发时若认证失败（如站点服务瞬时不可达），
+    自动重试最多 3 次（间隔 15 秒），避免一次网络抖动导致
+    站点功能长时间不可用（需等待下一次定时任务才恢复）。
     """
     sites_helper = SitesHelper()
     if sites_helper.auth_level >= 2:
         return
-    auth_conf = SystemConfigOper().get(SystemConfigKey.UserSiteAuthParams)
-    status, msg = sites_helper.check_user(**auth_conf) if auth_conf else sites_helper.check_user()
-    if status:
-        logger.info(f"{msg} 用户认证成功")
-    else:
-        logger.info(f"用户认证失败，{msg}")
+    max_retries = 3
+    for attempt in range(1, max_retries + 1):
+        auth_conf = SystemConfigOper().get(SystemConfigKey.UserSiteAuthParams)
+        status, msg = sites_helper.check_user(**auth_conf) if auth_conf else sites_helper.check_user()
+        if status:
+            logger.info(f"{msg} 用户认证成功")
+            return
+        logger.info(f"用户认证失败（{attempt}/{max_retries}），{msg}")
+        if attempt < max_retries:
+            time.sleep(15)
+    logger.info("用户认证多次尝试后仍未成功，等待下一次定时检查")
 
 
 def check_auth():

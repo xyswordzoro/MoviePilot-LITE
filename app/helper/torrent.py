@@ -411,19 +411,19 @@ class TorrentHelper:
                 torrent_meta.bangumiid, torrent_meta.anilistid,
         )):
             if torrent_meta.tmdbid and torrent_meta.tmdbid == mediainfo.tmdb_id:
-                logger.info(
+                logger.debug(
                     f'{mediainfo.title} 通过词表指定TMDBID匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
             if torrent_meta.doubanid and torrent_meta.doubanid == mediainfo.douban_id:
-                logger.info(
+                logger.debug(
                     f'{mediainfo.title} 通过词表指定豆瓣ID匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
             if torrent_meta.bangumiid and torrent_meta.bangumiid == mediainfo.bangumi_id:
-                logger.info(
+                logger.debug(
                     f'{mediainfo.title} 通过词表指定 Bangumi ID 匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
             if torrent_meta.anilistid and torrent_meta.anilistid == mediainfo.anilist_id:
-                logger.info(
+                logger.debug(
                     f'{mediainfo.title} 通过词表指定 AniList ID 匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
         # 要匹配的媒体标题、原标题
@@ -465,12 +465,12 @@ class TorrentHelper:
                     return False
         # 比对标题和原语种标题
         if meta_names.intersection(media_titles):
-            logger.info(f'{mediainfo.title} 通过标题匹配到资源：{torrent.site_name} - {torrent.title}')
+            logger.debug(f'{mediainfo.title} 通过标题匹配到资源：{torrent.site_name} - {torrent.title}')
             return True
         # 比对别名和译名
         if media_names:
             if meta_names.intersection(media_names):
-                logger.info(f'{mediainfo.title} 通过别名或译名匹配到资源：{torrent.site_name} - {torrent.title}')
+                logger.debug(f'{mediainfo.title} 通过别名或译名匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
         # 标题拆分
         if torrent_meta.org_string:
@@ -481,7 +481,7 @@ class TorrentHelper:
             ) if not StringUtils.is_english_word(t)]
             # 在标题中判断是否存在标题、原语种标题
             if media_titles.intersection(titles):
-                logger.info(f'{mediainfo.title} 通过标题匹配到资源：{torrent.site_name} - {torrent.title}')
+                logger.debug(f'{mediainfo.title} 通过标题匹配到资源：{torrent.site_name} - {torrent.title}')
                 return True
         # 在副标题中（非英文单词）判断是否存在标题、原语种标题、别名、译名
         if torrent.description:
@@ -489,7 +489,7 @@ class TorrentHelper:
                 r'[\s/【】|]+',
                 torrent.description) if not StringUtils.is_english_word(t)}
             if media_titles.intersection(subtitles) or media_names.intersection(subtitles):
-                logger.info(f'{mediainfo.title} 通过副标题匹配到资源：{torrent.site_name} - {torrent.title}，'
+                logger.debug(f'{mediainfo.title} 通过副标题匹配到资源：{torrent.site_name} - {torrent.title}，'
                             f'副标题：{torrent.description}')
                 return True
         # 未匹配
@@ -516,31 +516,31 @@ class TorrentHelper:
         include = filter_params.get("include")
         if include:
             if not _filter_pattern_search(include, content):
-                logger.info(f"{content} 不匹配包含规则 {include}")
+                logger.debug(f"{content} 不匹配包含规则 {include}")
                 return False
         # 排除
         exclude = filter_params.get("exclude")
         if exclude:
             if _filter_pattern_search(exclude, content):
-                logger.info(f"{content} 匹配排除规则 {exclude}")
+                logger.debug(f"{content} 匹配排除规则 {exclude}")
                 return False
         # 质量
         quality = filter_params.get("quality")
         if quality:
             if not _filter_pattern_search(quality, torrent_info.title):
-                logger.info(f"{torrent_info.title} 不匹配质量规则 {quality}")
+                logger.debug(f"{torrent_info.title} 不匹配质量规则 {quality}")
                 return False
         # 分辨率
         resolution = filter_params.get("resolution")
         if resolution:
             if not _filter_pattern_search(resolution, torrent_info.title):
-                logger.info(f"{torrent_info.title} 不匹配分辨率规则 {resolution}")
+                logger.debug(f"{torrent_info.title} 不匹配分辨率规则 {resolution}")
                 return False
         # 特效
         effect = filter_params.get("effect")
         if effect:
             if not _filter_pattern_search(effect, torrent_info.title):
-                logger.info(f"{torrent_info.title} 不匹配特效规则 {effect}")
+                logger.debug(f"{torrent_info.title} 不匹配特效规则 {effect}")
                 return False
 
         # 大小
