@@ -1,4 +1,5 @@
 import json
+import time
 from typing import Any, Dict, Tuple, Optional
 
 from app.core.config import settings
@@ -11,6 +12,12 @@ from app.utils.url import UrlUtils
 
 class CookieCloudHelper:
     _ignore_cookies: list = ["CookieAutoDeleteBrowsingDataCleanup", "CookieAutoDeleteCleaningDiscarded"]
+
+    # 官方公共 CookieCloud 服务（movie-pilot.org / 社区共享）响应波动较大，
+    # 默认 20 秒超时会导致偶发抖动直接被判失败。这里放宽超时并增加重试。
+    _REQUEST_TIMEOUT = 60
+    _RETRY_TIMES = 3
+    _RETRY_INTERVAL = 3
 
     def __init__(self):
         self.__sync_setting()
@@ -45,7 +52,21 @@ class CookieCloudHelper:
                 return {}, "未从本地CookieCloud服务加载到cookie数据，请检查服务器设置、用户KEY及加密密码是否正确"
         else:
             req_url = UrlUtils.combine_url(host=self._server, path=f"get/{self._key}")
-            ret = RequestUtils(content_type="application/json").get_res(url=req_url)
+            ret = None
+            last_error = ""
+            for attempt in range(1, self._RETRY_TIMES + 1):
+                ret = RequestUtils(content_type="application/json").get_res(
+                    url=req_url, timeout=self._REQUEST_TIMEOUT
+                )
+                if ret is not None:
+                    break
+                last_error = f"第 {attempt} 次请求无响应"
+                logger.warn(
+                    f"CookieCloud 请求无响应（{attempt}/{self._RETRY_TIMES}）：{req_url}"
+                )
+                if attempt < self._RETRY_TIMES:
+                    time.sleep(self._RETRY_INTERVAL)
+
             if ret and ret.status_code == 200:
                 try:
                     result = ret.json()
@@ -56,7 +77,13 @@ class CookieCloudHelper:
             elif ret:
                 return None, f"远程同步CookieCloud失败，错误码：{ret.status_code}"
             else:
-                return None, "CookieCloud请求失败，请检查服务器地址、用户KEY及加密密码是否正确"
+                # 请求始终无响应：多为服务端响应慢/网络抖动，而不是 KEY 或密码错误
+                return None, (
+                    f"CookieCloud 服务器无响应（{self._server}，"
+                    f"已重试 {self._RETRY_TIMES} 次，{last_error}）。"
+                    f"多为公共服务响应慢或网络波动，请稍后重试；"
+                    f"如需稳定可改用自建 CookieCloud 服务"
+                )
 
         encrypted = result.get("encrypted")
         if not encrypted:
