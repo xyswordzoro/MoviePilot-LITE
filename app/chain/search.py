@@ -1222,7 +1222,7 @@ class SearchChain(ChainBase):
                 torrent_meta = MetaInfo(title=torrent.title, subtitle=torrent.description,
                                         custom_words=custom_words)
                 if torrent.title != torrent_meta.org_string:
-                    logger.info(f"种子名称应用识别词后发生改变：{torrent.title} => {torrent_meta.org_string}")
+                    logger.debug(f"种子名称应用识别词后发生改变：{torrent.title} => {torrent_meta.org_string}")
                 # 季集数过滤
                 if season_episodes \
                         and not TorrentHelper.match_season_episodes(torrent=torrent,
@@ -1955,6 +1955,8 @@ class SearchChain(ChainBase):
         max_workers = min(len(indexer_sites), settings.CONF.threadpool or len(indexer_sites))
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             pending_tasks = {}
+            # 各站点有效资源数，用于搜索完成汇总
+            site_counts: dict = {}
 
             def submit_site_page(site: dict, page_index: int):
                 """
@@ -1990,6 +1992,7 @@ class SearchChain(ChainBase):
                         result = future.result()
                         if result:
                             results.extend(result)
+                        site_counts[site.get("name")] = site_counts.get(site.get("name"), 0) + len(result or [])
                         if (
                             self._should_continue_search_pages(
                                 site=site, page_results=result, keyword=search_keyword
@@ -2012,7 +2015,8 @@ class SearchChain(ChainBase):
         # 更新进度
         progress.update(value=100,
                         text=f"站点搜索完成，有效资源数：{len(results)}，总耗时 {(end_time - start_time).seconds} 秒")
-        logger.info(f"站点搜索完成，有效资源数：{len(results)}，总耗时 {(end_time - start_time).seconds} 秒")
+        _site_detail = "，".join(f"{name} {count}" for name, count in site_counts.items())
+        logger.info(f"站点搜索完成，有效资源数：{len(results)}（{_site_detail}），总耗时 {(end_time - start_time).seconds} 秒")
         # 结束进度
         progress.end()
 
@@ -2083,6 +2087,7 @@ class SearchChain(ChainBase):
                                                         page=search_page)
 
         pending_tasks = {}
+        site_counts: dict = {}
 
         def submit_site_page(site: dict, page_index: int):
             """
@@ -2110,6 +2115,7 @@ class SearchChain(ChainBase):
                     result = await future
                     if result:
                         results.extend(result)
+                    site_counts[site.get("name")] = site_counts.get(site.get("name"), 0) + len(result or [])
                     if (
                         self._should_continue_search_pages(
                             site=site, page_results=result, keyword=search_keyword
@@ -2136,7 +2142,8 @@ class SearchChain(ChainBase):
         # 更新进度
         progress.update(value=100,
                         text=f"站点搜索完成，有效资源数：{len(results)}，总耗时 {(end_time - start_time).seconds} 秒")
-        logger.info(f"站点搜索完成，有效资源数：{len(results)}，总耗时 {(end_time - start_time).seconds} 秒")
+        _site_detail = "，".join(f"{name} {count}" for name, count in site_counts.items())
+        logger.info(f"站点搜索完成，有效资源数：{len(results)}（{_site_detail}），总耗时 {(end_time - start_time).seconds} 秒")
         # 结束进度
         progress.end()
 
@@ -2228,6 +2235,7 @@ class SearchChain(ChainBase):
         for site in indexer_sites:
             submit_site_page(site=site, page_index=0)
 
+        site_counts: dict = {}
         results_count = 0
         try:
             while tasks:
@@ -2242,6 +2250,7 @@ class SearchChain(ChainBase):
                     finish_count += 1
                     result = await future
                     results_count += len(result)
+                    site_counts[site.get("name")] = site_counts.get(site.get("name"), 0) + len(result)
                     if (
                         self._should_continue_search_pages(
                             site=site, page_results=result, keyword=search_keyword
@@ -2280,7 +2289,8 @@ class SearchChain(ChainBase):
         end_time = datetime.now()
         progress.update(value=100,
                         text=f"站点搜索完成，有效资源数：{results_count}，总耗时 {(end_time - start_time).seconds} 秒")
-        logger.info(f"站点搜索完成，有效资源数：{results_count}，总耗时 {(end_time - start_time).seconds} 秒")
+        _site_detail = "，".join(f"{name} {count}" for name, count in site_counts.items())
+        logger.info(f"站点搜索完成，有效资源数：{results_count}（{_site_detail}），总耗时 {(end_time - start_time).seconds} 秒")
         progress.end()
 
     async def __async_search_subtitles_all_sites(self, keyword: str,

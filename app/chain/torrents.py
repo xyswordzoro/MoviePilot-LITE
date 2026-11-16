@@ -630,7 +630,7 @@ class TorrentsChain(ChainBase):
                             meta = MetaInfo(title=torrent.title, subtitle=torrent.description)
                             adjusted = torrent.title != meta.org_string
                             if adjusted:
-                                logger.info(f'种子名称应用识别词后发生改变：{torrent.title} => {meta.org_string}')
+                                logger.debug(f'种子名称应用识别词后发生改变：{torrent.title} => {meta.org_string}')
                             # 使用站点种子分类，校正类型识别
                             if meta.type != MediaType.TV \
                                     and torrent.category == MediaType.TV.value:
