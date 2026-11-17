@@ -954,8 +954,11 @@ async def get_logging(
                     lines_queue.append(line)
 
             # 输出历史日志
-            for line in lines_queue:
-                yield f"data: {line}\n\n"
+            # 合并为单条 SSE 消息发送：前端收到后即可一次性渲染完整首屏，
+            # 既缩短打开日志的等待时间，也避免分批插入造成内容跳动。
+            history = list(lines_queue)
+            if history:
+                yield "".join(f"data: {line}\n" for line in history) + "\n"
 
             # 实时监听新日志
             async with aiofiles.open(
