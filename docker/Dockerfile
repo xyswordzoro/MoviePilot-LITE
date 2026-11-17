@@ -117,7 +117,9 @@ RUN if [ -f /app/public/index.html ]; then \
     && ARCH=$(uname -m) \
     && if [ "$ARCH" = "aarch64" ]; then SUFFIX="aarch64-linux-gnu"; else SUFFIX="x86_64-linux-gnu"; fi \
     && curl -sL "https://raw.githubusercontent.com/jxxghp/MoviePilot-Resources/main/resources.v2/sites.${python_ver}-${SUFFIX}.so" -o "/app/app/helper/sites.${python_ver}-${SUFFIX}.so" \
-    # LITE 兼容补丁：修正上游插件对 NEO 专有模块 app.adapters 的探测方式
+    # 仓库内置插件：上游已下架的封面插件（动态封面工坊 / Yahaha 封面工坊）由仓库自带，保证升级后仍可用
+    && if [ -d /app/docker/bundled_plugins ]; then cp -rf /app/docker/bundled_plugins/* /app/app/plugins/ && echo "已内置封面插件"; fi \
+    # LITE 兼容补丁：修正插件对 NEO 专有模块 app.adapters 的探测方式
     && python3 /app/docker/patch_plugins.py
 
 # final 阶段: 安装运行时依赖和配置最终镜像
