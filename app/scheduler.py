@@ -681,12 +681,13 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
                 )
 
             # 插件市场缓存
+            # 插件市场缓存（12 小时刷新一次）
             self._scheduler.add_job(
                 self.start,
                 "interval",
                 id="plugin_market_refresh",
                 name="插件市场缓存",
-                minutes=30,
+                hours=12,
                 kwargs={"job_id": "plugin_market_refresh"},
             )
 
