@@ -529,11 +529,11 @@ class TheMovieDbModule(_ModuleBase):
             # 使用缓存信息
             cache_hit = True
             if cache_info.get("title"):
-                logger.info(f"{meta.name} 使用TMDB识别缓存：{cache_info.get('title')}")
+                logger.debug(f"{meta.name} 使用TMDB识别缓存：{cache_info.get('title')}")
                 info = self.tmdb.get_info(mtype=cache_info.get("type"),
                                           tmdbid=cache_info.get("id"))
             else:
-                logger.info(f"{meta.name} 使用TMDB识别缓存：无法识别")
+                logger.debug(f"{meta.name} 使用TMDB识别缓存：无法识别")
                 info = None
 
         if info:
@@ -615,11 +615,11 @@ class TheMovieDbModule(_ModuleBase):
             # 使用缓存信息
             cache_hit = True
             if cache_info.get("title"):
-                logger.info(f"{meta.name} 使用TMDB识别缓存：{cache_info.get('title')}")
+                logger.debug(f"{meta.name} 使用TMDB识别缓存：{cache_info.get('title')}")
                 info = await self.tmdb.async_get_info(mtype=cache_info.get("type"),
                                                       tmdbid=cache_info.get("id"))
             else:
-                logger.info(f"{meta.name} 使用TMDB识别缓存：无法识别")
+                logger.debug(f"{meta.name} 使用TMDB识别缓存：无法识别")
                 info = None
 
         if info:

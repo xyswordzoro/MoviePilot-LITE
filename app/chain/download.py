@@ -1248,7 +1248,7 @@ class DownloadChain(ChainBase):
 
         # 电视剧整季匹配
         if no_exists:
-            logger.info(f"开始匹配电视剧整季：{no_exists}")
+            logger.debug(f"开始匹配电视剧整季：{no_exists}")
             # 先把整季缺失的拿出来，看是否刚好有所有季都满足的种子 {tmdbid: [seasons]}
             need_seasons: Dict[int, list] = {}
             for need_mid, need_tv in no_exists.items():
@@ -1260,7 +1260,7 @@ class DownloadChain(ChainBase):
                         if not need_seasons.get(need_mid):
                             need_seasons[need_mid] = []
                         need_seasons[need_mid].append(tv.season if tv.season is not None else 1)
-            logger.info(f"缺失整季：{need_seasons}")
+            logger.debug(f"缺失整季：{need_seasons}")
             # 查找整季包含的种子，只处理整季没集的种子或者是集数超过季的种子
             for need_mid, need_season in need_seasons.items():
                 # 循环种子
@@ -1312,7 +1312,7 @@ class DownloadChain(ChainBase):
                                     logger.warn(f"{meta.org_string} 下载地址是磁力链，无法确定种子文件集数")
                                     continue
                                 torrent_episodes = TorrentHelper().get_torrent_episodes(torrent_files)
-                                logger.info(f"{meta.org_string} 解析种子文件集数为 {torrent_episodes}")
+                                logger.debug(f"{meta.org_string} 解析种子文件集数为 {torrent_episodes}")
                                 if not torrent_episodes:
                                     continue
                                 torrent_episodes_set = set(torrent_episodes)
@@ -1382,7 +1382,7 @@ class DownloadChain(ChainBase):
                                 __remember_context_failure(context)
         # 电视剧季内的集匹配
         if no_exists:
-            logger.info(f"开始电视剧完整集匹配：{no_exists}")
+            logger.debug(f"开始电视剧完整集匹配：{no_exists}")
             # TMDBID列表
             need_tv_list = list(no_exists)
             for need_mid in need_tv_list:
@@ -1469,7 +1469,7 @@ class DownloadChain(ChainBase):
 
         # 仍然缺失的剧集，从整季中选择需要的集数文件下载，仅支持QB和TR
         if no_exists:
-            logger.info(f"开始电视剧多集拆包匹配：{no_exists}")
+            logger.debug(f"开始电视剧多集拆包匹配：{no_exists}")
             # TMDBID列表
             no_exists_list = list(no_exists)
             for need_mid in no_exists_list:
@@ -1541,11 +1541,11 @@ class DownloadChain(ChainBase):
                                 continue
                             # 种子全部集
                             torrent_episodes = TorrentHelper().get_torrent_episodes(torrent_files)
-                            logger.info(f"{torrent.site_name} - {meta.org_string} 解析种子文件集数：{torrent_episodes}")
+                            logger.debug(f"{torrent.site_name} - {meta.org_string} 解析种子文件集数：{torrent_episodes}")
                             # 选中的集
                             selected_episodes = set(torrent_episodes).intersection(effective_need)
                             if not selected_episodes:
-                                logger.info(f"{torrent.site_name} - {torrent.title} 没有需要的集，跳过...")
+                                logger.debug(f"{torrent.site_name} - {torrent.title} 没有需要的集，跳过...")
                                 continue
                             logger.info(f"{torrent.site_name} - {torrent.title} 选中集数：{selected_episodes}")
                             # 添加下载
@@ -1580,7 +1580,12 @@ class DownloadChain(ChainBase):
                             logger.info(f"季 {need_season} 剩余需要集：{need_episodes}")
 
         # 返回下载的资源，剩下没下完的
-        logger.info(f"成功下载种子数：{len(downloaded_list)}，剩余未下载的剧集：{no_exists}")
+        _left_count = sum(
+            len(info.episodes or [])
+            for seasons in (no_exists or {}).values()
+            for info in seasons.values()
+        )
+        logger.info(f"成功下载种子数：{len(downloaded_list)}，剩余未下载剧集：{_left_count} 集")
         return downloaded_list, no_exists
 
     def get_no_exists_info(self, meta: MetaBase,
