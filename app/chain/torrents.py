@@ -625,7 +625,7 @@ class TorrentsChain(ChainBase):
                             if not torrent.enclosure:
                                 logger.warn(f"缺少种子链接，忽略处理: {torrent.title}")
                                 continue
-                            logger.debug(f'处理资源：{torrent.title} ...')
+                            logger.info(f'处理资源：{torrent.title} ...')
                             # 识别
                             meta = MetaInfo(title=torrent.title, subtitle=torrent.description)
                             adjusted = torrent.title != meta.org_string
@@ -641,25 +641,14 @@ class TorrentsChain(ChainBase):
                                 obtain_images=False,
                             )
                             if not mediainfo:
+                                logger.warn(f'{torrent.title} 未识别到媒体信息')
+                                # 存储空的媒体信息
                                 mediainfo = MediaInfo()
+                            # 清理多余数据，减少内存占用
+                            mediainfo.clear()
                             candidate_recognized = bool(
                                 mediainfo and all(resolve_media_identity(media=mediainfo))
                             )
-                            # 站点种子识别结果汇总：主日志一条覆盖标题与结果（不受 RSS 静默限制）
-                            if candidate_recognized:
-                                logger.info(
-                                    f"识别{indexer.get('name')}站点种子标题{torrent.title}，"
-                                    f"识别结果：{mediainfo.type.value} {mediainfo.title_year}",
-                                    force=True,
-                                )
-                            else:
-                                logger.warn(
-                                    f"识别{indexer.get('name')}站点种子标题{torrent.title}，"
-                                    f"识别结果：未识别到媒体信息",
-                                    force=True,
-                                )
-                            # 清理多余数据，减少内存占用
-                            mediainfo.clear()
                             # 站点日志：记录种子识别结果
                             site_log.record_torrent(
                                 raw_title=torrent.title,

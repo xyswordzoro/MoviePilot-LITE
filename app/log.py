@@ -531,11 +531,7 @@ class LoggerManager:
         获取模块的logger
         :param method: 日志方法
         :param msg: 日志信息
-        :param force: 传 force=True 时不受 RSS 静默范围限制（用于每站点识别汇总等关键日志）
         """
-        # 关键日志豁免：允许在 RSS 静默范围内强制输出
-        force = bool(kwargs.pop("force", False))
-
         # 获取当前日志级别
         current_level = self.__get_log_level()
         method_level = getattr(logging, method.upper(), logging.INFO)
@@ -549,8 +545,7 @@ class LoggerManager:
 
         # RSS 刷新明细默认只写入站点日志，关闭开关后不再刷屏主日志（错误仍保留）
         if (
-            not force
-            and not log_settings.RSS_LOG_ENABLE
+            not log_settings.RSS_LOG_ENABLE
             and method_level < logging.ERROR
             and self._is_rss_log_suppressed(caller_name)
         ):

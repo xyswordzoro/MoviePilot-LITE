@@ -771,8 +771,8 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         if not mediainfo:
             return None
         # 识别成功
-        logger.info(
-            f"识别标题{title}，识别结果：{mediainfo.type.value} {mediainfo.title_year}"
+        logger.debug(
+            f"{title} 识别到媒体信息：{mediainfo.type.value} {mediainfo.title_year}"
         )
         if obtain_images:
             self.obtain_images(mediainfo=mediainfo)
@@ -1764,8 +1764,8 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         )
         if not mediainfo:
             return None
-        logger.info(
-            f"识别标题{title}，识别结果：{mediainfo.type.value} {mediainfo.title_year}"
+        logger.debug(
+            f"{title} 识别到媒体信息：{mediainfo.type.value} {mediainfo.title_year}"
         )
         if obtain_images:
             await self.async_obtain_images(mediainfo=mediainfo)
