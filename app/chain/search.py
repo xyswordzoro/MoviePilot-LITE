@@ -964,7 +964,7 @@ class SearchChain(ChainBase):
             logger.warn(f'{title} 未搜索到资源')
         yield {
             "type": "done",
-            "text": f"搜索完成，共 {len(contexts)} 个资源",
+            "text": f"匹配完成，共 {len(contexts)} 个资源",
             "items": [context.to_dict() for context in contexts],
             "total_items": len(contexts)
         }
@@ -1275,9 +1275,8 @@ class SearchChain(ChainBase):
         contexts = TorrentHelper.sort_torrents(contexts)
 
         # 结束进度
-        logger.info(f'搜索完成，共 {len(contexts)} 个资源')
         progress.update(value=100,
-                        text=f'搜索完成，共 {len(contexts)} 个资源')
+                        text=f'匹配完成，共 {len(contexts)} 个资源')
         progress.end()
 
         # 去重后返回
@@ -1566,7 +1565,7 @@ class SearchChain(ChainBase):
         yield {
             "type": "done",
             "stage": "done",
-            "text": f"搜索完成，共 {len(contexts)} 个资源",
+            "text": f"匹配完成，共 {len(contexts)} 个资源",
             "items": final_items,
             "total_items": len(contexts),
             "contexts": contexts
