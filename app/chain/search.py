@@ -1245,7 +1245,7 @@ class SearchChain(ChainBase):
                     _match_torrents.append((torrent, torrent_meta, "title"))
                     continue
             # 匹配完成
-            logger.debug(f"匹配完成，共匹配到 {len(_match_torrents)} 个资源")
+            logger.info(f"匹配完成，共匹配到 {len(_match_torrents)} 个资源")
             progress.update(value=97,
                             text=f'匹配完成，共匹配到 {len(_match_torrents)} 个资源')
 
@@ -1275,7 +1275,7 @@ class SearchChain(ChainBase):
         contexts = TorrentHelper.sort_torrents(contexts)
 
         # 结束进度
-        logger.debug(f'搜索完成，共 {len(contexts)} 个资源')
+        logger.info(f'搜索完成，共 {len(contexts)} 个资源')
         progress.update(value=100,
                         text=f'搜索完成，共 {len(contexts)} 个资源')
         progress.end()
