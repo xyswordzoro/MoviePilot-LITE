@@ -97,6 +97,9 @@ class WordsMatcher(metaclass=Singleton):
         2：被替换词 => 替换词
         3：前定位词 <> 后定位词 >> 偏移量（EP）
         """
+        # 空标题无需处理：避免对 None 做正则替换产生 TypeError 误报警告
+        if not isinstance(title, str) or not title:
+            return title, []
         appley_words = []
         # 读取自定义识别词
         words: List[str] = custom_words or self.systemconfig.get(SystemConfigKey.CustomIdentifiers) or []

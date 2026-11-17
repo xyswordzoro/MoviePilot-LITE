@@ -277,9 +277,9 @@ class TheMovieDbModule(_ModuleBase):
         根据名称搜索媒体信息
         """
         if meta.begin_season is not None:
-            logger.info(f"正在识别 {name} 第{meta.begin_season}季 ...")
+            logger.debug(f"正在识别 {name} 第{meta.begin_season}季 ...")
         else:
-            logger.info(f"正在识别 {name} ...")
+            logger.debug(f"正在识别 {name} ...")
 
         if meta.type == MediaType.UNKNOWN and not meta.year:
             return self.tmdb.match_multi(name)
@@ -313,9 +313,9 @@ class TheMovieDbModule(_ModuleBase):
         根据名称搜索媒体信息（异步版本）
         """
         if meta.begin_season is not None:
-            logger.info(f"正在识别 {name} 第{meta.begin_season}季 ...")
+            logger.debug(f"正在识别 {name} 第{meta.begin_season}季 ...")
         else:
-            logger.info(f"正在识别 {name} ...")
+            logger.debug(f"正在识别 {name} ...")
 
         if meta.type == MediaType.UNKNOWN and not meta.year:
             return await self.tmdb.async_match_multi(name)

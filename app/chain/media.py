@@ -580,7 +580,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 mediainfo = native_fn()
         else:
             # 原生优先
-            logger.info(f"开始识别标题：{log_name} ...")
+            logger.debug(f"开始识别标题：{log_name} ...")
             mediainfo = native_fn()
             if not mediainfo and plugin_available:
                 logger.info(
@@ -771,7 +771,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         if not mediainfo:
             return None
         # 识别成功
-        logger.info(
+        logger.debug(
             f"{title} 识别到媒体信息：{mediainfo.type.value} {mediainfo.title_year}"
         )
         if obtain_images:
@@ -1680,7 +1680,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 mediainfo = await native_fn()
         else:
             # 原生优先
-            logger.info(f"识别标题：{log_name} ...")
+            logger.debug(f"识别标题：{log_name} ...")
             mediainfo = await native_fn()
             if not mediainfo and plugin_available:
                 logger.info(
@@ -1764,7 +1764,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         )
         if not mediainfo:
             return None
-        logger.info(
+        logger.debug(
             f"{title} 识别到媒体信息：{mediainfo.type.value} {mediainfo.title_year}"
         )
         if obtain_images:
