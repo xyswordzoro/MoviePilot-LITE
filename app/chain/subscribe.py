@@ -1506,7 +1506,6 @@ class SubscribeChain(ChainBase):
                             downloader=subscribe.downloader,
                             source=self.get_subscribe_source_keyword(subscribe)
                         )
-                        downloaded_count += len(downloads or [])
 
                         # 同步外部修改，更新订阅信息
                         subscribe = subscribeoper.get(subscribe.id)
