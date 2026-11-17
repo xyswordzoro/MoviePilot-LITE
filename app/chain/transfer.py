@@ -1697,7 +1697,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
 
                     # 如果当前没有在运行的任务且处理数为0，说明是一个新序列的开始
                     if self._active_tasks == 0 and self._processed_num == 0:
-                        logger.info("开始整理队列处理...")
+                        logger.debug("开始整理队列处理...")
                         # 启动进度
                         self._progress.start()
                         # 重置计数
@@ -1715,7 +1715,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                     self.__start_job_execution(task)
                     # 更新进度
                     __process_msg = f"正在整理 {fileitem.name} ..."
-                    logger.info(__process_msg)
+                    logger.debug(__process_msg)
                     with task_lock:
                         self._progress.update(
                             value=(self._processed_num / self._total_num * 100)
@@ -1735,7 +1735,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                         # 更新进度
                         self._processed_num += 1
                         __process_msg = f"{fileitem.name} 整理完成"
-                        logger.info(__process_msg)
+                        logger.debug(__process_msg)
                         self._progress.update(
                             value=(self._processed_num / self._total_num * 100)
                             if self._total_num
@@ -1937,7 +1937,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 task.mediainfo = mediainfo
                 # 更新队列任务
                 if not self.jobview.migrate_task(task):
-                    logger.info(f"{task.fileitem.name} 已存在整理任务，跳过重复处理")
+                    logger.debug(f"{task.fileitem.name} 已存在整理任务，跳过重复处理")
                     return False, f"{task.fileitem.name} 已在整理队列中"
 
             # 获取集数据
@@ -3446,7 +3446,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                             skipped_torrents.add(
                                 (candidate_hash, candidate_downloader)
                             )
-                        logger.info(
+                        logger.debug(
                             f"{file_item.path} 已整理过，如需重新处理，请删除整理记录。"
                         )
                         err_msgs.append(f"{file_item.name} 已整理过")
@@ -3521,7 +3521,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 )
                 if background:
                     if self.put_to_queue(task=transfer_task):
-                        logger.info(f"{file_path.name} 已添加到整理队列")
+                        logger.debug(f"{file_path.name} 已添加到整理队列")
                     else:
                         logger.debug(f"{file_path.name} 已在整理队列中，跳过")
                 else:
@@ -3592,7 +3592,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                     if not preview:
                         # 更新进度
                         __process_msg = f"正在整理 （{processed_num + fail_num + 1}/{total_num}）{transfer_task.fileitem.name} ..."
-                        logger.info(__process_msg)
+                        logger.debug(__process_msg)
                         progress.update(
                             value=(processed_num + fail_num) / total_num * 100,
                             text=__process_msg,
@@ -3674,7 +3674,7 @@ class TransferChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 and skipped_torrents
         ):
             for skipped_hash, skipped_downloader in skipped_torrents:
-                logger.info(f"补充设置下载任务已整理标签：{skipped_hash}")
+                logger.debug(f"补充设置下载任务已整理标签：{skipped_hash}")
                 self.__mark_torrent_completed_if_done(
                     skipped_hash, skipped_downloader
                 )

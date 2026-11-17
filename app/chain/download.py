@@ -38,6 +38,42 @@ from app.utils.system import SystemUtils
 
 DOWNLOAD_FAILURE_RESOURCE_TTL_SECONDS = 24 * 60 * 60
 DOWNLOAD_FAILURE_TRANSIENT_TTL_SECONDS = 60 * 60
+# 整季包鉴别后确认"不覆盖目标集"的冷却时间：同一资源在库存未变化时无需每轮重复开种
+DOWNLOAD_FAILURE_UNSUITABLE_TTL_SECONDS = 12 * 60 * 60
+# 种子标题/描述中声明的总集数，如「斗破苍穹年番 第五季 全219集」
+SEASON_PACK_DECLARED_EPISODES_RE = re.compile(r"(?:全|共)\s*(\d+)\s*集")
+# 种子文件集数解析缓存（按资源键），避免同一资源反复解包
+_TORRENT_EPISODE_CACHE_TTL_SECONDS = 12 * 60 * 60
+_TORRENT_EPISODE_CACHE_MAX_SIZE = 500
+_TORRENT_EPISODE_CACHE: Dict[str, Tuple[float, List[int]]] = {}
+
+
+def _get_cached_torrent_episodes(cache_key: str) -> Optional[List[int]]:
+    """
+    读取种子文件集数解析缓存，过期即清除。
+    """
+    cached = _TORRENT_EPISODE_CACHE.get(cache_key)
+    if not cached:
+        return None
+    cached_at, episodes = cached
+    if time.time() - cached_at > _TORRENT_EPISODE_CACHE_TTL_SECONDS:
+        _TORRENT_EPISODE_CACHE.pop(cache_key, None)
+        return None
+    return episodes
+
+
+def _cache_torrent_episodes(cache_key: str, episodes: List[int]) -> None:
+    """
+    缓存种子文件集数解析结果，超出上限时按写入顺序淘汰。
+    """
+    if not cache_key or not episodes:
+        return
+    if len(_TORRENT_EPISODE_CACHE) >= _TORRENT_EPISODE_CACHE_MAX_SIZE:
+        for stale_key in list(_TORRENT_EPISODE_CACHE)[:50]:
+            _TORRENT_EPISODE_CACHE.pop(stale_key, None)
+    _TORRENT_EPISODE_CACHE[cache_key] = (time.time(), list(episodes))
+
+
 DOWNLOAD_FAILURE_RESOURCE_ERROR_KEYWORDS = (
     "无法读取种子文件",
     "下载种子内容为空",
@@ -523,6 +559,34 @@ class DownloadChain(ChainBase):
         return f"title={title}|size={size}"
 
     @classmethod
+    def _parse_torrent_episodes(cls, torrent: TorrentInfo, torrent_files: List[str]) -> List[int]:
+        """
+        解析种子文件集数，并按资源键缓存结果，避免同一资源每轮重复解包。
+        """
+        cache_key = f"{getattr(torrent, 'site_name', '')}|{cls._torrent_resource_key(torrent)}"
+        cached = _get_cached_torrent_episodes(cache_key)
+        if cached is not None:
+            return list(cached)
+        episodes = TorrentHelper().get_torrent_episodes(torrent_files) or []
+        _cache_torrent_episodes(cache_key, episodes)
+        return list(episodes)
+
+    @staticmethod
+    def _declared_pack_episodes(torrent: TorrentInfo) -> Optional[int]:
+        """
+        从种子标题/描述中提取声明的总集数（如「全219集」），无法确定时返回 None。
+        """
+        text = " ".join(
+            str(getattr(torrent, attr, "") or "")
+            for attr in ("title", "description")
+        )
+        matches = SEASON_PACK_DECLARED_EPISODES_RE.findall(text)
+        if not matches:
+            return None
+        counts = [int(item) for item in matches if str(item).isdigit()]
+        return max(counts) if counts else None
+
+    @classmethod
     def _build_download_failure_fingerprint(cls, context: Context) -> Optional[str]:
         """
         根据媒体和种子资源信息生成失败冷却指纹。
@@ -576,6 +640,7 @@ class DownloadChain(ChainBase):
             downloader: Optional[str] = None,
             source: Optional[str] = None,
             episodes: Optional[Set[int]] = None,
+            ttl_seconds: Optional[int] = None,
     ) -> Optional[str]:
         """
         记录资源级下载失败，并返回本次失败指纹。
@@ -588,7 +653,9 @@ class DownloadChain(ChainBase):
         now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(now_timestamp))
         next_retry_at = time.strftime(
             "%Y-%m-%d %H:%M:%S",
-            time.localtime(now_timestamp + self._download_failure_ttl(error_msg)),
+            time.localtime(
+                now_timestamp + (ttl_seconds or self._download_failure_ttl(error_msg))
+            ),
         )
         media = context.media_info
         media_source, media_id = resolve_media_identity(media=media)
@@ -1212,7 +1279,7 @@ class DownloadChain(ChainBase):
             """
             fingerprint = self._build_download_failure_fingerprint(_context)
             if fingerprint and fingerprint in active_failure_fingerprints:
-                logger.info(f"{_context.torrent_info.title} 近期添加下载失败，暂时跳过该资源")
+                logger.debug(f"{_context.torrent_info.title} 近期添加下载失败，暂时跳过该资源")
                 return True
             return False
 
@@ -1226,6 +1293,8 @@ class DownloadChain(ChainBase):
 
         # 如果是电影，直接下载
         downloaded_movies = set()
+        # 本轮因集数不覆盖目标而被跳过的整季候选数（仅用于汇总日志）
+        unsuitable_pack_count = 0
         for context in contexts:
             if global_vars.is_system_stopped:
                 break
@@ -1296,7 +1365,22 @@ class DownloadChain(ChainBase):
                             complete_coverage_matched = False
                             if len(torrent_season) == 1:
                                 # 只有一季的可能是命名错误，需要打开种子鉴别，只有实际集数大于等于总集数才下载
-                                logger.info(f"开始下载种子 {torrent.title} ...")
+                                need_tv_info = __get_no_exist_media(need_mid, torrent_season[0])
+                                need_min_episode = 1
+                                if need_tv_info:
+                                    if need_tv_info.episodes:
+                                        need_min_episode = min(need_tv_info.episodes)
+                                    elif need_tv_info.start_episode:
+                                        need_min_episode = need_tv_info.start_episode
+                                # 标题/描述已声明总集数且不够覆盖所需集时，无需下载种子文件即可排除
+                                declared_episodes = self._declared_pack_episodes(torrent)
+                                if declared_episodes and declared_episodes < need_min_episode:
+                                    unsuitable_pack_count += 1
+                                    logger.debug(
+                                        f"{torrent.title} 声明共 {declared_episodes} 集，"
+                                        f"不覆盖所需第 {need_min_episode} 集起的剧集，跳过")
+                                    continue
+                                logger.debug(f"检查整季种子是否完整合集：{torrent.title}")
                                 content, _, torrent_files = self.download_torrent(torrent)
                                 if not content:
                                     logger.warn(f"{torrent.title} 种子下载失败！")
@@ -1311,7 +1395,7 @@ class DownloadChain(ChainBase):
                                 if isinstance(content, str):
                                     logger.warn(f"{meta.org_string} 下载地址是磁力链，无法确定种子文件集数")
                                     continue
-                                torrent_episodes = TorrentHelper().get_torrent_episodes(torrent_files)
+                                torrent_episodes = self._parse_torrent_episodes(torrent, torrent_files)
                                 logger.debug(f"{meta.org_string} 解析种子文件集数为 {torrent_episodes}")
                                 if not torrent_episodes:
                                     continue
@@ -1328,18 +1412,36 @@ class DownloadChain(ChainBase):
                                 complete_coverage_matched = bool(required_episodes) \
                                     and required_episodes.issubset(torrent_episodes_set)
                                 if complete_coverage_matched:
-                                    logger.info(
+                                    logger.debug(
                                         f"{meta.org_string} 解析文件集数已完整覆盖目标范围："
                                         f"{StringUtils.format_ep(sorted(required_episodes))}")
                                 if required_episodes and not complete_coverage_matched:
                                     missing_episodes = sorted(required_episodes.difference(torrent_episodes_set))
-                                    logger.info(
+                                    logger.debug(
                                         f"{meta.org_string} 解析文件集数未覆盖目标范围，"
                                         f"缺少 {StringUtils.format_ep(missing_episodes)}，先放弃这个种子")
+                                    unsuitable_pack_count += 1
+                                    self._record_download_failure(
+                                        context=context,
+                                        error_msg="整季包未覆盖目标集范围",
+                                        downloader=downloader,
+                                        source=source,
+                                        ttl_seconds=DOWNLOAD_FAILURE_UNSUITABLE_TTL_SECONDS,
+                                    )
+                                    __remember_context_failure(context)
                                     continue
                                 if not required_episodes and need_total and len(torrent_episodes) < need_total:
-                                    logger.info(
+                                    logger.debug(
                                         f"{meta.org_string} 解析文件集数发现不是完整合集，先放弃这个种子")
+                                    unsuitable_pack_count += 1
+                                    self._record_download_failure(
+                                        context=context,
+                                        error_msg="整季包不是完整合集",
+                                        downloader=downloader,
+                                        source=source,
+                                        ttl_seconds=DOWNLOAD_FAILURE_UNSUITABLE_TTL_SECONDS,
+                                    )
+                                    __remember_context_failure(context)
                                     continue
                                 else:
                                     # 下载
@@ -1374,7 +1476,7 @@ class DownloadChain(ChainBase):
                                 need_season = __update_seasons(_mid=need_mid,
                                                                _need=need_season,
                                                                _current=torrent_season)
-                                logger.info(f"{need_mid} 剩余需要季：{need_season}")
+                                logger.debug(f"{need_mid} 剩余需要季：{need_season}")
                                 if not need_season:
                                     # 全部下载完成
                                     break
@@ -1463,7 +1565,8 @@ class DownloadChain(ChainBase):
                                                                       _need=need_episodes,
                                                                       _sea=need_season,
                                                                       _current=torrent_episodes)
-                                    logger.info(f"季 {need_season} 剩余需要集：{need_episodes}")
+                                    logger.debug(
+                                        f"季 {need_season} 本批下载后仍缺 {len(need_episodes)} 集：{need_episodes}")
                                 else:
                                     __remember_context_failure(context)
 
@@ -1524,10 +1627,10 @@ class DownloadChain(ChainBase):
                                 and len(meta.season_list) == 1 \
                                 and meta.season_list[0] == need_season:
                             # 检查种子看是否有需要的集
-                            logger.info(f"开始下载种子 {torrent.title} ...")
+                            logger.debug(f"检查整季种子是否包含需要的集：{torrent.title}")
                             content, _, torrent_files = self.download_torrent(torrent)
                             if not content:
-                                logger.info(f"{torrent.title} 种子下载失败！")
+                                logger.warn(f"{torrent.title} 种子下载失败！")
                                 self._record_download_failure(
                                     context=context,
                                     error_msg="下载种子内容为空",
@@ -1540,14 +1643,23 @@ class DownloadChain(ChainBase):
                                 logger.warn(f"{meta.org_string} 下载地址是磁力链，无法解析种子文件集数")
                                 continue
                             # 种子全部集
-                            torrent_episodes = TorrentHelper().get_torrent_episodes(torrent_files)
+                            torrent_episodes = self._parse_torrent_episodes(torrent, torrent_files)
                             logger.debug(f"{torrent.site_name} - {meta.org_string} 解析种子文件集数：{torrent_episodes}")
                             # 选中的集
                             selected_episodes = set(torrent_episodes).intersection(effective_need)
                             if not selected_episodes:
                                 logger.debug(f"{torrent.site_name} - {torrent.title} 没有需要的集，跳过...")
+                                unsuitable_pack_count += 1
+                                self._record_download_failure(
+                                    context=context,
+                                    error_msg="整季包没有需要的集",
+                                    downloader=downloader,
+                                    source=source,
+                                    ttl_seconds=DOWNLOAD_FAILURE_UNSUITABLE_TTL_SECONDS,
+                                )
+                                __remember_context_failure(context)
                                 continue
-                            logger.info(f"{torrent.site_name} - {torrent.title} 选中集数：{selected_episodes}")
+                            logger.debug(f"{torrent.site_name} - {torrent.title} 选中集数：{selected_episodes}")
                             # 添加下载
                             logger.info(f"开始下载 {torrent.title} ...")
                             download_id = self.download_single(
@@ -1577,7 +1689,8 @@ class DownloadChain(ChainBase):
                                                               _need=need_episodes,
                                                               _sea=need_season,
                                                               _current=selected_episodes)
-                            logger.info(f"季 {need_season} 剩余需要集：{need_episodes}")
+                            logger.debug(
+                                f"季 {need_season} 本批下载后仍缺 {len(need_episodes)} 集：{need_episodes}")
 
         # 返回下载的资源，剩下没下完的
         _left_count = sum(
@@ -1585,7 +1698,10 @@ class DownloadChain(ChainBase):
             for seasons in (no_exists or {}).values()
             for info in seasons.values()
         )
-        logger.info(f"成功下载种子数：{len(downloaded_list)}，剩余未下载剧集：{_left_count} 集")
+        _summary = f"成功下载种子数：{len(downloaded_list)}，剩余未下载剧集：{_left_count} 集"
+        if unsuitable_pack_count:
+            _summary += f"，跳过不适用整季包 {unsuitable_pack_count} 个"
+        logger.info(_summary)
         return downloaded_list, no_exists
 
     def get_no_exists_info(self, meta: MetaBase,

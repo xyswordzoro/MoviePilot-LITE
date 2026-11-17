@@ -211,7 +211,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         :return bool: 是否应该刮削
         """
         if scraping_option.is_skip:
-            logger.info(
+            logger.debug(
                 f"{scraping_option.type.value} {scraping_option.metadata.value} 刮削策略 {scraping_option.policy.value}"
             )
             return False
@@ -222,13 +222,13 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
 
         # 文件存在的情况
         if scraping_option.is_overwrite or global_overwrite:
-            logger.info(
+            logger.debug(
                 f"{scraping_option.type.value} {scraping_option.metadata.value} 文件存在，"
                 f"{'配置为覆盖' if scraping_option.is_overwrite else '配置为全局覆盖'}"
             )
             return True
         else:
-            logger.info(
+            logger.debug(
                 f"{scraping_option.type.value} {scraping_option.metadata.value} 文件已存在，跳过"
             )
             return False
@@ -265,7 +265,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 fileitem=fileitem, path=tmp_file_path, new_name=path.name
             )
             if item:
-                logger.info(f"已保存文件：{item.path}")
+                logger.debug(f"已保存文件：{item.path}")
             else:
                 logger.warn(f"文件保存失败：{path}")
         finally:
@@ -284,7 +284,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
         if not fileitem or not url or not path:
             return
         try:
-            logger.info(f"正在下载图片：{url} ...")
+            logger.debug(f"正在下载图片：{url} ...")
             request_utils = RequestUtils(
                 proxies=settings.PROXY, ua=settings.NORMAL_USER_AGENT
             )
@@ -309,13 +309,13 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                             fileitem=fileitem, path=tmp_file_path, new_name=path.name
                         )
                         if item:
-                            logger.info(f"已保存图片：{item.path}")
+                            logger.debug(f"已保存图片：{item.path}")
                         else:
                             logger.warn(f"图片保存失败：{path}")
                     finally:
                         self._cleanup_temp_file(tmp_file_path)
                 else:
-                    logger.info(f"{url} 图片下载失败")
+                    logger.warn(f"{url} 图片下载失败")
         except Exception as err:
             logger.error(f"{url} 图片下载失败：{str(err)}！")
 
@@ -1115,7 +1115,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                                 storage=fileitem.storage, path=sub_dir
                             )
                             if sub_dir_item:
-                                logger.info(f"为目录生成海报和nfo：{sub_dir}")
+                                logger.debug(f"为目录生成海报和nfo：{sub_dir}")
                                 # 初始化目录元数据，但不处理文件
                                 self.scrape_metadata(
                                     fileitem=sub_dir_item,
@@ -1142,6 +1142,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                                 )
                             else:
                                 logger.warn(f"无法获取文件项：{sub_file_path}")
+                        logger.info(f"刮削完成：{mediainfo.title_year}，共 {len(file_list)} 个文件")
                 else:
                     # 执行全量刮削
                     logger.info(f"开始刮削目录 {fileitem.path} ...")
@@ -1172,7 +1173,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
 
         # 检查刮削开关
         if nfo_option.is_skip:
-            logger.info(
+            logger.debug(
                 f"{item_type.value} {ScrapingMetadata.NFO.value} 刮削策略 {nfo_option.policy.value}"
             )
             return
@@ -1231,7 +1232,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
             image_dict = self.metadata_img(mediainfo=mediainfo)
 
         if not image_dict:
-            logger.info(f"未获取到 {item_type.value} 的图片信息，跳过图片刮削。")
+            logger.debug(f"未获取到 {item_type.value} 的图片信息，跳过图片刮削。")
             return
 
         # 遍历图片 image_name 和 image_url
@@ -1248,7 +1249,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 option = self.scraping_policies.option(item_type, metadata_type)
 
                 if option.is_skip:
-                    logger.info(
+                    logger.debug(
                         f"{item_type.value} {option.metadata.value} 刮削策略 {option.policy.value}"
                     )
                     continue
@@ -1257,7 +1258,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 if item_type == ScrapingTarget.TV and image_name.lower().startswith(
                         "season"
                 ):
-                    logger.info(f"当前为电视剧根目录刮削，跳过季图片：{image_name}")
+                    logger.debug(f"当前为电视剧根目录刮削，跳过季图片：{image_name}")
                     continue
                 if (
                         item_type == ScrapingTarget.SEASON
@@ -1272,7 +1273,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                     if image_season_str is not None and image_season_str != str(
                             season_number
                     ).rjust(2, "0"):
-                        logger.info(
+                        logger.debug(
                             f"当前刮削季为：{season_number}，跳过非本季图片：{image_name}"
                         )
                         continue
@@ -1348,7 +1349,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
             logger.warn(f"{filepath} 无法识别文件媒体信息！")
             return
 
-        logger.info(f"开始刮削：{filepath} ...")
+        logger.debug(f"开始刮削：{filepath} ...")
 
         # 根据媒体类型分发处理逻辑
         if mediainfo.type == MediaType.MOVIE:
@@ -1372,7 +1373,7 @@ class MediaChain(ChainBase, ConfigReloadMixin, metaclass=Singleton):
                 recursive=recursive,
             )
 
-        logger.info(f"{filepath.name} 刮削完成")
+        logger.debug(f"{filepath.name} 刮削完成")
 
     def _handle_movie_scraping(
             self,

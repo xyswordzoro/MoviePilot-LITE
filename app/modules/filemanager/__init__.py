@@ -523,7 +523,7 @@ class FileManagerModule(_ModuleBase):
                                 need_notify=need_notify)
 
         # 整理
-        logger.info(f"获取整理目标路径：【{target_storage}】{target_path}")
+        logger.debug(f"获取整理目标路径：【{target_storage}】{target_path}")
         return handler.transfer_media(fileitem=fileitem,
                                       in_meta=meta,
                                       mediainfo=mediainfo,

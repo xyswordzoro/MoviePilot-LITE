@@ -602,7 +602,7 @@ class TransHandler:
                     )
                     return result
 
-                logger.info(f"文件 {fileitem.path} 整理成功")
+                logger.debug(f"文件 {fileitem.path} 整理成功")
                 self.__update_result(
                     result=result,
                     success=True,
@@ -1029,7 +1029,7 @@ class TransHandler:
         :param source_oper: 源存储操作对象
         :param target_oper: 目标存储操作对象
         """
-        logger.info(
+        logger.debug(
             f"正在整理文件：【{fileitem.storage}】{fileitem.path} 到 【{target_storage}】{target_file}，"
             f"操作类型：{transfer_type}"
         )

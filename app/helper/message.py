@@ -547,7 +547,7 @@ class MessageTemplateHelper:
         """
         if not MessageTemplateHelper.is_instance_valid(message):
             if MessageTemplateHelper.meets_update_conditions(message, *args, **kwargs):
-                logger.info("将使用模板渲染消息内容")
+                logger.debug("将使用模板渲染消息内容")
                 return MessageTemplateHelper._apply_template_data(message, *args, **kwargs)
         return message
 
