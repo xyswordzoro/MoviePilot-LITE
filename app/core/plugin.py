@@ -1346,7 +1346,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
 
         # 使用多线程获取线上插件；限制并发，避免一次性向 GitHub 代理节点
         # 发起几十个连接导致节点建连超时（表现为大量 TLS EOF / 请求失败）
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             futures_to_version = {}
             for m in settings.PLUGIN_MARKET.split(","):
                 if not m:
@@ -1742,7 +1742,7 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
             return []
 
         # 限制并发请求数：插件市场可能包含十几个仓库，全部并发会瞬间压垮代理节点
-        market_semaphore = asyncio.Semaphore(4)
+        market_semaphore = asyncio.Semaphore(10)
 
         async def fetch_market(
                 market: str,
