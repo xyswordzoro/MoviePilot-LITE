@@ -1,6 +1,7 @@
 import asyncio
 import mimetypes
 import shutil
+import time
 from typing import Annotated, Any, Dict, List, Optional
 
 import aiofiles
@@ -49,6 +50,33 @@ PLUGIN_V2_PREFIX = f"{API_V2_STR}/plugin"
 
 router = APIRouter()
 _plugin_release_refresh_tasks: set[asyncio.Task] = set()
+
+# 插件市场最终列表缓存：市场清单约 800KB，实时组装需要数秒。
+# 缓存最终响应后，打开插件市场可从数秒降到毫秒级；安装/卸载/手动刷新时失效。
+_PLUGIN_MARKET_CACHE_TTL_SECONDS = 10 * 60
+_plugin_market_cache: Dict[str, Any] = {}
+
+
+def _get_plugin_market_cache() -> Optional[List[schemas.Plugin]]:
+    """读取仍在有效期内的市场缓存。"""
+    payload = _plugin_market_cache.get("payload")
+    expire_at = float(_plugin_market_cache.get("expire_at") or 0)
+    if payload is not None and time.time() < expire_at:
+        return payload
+    if _plugin_market_cache:
+        _plugin_market_cache.clear()
+    return None
+
+
+def _set_plugin_market_cache(payload: List[schemas.Plugin]) -> None:
+    """写入市场缓存。"""
+    _plugin_market_cache["payload"] = payload
+    _plugin_market_cache["expire_at"] = time.time() + _PLUGIN_MARKET_CACHE_TTL_SECONDS
+
+
+def clear_plugin_market_cache() -> None:
+    """使市场缓存失效（安装/卸载插件后调用）。"""
+    _plugin_market_cache.clear()
 
 
 async def _get_market_plugin_from_repo(
@@ -349,6 +377,12 @@ async def all_plugins(
     """
     查询所有插件清单，包括本地插件和在线插件，插件状态：installed, market, all
     """
+    # 市场清单组装较慢，命中缓存直接返回
+    if state == "market" and not force:
+        cached_market = _get_plugin_market_cache()
+        if cached_market is not None:
+            return cached_market
+
     # 本地插件
     plugin_manager = PluginManager()
     local_plugins = plugin_manager.get_local_plugins()
@@ -372,6 +406,7 @@ async def all_plugins(
         # 没有获取在线插件
         if state == "market":
             # 返回未安装的本地插件
+            _set_plugin_market_cache(not_installed_plugins)
             return not_installed_plugins
         return local_plugins
 
@@ -393,6 +428,7 @@ async def all_plugins(
     # 返回插件清单
     if state == "market":
         # 返回未安装的插件
+        _set_plugin_market_cache(market_plugins)
         return market_plugins
 
     # 返回所有插件
@@ -620,6 +656,8 @@ async def install(
         )
     # 重新加载插件
     await run_in_threadpool(reload_plugin, plugin_id)
+    # 已安装列表变化，市场缓存需要重新组装
+    clear_plugin_market_cache()
     return schemas.Response(success=True)
 
 
@@ -1027,6 +1065,8 @@ def uninstall_plugin(
     _remove_plugin_from_folders(plugin_id)
     # 移除插件
     plugin_manager.remove_plugin(plugin_id)
+    # 已安装列表变化，市场缓存需要重新组装
+    clear_plugin_market_cache()
     return schemas.Response(success=True)
 
 
