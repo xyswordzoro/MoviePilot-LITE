@@ -1460,7 +1460,7 @@ class Scheduler(ConfigReloadMixin, metaclass=SingletonClass):
         collected = gc.collect()
         memory_after = get_memory_usage()
         memory_freed = memory_before - memory_after
-        logger.info(
+        logger.debug(
             f"主动内存回收完成，回收对象数: {collected}，释放内存: {memory_freed:.2f} MB"
         )
 
