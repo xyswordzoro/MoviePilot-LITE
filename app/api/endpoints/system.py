@@ -12,6 +12,7 @@ from urllib.parse import urljoin, urlparse
 import aiofiles
 import anyio
 import pillow_avif  # noqa 用于自动注册AVIF支持
+import yaml
 from anyio import Path as AsyncPath
 from app.helper.sites import SitesHelper  # noqa  # noqa
 from fastapi import APIRouter, Body, Depends, HTTPException, Header, Request, Response
@@ -48,6 +49,7 @@ from app.helper.rule import RuleHelper
 from app.helper.server import MoviePilotServerHelper
 from app.helper.system import SystemHelper
 from app.log import logger
+from app.modules.themoviedb.category import CategoryHelper
 from app.scheduler import Scheduler
 from app.schemas import ConfigChangeEventData
 from app.schemas.types import SystemConfigKey, EventType
@@ -711,6 +713,56 @@ async def set_env_setting(
         message="所有配置项更新成功",
         data={"success_updates": success_updates},
     )
+
+
+@router.get("/category", summary="读取二级分类策略", response_model=schemas.Response)
+async def get_category_config(
+    _: User = Depends(get_current_active_superuser_async),
+):
+    """
+    读取二级分类策略 category.yaml 内容（仅管理员）
+    """
+    user_file = settings.CONFIG_PATH / "category.yaml"
+    default_file = settings.INNER_CONFIG_PATH / "category.yaml"
+    path = user_file if user_file.exists() else default_file
+    if not path.exists():
+        return schemas.Response(success=False, message="未找到 category.yaml 配置文件")
+    try:
+        content = path.read_text(encoding="utf-8")
+    except Exception as err:
+        return schemas.Response(success=False, message=f"读取 category.yaml 失败：{err}")
+    return schemas.Response(
+        success=True,
+        data={"content": content, "is_custom": user_file.exists()},
+    )
+
+
+@router.put("/category", summary="保存二级分类策略", response_model=schemas.Response)
+async def save_category_config(
+    payload: dict = Body(...),
+    _: User = Depends(get_current_active_superuser_async),
+):
+    """
+    保存二级分类策略 category.yaml（仅管理员），保存后立即生效
+    """
+    content = payload.get("content")
+    if not isinstance(content, str) or not content.strip():
+        return schemas.Response(success=False, message="内容不能为空")
+
+    try:
+        parsed = yaml.safe_load(content)
+    except yaml.YAMLError as err:
+        return schemas.Response(success=False, message=f"YAML 解析失败：{err}")
+    if not isinstance(parsed, dict):
+        return schemas.Response(success=False, message="YAML 顶层必须是字典结构")
+
+    try:
+        user_file = settings.CONFIG_PATH / "category.yaml"
+        user_file.write_text(content, encoding="utf-8")
+        CategoryHelper().init()
+    except Exception as err:
+        return schemas.Response(success=False, message=f"保存 category.yaml 失败：{err}")
+    return schemas.Response(success=True)
 
 
 @router.get("/progress/{process_type}", summary="实时进度")
