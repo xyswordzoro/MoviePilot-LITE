@@ -1667,14 +1667,29 @@ class PluginHelper(metaclass=WeakSingleton):
 
         # 遍历策略并尝试请求
         for strategy_name, target_url, request_params in strategies:
-            logger.debug(f"[GitHub] 尝试使用策略：{strategy_name} 请求 URL：{target_url}")
+            # 代理走的是境外节点，偶发建连超时很常见，失败后短暂退避再试一次；
+            # 直连重试没有意义（国内网络直连 GitHub 基本不可用），只试一次。
+            attempts = 2 if strategy_name == "代理" else 1
+            for attempt in range(attempts):
+                logger.debug(
+                    f"[GitHub] 尝试使用策略：{strategy_name} 请求 URL：{target_url}"
+                    f"（第 {attempt + 1}/{attempts} 次）"
+                )
 
-            try:
-                res = RequestUtils(**request_params).get_res(url=target_url, raise_exception=True)
-                logger.debug(f"[GitHub] 请求成功，策略：{strategy_name}, URL: {target_url}")
-                return res
-            except Exception as e:
-                logger.error(f"[GitHub] 请求失败，策略：{strategy_name}, URL: {target_url}，错误：{str(e)}")
+                try:
+                    res = RequestUtils(**request_params).get_res(url=target_url, raise_exception=True)
+                    logger.debug(f"[GitHub] 请求成功，策略：{strategy_name}, URL: {target_url}")
+                    return res
+                except Exception as e:
+                    # 已配置代理时，直连失败属于预期内的兜底结果，降为 DEBUG 避免刷屏
+                    log_method = (
+                        logger.debug
+                        if strategy_name == "直连" and settings.PROXY_HOST
+                        else logger.error
+                    )
+                    log_method(f"[GitHub] 请求失败，策略：{strategy_name}, URL: {target_url}，错误：{str(e)}")
+                    if attempt + 1 < attempts:
+                        time.sleep(1 + attempt)
 
         logger.error(f"[GitHub] 所有策略均请求失败，URL: {url}，请检查网络连接或 GitHub 配置")
         return None
@@ -2172,14 +2187,28 @@ class PluginHelper(metaclass=WeakSingleton):
 
         # 遍历策略并尝试请求
         for strategy_name, target_url, request_params in strategies:
-            logger.debug(f"[GitHub] 尝试使用策略：{strategy_name} 请求 URL：{target_url}")
+            # 代理偶发建连超时时退避重试一次；直连仅尝试一次。
+            attempts = 2 if strategy_name == "代理" else 1
+            for attempt in range(attempts):
+                logger.debug(
+                    f"[GitHub] 尝试使用策略：{strategy_name} 请求 URL：{target_url}"
+                    f"（第 {attempt + 1}/{attempts} 次）"
+                )
 
-            try:
-                res = await AsyncRequestUtils(**request_params).get_res(url=target_url, raise_exception=True)
-                logger.debug(f"[GitHub] 请求成功，策略：{strategy_name}, URL: {target_url}")
-                return res
-            except Exception as e:
-                logger.error(f"[GitHub] 请求失败，策略：{strategy_name}, URL: {target_url}，错误：{str(e)}")
+                try:
+                    res = await AsyncRequestUtils(**request_params).get_res(url=target_url, raise_exception=True)
+                    logger.debug(f"[GitHub] 请求成功，策略：{strategy_name}, URL: {target_url}")
+                    return res
+                except Exception as e:
+                    # 已配置代理时，直连失败属于预期内的兜底结果，降为 DEBUG 避免刷屏
+                    log_method = (
+                        logger.debug
+                        if strategy_name == "直连" and settings.PROXY_HOST
+                        else logger.error
+                    )
+                    log_method(f"[GitHub] 请求失败，策略：{strategy_name}, URL: {target_url}，错误：{str(e)}")
+                    if attempt + 1 < attempts:
+                        await asyncio.sleep(1 + attempt)
 
         logger.error(f"[GitHub] 所有策略均请求失败，URL: {url}，请检查网络连接或 GitHub 配置")
         return None

@@ -1344,8 +1344,9 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
         # 用于存储 v1 版本插件
         base_version_plugins = []
 
-        # 使用多线程获取线上插件
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        # 使用多线程获取线上插件；限制并发，避免一次性向 GitHub 代理节点
+        # 发起几十个连接导致节点建连超时（表现为大量 TLS EOF / 请求失败）
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             futures_to_version = {}
             for m in settings.PLUGIN_MARKET.split(","):
                 if not m:
@@ -1740,6 +1741,9 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
                 progress_callback(value=100, text="未配置插件市场，跳过刷新")
             return []
 
+        # 限制并发请求数：插件市场可能包含十几个仓库，全部并发会瞬间压垮代理节点
+        market_semaphore = asyncio.Semaphore(4)
+
         async def fetch_market(
                 market: str,
                 package_version: Optional[str],
@@ -1749,11 +1753,12 @@ class PluginManager(ConfigReloadMixin, metaclass=Singleton):
             """
             获取单个市场版本的插件列表并保留结果分组。
             """
-            plugins = await self.async_get_plugins_from_market(
-                market,
-                package_version,
-                force,
-            )
+            async with market_semaphore:
+                plugins = await self.async_get_plugins_from_market(
+                    market,
+                    package_version,
+                    force,
+                )
             return task_index, result_version, plugins or []
 
         higher_version_plugins = []
