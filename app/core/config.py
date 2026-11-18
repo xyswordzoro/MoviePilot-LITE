@@ -510,6 +510,8 @@ class ConfigModel(BaseModel):
             "ykimg.com",
             "qpic.cn",
             "anilist.co",
+            # 公共静态资源 CDN，部分插件图标使用该域名
+            "cdn.jsdelivr.net",
         ]
     )
     # 图片代理允许访问的非公网 IP/CIDR，默认不放行任何非公网解析结果

@@ -197,6 +197,14 @@ class ImageHelper(metaclass=Singleton):
         """
         if not content:
             return None
+        # SVG 不是 Pillow 能识别的位图，且图片代理明确不返回 SVG（存在 XSS 风险）。
+        # 提前静默跳过，避免每次加载 SVG 图标都刷一条 WARNING。
+        head = content[:2048].lstrip().lower()
+        if head.startswith(b"<svg") or (
+                (head.startswith(b"<?xml") or head.startswith(b"<!--"))
+                and b"<svg" in head
+        ):
+            return None
         try:
             with Image.open(io.BytesIO(content)) as image:
                 image_format = (image.format or "").upper()
