@@ -532,7 +532,7 @@ class TelegramModule(_ModuleBase, _MessageBase[Telegram]):
                     )
                     client.send_msg(
                         title=message.title,
-                        text=message.text,
+                        text=message.html or message.text,
                         image=message.image,
                         userid=userid,
                         link=message.link,
@@ -541,7 +541,7 @@ class TelegramModule(_ModuleBase, _MessageBase[Telegram]):
                         original_message_id=original_message_id,
                         original_chat_id=message.original_chat_id,
                         disable_web_page_preview=message.disable_web_page_preview,
-                        parse_mode=message.parse_mode,
+                        parse_mode="HTML" if message.html else message.parse_mode,
                     )
 
     def post_medias_message(
