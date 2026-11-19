@@ -5,7 +5,7 @@ from contextvars import ContextVar
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from app.core.context import MediaInfo
 from app.log import log_settings
@@ -258,16 +258,20 @@ def _iter_records(path: Path, tail_size: int = 64 * 1024) -> List[Dict[str, Any]
     return records
 
 
-def list_sites() -> List[Dict[str, Any]]:
+def list_sites(exclude_domains: Optional[Set[str]] = None) -> List[Dict[str, Any]]:
     """
     概览所有站点日志，读取每个站点文件的最新汇总与最近活动时间
+    :param exclude_domains: 不在站点日志中显示的站点域名集合
     :return: 站点概览列表，按最近活动时间倒序
     """
     base_dir = get_base_dir()
     if not base_dir.exists():
         return []
+    exclude_domains = exclude_domains or set()
     sites = []
     for path in base_dir.glob("*.log"):
+        if path.stem in exclude_domains:
+            continue
         records = _iter_records(path)
         if not records:
             continue
@@ -289,23 +293,29 @@ def list_sites() -> List[Dict[str, Any]]:
 
 
 def read_site_records(domain: str, limit: int = 200,
-                      level: str = "all") -> List[Dict[str, Any]]:
+                      level: str = "all",
+                      exclude_domains: Optional[Set[str]] = None) -> List[Dict[str, Any]]:
     """
     读取站点日志记录，最新在前；domain 为 all 时合并所有站点
     :param domain: 站点域名，all 表示全部站点
     :param limit: 返回的最大记录数
     :param level: 过滤级别 all/ok/word/fail
+    :param exclude_domains: 不在站点日志中显示的站点域名集合
     :return: 记录列表
     """
     base_dir = get_base_dir()
+    exclude_domains = exclude_domains or set()
     if domain == "all":
-        paths = list(base_dir.glob("*.log")) if base_dir.exists() else []
+        paths = [
+            path for path in (base_dir.glob("*.log") if base_dir.exists() else [])
+            if path.stem not in exclude_domains
+        ]
         records: List[Dict[str, Any]] = []
         for path in paths:
             records.extend(_iter_records(path))
         records.sort(key=lambda r: r.get("time") or "", reverse=True)
     else:
-        if not _sanitize_domain(domain):
+        if not _sanitize_domain(domain) or domain in exclude_domains:
             return []
         records = _iter_records(base_dir / f"{domain}.log")
     result = []

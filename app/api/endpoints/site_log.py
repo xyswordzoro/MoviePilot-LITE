@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import List
+from typing import List, Set
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.responses import FileResponse
@@ -12,6 +12,7 @@ from app.helper import site_log
 from app.helper.sites import SitesHelper
 from app.log import logger
 from app.schemas.types import SystemConfigKey
+from app.utils.string import StringUtils
 
 router = APIRouter()
 
@@ -22,22 +23,38 @@ _DOMAIN_PATTERN = re.compile(r"^[A-Za-z0-9_.-]{1,255}$")
 _SITE_LOG_PAGE = Path(__file__).resolve().parents[2] / "assets" / "site_log.html"
 
 
-def _get_rss_disabled_ids() -> List[int]:
+def _get_log_disabled_ids() -> List[int]:
     """
-    读取已关闭 RSS 的站点 ID 列表。
+    读取不在站点日志中显示的站点 ID 列表。
     """
     try:
-        return [int(item) for item in (SystemConfigOper().get(SystemConfigKey.RSSDisabledSites) or [])]
+        return [int(item) for item in (SystemConfigOper().get(SystemConfigKey.SiteLogDisabledSites) or [])]
     except Exception as err:
-        logger.warn(f"读取站点 RSS 开关配置失败：{err}")
+        logger.warn(f"读取站点日志开关配置失败：{err}")
         return []
 
 
-def _set_rss_disabled_ids(disabled_ids: List[int]) -> None:
+def _set_log_disabled_ids(disabled_ids: List[int]) -> None:
     """
-    保存已关闭 RSS 的站点 ID 列表。
+    保存不在站点日志中显示的站点 ID 列表。
     """
-    SystemConfigOper().set(SystemConfigKey.RSSDisabledSites, disabled_ids)
+    SystemConfigOper().set(SystemConfigKey.SiteLogDisabledSites, disabled_ids)
+
+
+def _disabled_domains() -> Set[str]:
+    """
+    把关闭了站点日志的站点 ID 映射为站点域名（与站点日志文件名一致）。
+    """
+    disabled_ids = set(_get_log_disabled_ids())
+    if not disabled_ids:
+        return set()
+    domains = set()
+    for indexer in SitesHelper().get_indexers():
+        if indexer.get("id") in disabled_ids:
+            domain = StringUtils.get_url_domain(indexer.get("domain"))
+            if domain:
+                domains.add(domain)
+    return domains
 
 
 @router.get("/sites", summary="站点日志站点概览", response_model=List[dict])
@@ -46,7 +63,7 @@ def list_site_logs(_: schemas.TokenPayload = Depends(verify_token)):
     获取所有站点日志概览
     :return: 站点列表，含最新汇总与最近活动时间，按最近活动倒序
     """
-    return site_log.list_sites()
+    return site_log.list_sites(exclude_domains=_disabled_domains())
 
 
 @router.get("/page", summary="站点日志页面", include_in_schema=False)
@@ -69,15 +86,17 @@ def read_site_log_records(domain: str, limit: int = 200, level: str = "all",
     """
     if domain != "all" and not _DOMAIN_PATTERN.fullmatch(domain):
         raise HTTPException(status_code=404, detail="Not Found")
-    return site_log.read_site_records(domain, limit=limit, level=level)
+    return site_log.read_site_records(
+        domain, limit=limit, level=level, exclude_domains=_disabled_domains()
+    )
 
 
-@router.get("/rss_sites", summary="站点 RSS 开关列表", response_model=List[dict])
-def list_rss_sites(_: schemas.TokenPayload = Depends(verify_token)):
+@router.get("/log_switch", summary="站点日志开关列表", response_model=List[dict])
+def list_log_switch(_: schemas.TokenPayload = Depends(verify_token)):
     """
-    获取全部站点及 RSS 开关状态（enabled=True 表示参与 RSS 刷新）
+    获取全部站点及站点日志开关状态（enabled=True 表示显示在站点日志中）
     """
-    disabled_ids = set(_get_rss_disabled_ids())
+    disabled_ids = set(_get_log_disabled_ids())
     sites = []
     for indexer in SitesHelper().get_indexers():
         sites.append({
@@ -91,11 +110,11 @@ def list_rss_sites(_: schemas.TokenPayload = Depends(verify_token)):
     return sites
 
 
-@router.put("/rss_sites", summary="设置站点 RSS 开关", response_model=schemas.Response)
-def set_rss_sites(payload: dict = Body(...),
-                  _: schemas.TokenPayload = Depends(verify_token)):
+@router.put("/log_switch", summary="设置站点日志开关", response_model=schemas.Response)
+def set_log_switch(payload: dict = Body(...),
+                   _: schemas.TokenPayload = Depends(verify_token)):
     """
-    保存已关闭 RSS 的站点 ID 列表
+    保存不在站点日志中显示的站点 ID 列表
     :param payload: {"disabled_ids": [站点ID, ...]}
     """
     disabled_ids = payload.get("disabled_ids")
@@ -105,5 +124,5 @@ def set_rss_sites(payload: dict = Body(...),
         clean_ids = sorted({int(item) for item in disabled_ids})
     except (TypeError, ValueError):
         return schemas.Response(success=False, message="站点 ID 必须为数字")
-    _set_rss_disabled_ids(clean_ids)
+    _set_log_disabled_ids(clean_ids)
     return schemas.Response(success=True)
