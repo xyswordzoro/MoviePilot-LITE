@@ -542,9 +542,14 @@ class TorrentsChain(ChainBase):
 
         # 需要刷新的站点domain
         domains = []
+        # 站点 RSS 开关：被关闭的站点不参与 RSS 刷新（不影响首页抓取与手动搜索）
+        rss_disabled_ids = set(
+            SystemConfigOper().get(SystemConfigKey.RSSDisabledSites) or []
+        ) if stype != "spider" else set()
         indexers = [
             indexer for indexer in SitesHelper().get_indexers()
-            if not sites or indexer.get("id") in sites
+            if (not sites or indexer.get("id") in sites)
+            and indexer.get("id") not in rss_disabled_ids
         ]
         total_indexers = len(indexers)
         if progress_callback:

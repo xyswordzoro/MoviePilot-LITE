@@ -223,6 +223,8 @@ class SystemConfigKey(Enum):
     IndexerSites = "IndexerSites"
     # 订阅站点范围
     RssSites = "RssSites"
+    # 站点 RSS 开关：已关闭 RSS 的站点 ID 列表
+    RSSDisabledSites = "RSSDisabledSites"
     # 自定义制作组/字幕组
     CustomReleaseGroups = "CustomReleaseGroups"
     # 自定义占位符

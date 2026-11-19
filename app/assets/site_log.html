@@ -31,9 +31,34 @@
     background: light-dark(#fff, #1e2027);
   }
   .search input { border: none; outline: none; background: transparent; color: inherit; width: 100%; font-size: 12.5px; }
+  .rssbtn {
+    border: 1px solid light-dark(#e3e5ea, #33363f); background: light-dark(#fff, #1e2027);
+    color: light-dark(#5a5f6a, #aab1bb); border-radius: 999px; padding: 4px 12px;
+    font-size: 12.5px; cursor: pointer; white-space: nowrap;
+  }
+  .rssbtn:hover { border-color: light-dark(#6a7ce0, #8fa3ff); color: light-dark(#4b3ba8, #9fb5ff); }
+  .rssbtn.on { background: light-dark(#e9e3ff, #3a3358); color: light-dark(#4b3ba8, #c4b5ff); border-color: transparent; }
   .live { font-size: 11.5px; color: light-dark(#52c41a, #4cc766); white-space: nowrap; }
   .live.off { color: light-dark(#8a8f99, #98a0ab); }
   .sites { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .chip.off { opacity: 0.55; }
+  .rsspanel {
+    display: none; padding: 10px 12px; margin-bottom: 12px;
+    border: 1px solid light-dark(#e3e5ea, #33363f); border-radius: 10px;
+    background: light-dark(#fff, #1e2027);
+  }
+  .rsspanel.open { display: block; }
+  .rsshead { font-size: 12.5px; font-weight: 600; margin-bottom: 8px; }
+  .rsshead .rsshint { font-weight: 400; font-size: 11.5px; color: light-dark(#8a8f99, #98a0ab); margin-inline-start: 8px; }
+  .rssgrid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rssrow {
+    display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px;
+    border: 1px solid light-dark(#e3e5ea, #33363f); border-radius: 999px; cursor: pointer;
+    font-size: 12.5px; background: light-dark(#fff, #1e2027); color: inherit;
+  }
+  .rssrow img { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; }
+  .rssrow input[type="checkbox"] { accent-color: #6a5bd8; cursor: pointer; }
+  .rssrow.off { opacity: 0.55; }
   .chip {
     border: 1px solid light-dark(#e3e5ea, #33363f); background: light-dark(#fff, #1e2027);
     color: inherit; border-radius: 999px; padding: 5px 14px; font-size: 13px; cursor: pointer;
@@ -112,7 +137,12 @@
     <span class="search">
       <input id="kw" type="text" placeholder="搜索种子 / 识别名 / 站点" aria-label="搜索">
     </span>
+    <button id="rssbtn" class="rssbtn" type="button" title="设置各站点 RSS 刷新开关">RSS 开关</button>
     <span class="live" id="live">● 15s 自动刷新</span>
+  </div>
+  <div class="rsspanel" id="rsspanel">
+    <div class="rsshead">站点 RSS 开关<span class="rsshint">关闭后该站点不再参与 RSS 刷新，也不会产生站点日志；勾选即恢复</span></div>
+    <div class="rssgrid" id="rssgrid">加载中...</div>
   </div>
   <div class="sites" id="sites"></div>
   <div id="list"><div class="empty">加载中...</div></div>
@@ -147,6 +177,9 @@
   var sites = [];
   var records = [];
   var page = 1;
+  var rssSitesData = [];
+  var rssPanelLoaded = false;
+  var disabledDomains = {};
 
   function getToken() {
     // 1. URL 参数携带令牌：JWT 三段式走 Bearer 头，否则按 API_TOKEN 走查询参数
@@ -189,10 +222,14 @@
     return '/api/v1' + path + qs;
   }
 
-  function apiFetch(path, params) {
+  function apiFetch(path, params, options) {
     var headers = {};
     if (authMode === 'jwt') headers['Authorization'] = 'Bearer ' + token;
-    return fetch(apiUrl(path, params), { headers: headers });
+    var opts = options || {};
+    if (opts.headers) {
+      Object.keys(opts.headers).forEach(function (k) { headers[k] = opts.headers[k]; });
+    }
+    return fetch(apiUrl(path, params), Object.assign({}, opts, { headers: headers }));
   }
 
   function showLogin(show) {
@@ -231,6 +268,7 @@
       + '全部站点</button>';
     html += sites.map(function (s) {
       var sub = s.last_time ? '<span class="sub">' + esc(s.last_time.slice(5, 16)) + '</span>' : '';
+      if (disabledDomains[s.domain]) sub += '<span class="sub">RSS关</span>';
       return '<button class="chip ' + (selected === s.domain ? 'on' : '') + '" data-site="' + esc(s.domain)
         + '" type="button">' + esc(s.site) + sub + '</button>';
     }).join('');
@@ -243,6 +281,70 @@
         renderSites();
         loadRecords();
       });
+    });
+  }
+
+  // 加载站点 RSS 开关状态（含站点管理里的全部站点）
+  function loadRssSites() {
+    return apiFetch('/site_log/rss_sites').then(function (res) { return res.json(); }).then(function (data) {
+      rssSitesData = Array.isArray(data) ? data : [];
+      disabledDomains = {};
+      rssSitesData.forEach(function (s) {
+        if (!s.enabled) disabledDomains[s.domain] = true;
+      });
+      renderRssPanel();
+      renderSites();
+    }).catch(function (err) {
+      console.warn('加载 RSS 开关失败:', err);
+    });
+  }
+
+  function renderRssPanel() {
+    var box = document.getElementById('rssgrid');
+    box.innerHTML = rssSitesData.map(function (s) {
+      var icon = s.icon
+        ? '<img src="' + esc(s.icon) + '" onerror="this.style.display=\'none\'">'
+        : '';
+      return '<label class="rssrow' + (s.enabled ? '' : ' off') + '" title="'
+        + esc(s.name) + (s.has_rss ? '' : '（未配置 RSS 地址）') + '">'
+        + icon + '<span class="nm">' + esc(s.name) + '</span>'
+        + '<input type="checkbox" class="rsssw" data-id="' + esc(s.id) + '"'
+        + (s.enabled ? ' checked' : '') + '>'
+        + '</label>';
+    }).join('') || '<span class="empty" style="padding:6px 0">没有站点</span>';
+    Array.prototype.forEach.call(box.querySelectorAll('.rsssw'), function (sw) {
+      sw.addEventListener('change', function () {
+        var targetId = Number(sw.getAttribute('data-id'));
+        var disabled = [];
+        rssSitesData.forEach(function (s) {
+          if (s.id === targetId) s.enabled = sw.checked;
+          if (!s.enabled) disabled.push(s.id);
+        });
+        saveRssSites(disabled);
+      });
+    });
+  }
+
+  function saveRssSites(disabledIds) {
+    disabledDomains = {};
+    rssSitesData.forEach(function (s) {
+      if (!s.enabled) disabledDomains[s.domain] = true;
+    });
+    apiFetch('/site_log/rss_sites', null, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ disabled_ids: disabledIds }),
+    }).then(function (res) { return res.json(); }).then(function (data) {
+      if (data && data.success === false) {
+        document.getElementById('rssgrid').innerHTML =
+          '<span class="empty">保存失败：' + esc(data.message || '') + '</span>';
+        return;
+      }
+      renderRssPanel();
+      renderSites();
+    }).catch(function (err) {
+      document.getElementById('rssgrid').innerHTML =
+        '<span class="empty">保存失败：' + esc(err) + '</span>';
     });
   }
 
@@ -353,7 +455,16 @@
     document.getElementById('live').className = 'live';
     loadSites();
     loadRecords();
+    loadRssSites();
   }
+
+  document.getElementById('rssbtn').addEventListener('click', function () {
+    var panel = document.getElementById('rsspanel');
+    var opening = panel.style.display !== 'block';
+    panel.style.display = opening ? 'block' : 'none';
+    this.classList.toggle('on', opening);
+    if (opening) loadRssSites();
+  });
 
   Array.prototype.forEach.call(document.querySelectorAll('.segbtn'), function (btn) {
     btn.addEventListener('click', function () {
