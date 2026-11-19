@@ -23,7 +23,6 @@ from app.db.downloadfailure_oper import DownloadFailureOper
 from app.db.downloadhistory_oper import DownloadHistoryOper
 from app.db.mediaserver_oper import MediaServerOper
 from app.helper.directory import DirectoryHelper, validate_download_save_path
-from app.helper.notification_image import build_download_image
 from app.helper.thread import ThreadHelper
 from app.helper.torrent import TorrentHelper
 from app.log import logger
@@ -1061,29 +1060,13 @@ class DownloadChain(ChainBase):
                 downloadhis.add_files(files_to_add)
 
             # 下载成功发送消息
-            message_image = _media.get_message_image()
-            try:
-                episode_label = _meta.season_episode
-                if download_episodes:
-                    season_label = f"S{_media.season:02d}" if _media.season is not None else ""
-                    episode_label = f"{season_label}{download_episodes}"
-                composed_image = build_download_image(
-                    background_url=message_image,
-                    title=_media.title or _meta.name,
-                    episode=episode_label,
-                )
-                if composed_image:
-                    message_image = composed_image
-            except Exception as err:
-                logger.warning(f"下载通知图片合成失败，使用原始图片：{err}")
-
             self.post_message(
                 Notification(
                     channel=channel,
                     source=source if channel else None,
                     mtype=NotificationType.Download,
                     ctype=ContentType.DownloadAdded,
-                    image=message_image,
+                    image=_media.get_message_image(),
                     link=settings.MP_DOMAIN('/#/downloading'),
                     userid=userid,
                     username=username

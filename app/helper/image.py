@@ -1,4 +1,3 @@
-import base64
 import io
 from pathlib import Path
 from typing import Optional, List
@@ -271,26 +270,6 @@ class ImageHelper(metaclass=Singleton):
         if not url:
             return None
 
-        # 本地合成图片或 data URI，供通知消息直接使用
-        if url.startswith("data:image/"):
-            try:
-                header, data = url.split(",", 1)
-                content = base64.b64decode(data)
-                mime_type = header.split(";")[0].split(":", 1)[1]
-                return content, mime_type
-            except Exception as err:
-                logger.warning(f"解析 data URI 图片失败：{err}")
-                return None
-
-        if Path(url).is_file():
-            try:
-                content = Path(url).read_bytes()
-                mime_type = self.get_image_mime_type(content)
-                return (content, mime_type) if mime_type else None
-            except Exception as err:
-                logger.warning(f"读取本地图片失败：{url} - {err}")
-                return None
-
         cache_path = self._prepare_cache_path(url)
 
         # 检查缓存
@@ -348,26 +327,6 @@ class ImageHelper(metaclass=Singleton):
         """
         if not url:
             return None
-
-        # 本地合成图片或 data URI，供通知消息直接使用
-        if url.startswith("data:image/"):
-            try:
-                header, data = url.split(",", 1)
-                content = base64.b64decode(data)
-                mime_type = header.split(";")[0].split(":", 1)[1]
-                return content, mime_type
-            except Exception as err:
-                logger.warning(f"解析 data URI 图片失败：{err}")
-                return None
-
-        if Path(url).is_file():
-            try:
-                content = Path(url).read_bytes()
-                mime_type = self.get_image_mime_type(content)
-                return (content, mime_type) if mime_type else None
-            except Exception as err:
-                logger.warning(f"读取本地图片失败：{url} - {err}")
-                return None
 
         cache_path = self._prepare_cache_path(url)
 

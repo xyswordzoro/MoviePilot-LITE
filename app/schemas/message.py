@@ -221,8 +221,6 @@ class Notification(BaseModel):
     title: Optional[str] = None
     # 文本内容
     text: Optional[str] = None
-    # HTML 富文本内容（仅支持 HTML 的渠道使用，如 Telegram）
-    html: Optional[str] = None
     # 图片
     image: Optional[str] = None
     # 语音文件路径

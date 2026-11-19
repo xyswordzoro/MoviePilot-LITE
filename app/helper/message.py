@@ -18,12 +18,11 @@ from app.core.config import global_vars
 from app.core.context import MediaInfo, TorrentInfo
 from app.core.meta import MetaBase
 from app.db.systemconfig_oper import SystemConfigOper
-from app.helper.message_template_defaults import DOWNLOAD_ADDED_TEMPLATE, LEGACY_DOWNLOAD_ADDED_MARKERS
 from app.log import logger
 from app.schemas.message import Notification
 from app.schemas.tmdb import TmdbEpisode
 from app.schemas.transfer import TransferInfo
-from app.schemas.types import ContentType, SystemConfigKey
+from app.schemas.types import SystemConfigKey
 from app.utils.singleton import Singleton, SingletonClass
 from app.utils.string import StringUtils
 
@@ -596,18 +595,8 @@ class MessageTemplateHelper:
         """
         获取消息模板
         """
-        template_dict: dict[str, str] = SystemConfigOper().get(SystemConfigKey.NotificationTemplates) or {}
-        template = template_dict.get(message.ctype.value)
-
-        # 旧版下载通知模板自动升级为 LITE 紧凑格式（仅替换已知旧格式，保留用户自定义）。
-        if message.ctype == ContentType.DownloadAdded and (
-            not template or any(marker in template for marker in LEGACY_DOWNLOAD_ADDED_MARKERS)
-        ):
-            template = DOWNLOAD_ADDED_TEMPLATE
-            template_dict["downloadAdded"] = template
-            SystemConfigOper().set(SystemConfigKey.NotificationTemplates, template_dict)
-
-        return template
+        template_dict: dict[str, str] = SystemConfigOper().get(SystemConfigKey.NotificationTemplates)
+        return template_dict.get(message.ctype.value)
 
 
 class MessageQueueManager(metaclass=SingletonClass):
