@@ -1,0 +1,22 @@
+
+.filter-options[data-v-fd3fbd0e] {
+  display: flex;
+  flex-wrap: wrap;
+}
+.filter-chip[data-v-fd3fbd0e] {
+  border: 1px solid rgba(var(--v-theme-primary), 0.2);
+  margin: 4px;
+  background-color: rgba(var(--v-theme-primary), 0.1) !important;
+  color: rgba(var(--v-theme-on-surface), 0.9) !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.filter-chip[data-v-fd3fbd0e]:hover {
+  background-color: rgba(var(--v-theme-primary), 0.15) !important;
+}
+.filter-chip.v-chip--selected[data-v-fd3fbd0e] {
+  background-color: rgba(var(--v-theme-primary), 0.85) !important;
+  box-shadow: 0 2px 4px rgba(var(--v-theme-primary), 0.3);
+  color: rgb(var(--v-theme-on-primary)) !important;
+  font-weight: 600;
+}

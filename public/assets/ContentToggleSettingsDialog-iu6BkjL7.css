@@ -1,0 +1,86 @@
+
+.settings-card-header[data-v-4dd43819] {
+  padding-block: 16px;
+  padding-inline: 20px;
+}
+.settings-hint[data-v-4dd43819] {
+  color: rgba(var(--v-theme-on-surface), 0.7);
+  font-size: 0.9rem;
+  margin-block-end: 16px;
+}
+.settings-grid[data-v-4dd43819] {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.setting-label[data-v-4dd43819] {
+  flex: 1;
+  color: rgba(var(--v-theme-on-surface), 0.72);
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.35;
+  text-align: start;
+  transition: color 0.2s ease;
+}
+.setting-item[data-v-4dd43819] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: relative;
+  overflow: hidden;
+  min-block-size: 48px;
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.1);
+  border-radius: 10px;
+  background-color: rgba(var(--v-theme-on-surface), 0.04);
+  cursor: pointer;
+  font: inherit;
+  padding-block: 10px;
+  padding-inline: 12px;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.setting-item[data-v-4dd43819]::before {
+  position: absolute;
+  background: rgb(var(--v-theme-primary));
+  content: '';
+  inline-size: 3px;
+  inset-block: 0;
+  inset-inline-start: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.setting-item.enabled[data-v-4dd43819] {
+  border-color: rgba(var(--v-theme-primary), 0.3);
+  background-color: rgba(var(--v-theme-primary), 0.08);
+}
+.setting-item.enabled[data-v-4dd43819]::before {
+  opacity: 1;
+}
+.setting-item[data-v-4dd43819]:hover {
+  border-color: rgba(var(--v-theme-primary), 0.32);
+  background-color: rgba(var(--v-theme-primary), 0.06);
+}
+.setting-item[data-v-4dd43819]:active {
+  transform: scale(0.99);
+}
+.setting-item[data-v-4dd43819]:focus-visible {
+  outline: 3px solid rgba(var(--v-theme-primary), 0.28);
+  outline-offset: 2px;
+}
+.setting-item.enabled .setting-label[data-v-4dd43819] {
+  color: rgb(var(--v-theme-on-surface));
+}
+.setting-item-inner[data-v-4dd43819] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.setting-check[data-v-4dd43819] {
+  display: flex;
+  flex-shrink: 0;
+}
+@media (width <= 760px) {
+.settings-grid[data-v-4dd43819] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+}
+

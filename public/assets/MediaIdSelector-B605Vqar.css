@@ -1,0 +1,20 @@
+.media-id-selector[data-v-0d913537] {
+  overflow: hidden !important;
+}
+.media-id-selector__search[data-v-0d913537] {
+  flex: 0 0 auto;
+  overflow: visible !important;
+  padding-block: 0.25rem 1rem !important;
+}
+.media-id-selector__close[data-v-0d913537] {
+  position: relative;
+  flex: 0 0 auto;
+}
+.media-id-selector__results[data-v-0d913537] {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-anchor: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}

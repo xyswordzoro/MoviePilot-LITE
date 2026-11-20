@@ -1,0 +1,26 @@
+
+.site-log-frame[data-v-4e26ca3f] {
+  border: none;
+  inline-size: 100%;
+  block-size: 72vh;
+}
+@media (width <= 960px) {
+.site-log-dialog-card[data-v-4e26ca3f] {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    block-size: 100%;
+}
+.site-log-dialog-content[data-v-4e26ca3f] {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    inline-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+}
+.site-log-frame[data-v-4e26ca3f] {
+    flex: 1 1 auto;
+    block-size: auto;
+}
+}

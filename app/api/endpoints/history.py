@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Any, Optional
 
 from fastapi import APIRouter, Depends
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
 
@@ -120,10 +121,36 @@ async def transfer_history(
         )
         total = await TransferHistory.async_count(db, status=status)
 
+    # 通过下载历史补充来源站点，同一 hash 取最新一条记录的站点
+    site_map: dict[str, Optional[str]] = {}
+    download_hashes = list(
+        {item.download_hash for item in result if item.download_hash}
+    )
+    if download_hashes:
+        rows = (
+            await db.execute(
+                select(
+                    DownloadHistory.download_hash,
+                    DownloadHistory.torrent_site,
+                )
+                .where(DownloadHistory.download_hash.in_(download_hashes))
+                .order_by(DownloadHistory.date.desc())
+            )
+        ).all()
+        for row_hash, row_site in rows:
+            if row_hash and row_hash not in site_map:
+                site_map[row_hash] = row_site
+
+    history_list = []
+    for item in result:
+        item_dict = item.to_dict()
+        item_dict["site"] = site_map.get(item.download_hash or "", None)
+        history_list.append(item_dict)
+
     return schemas.Response(
         success=True,
         data={
-            "list": [item.to_dict() for item in result],
+            "list": history_list,
             "total": total,
         },
     )
