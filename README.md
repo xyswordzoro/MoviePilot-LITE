@@ -17,8 +17,8 @@
 | **仪表盘**：媒体统计、今日更新、最新入库 | **搜索结果**：中文标题优先，紧凑卡片与高密度列表可切换 |
 | ![电视剧订阅](docs/screenshots/subscribe.jpg) | ![站点管理](docs/screenshots/site.jpg) |
 | **订阅分组**：按分类自动分组，进度与状态一目了然 | **站点管理**：站点状态、上传下载、分享率与顶部汇总 |
-| ![站点日志](docs/screenshots/site-log.jpg) | ![日志分类](docs/screenshots/logging.jpg) |
-| **站点日志**：按站点记录 RSS 刷新与识别明细 | **日志分类**：下载 / 消息 / 刮削 / 整理分类着色与筛选 |
+| ![站点日志](docs/screenshots/site-log.jpg) | ![实时日志](docs/screenshots/logging.jpg) |
+| **站点日志**：按站点记录 RSS 刷新与识别明细 | **实时日志**：紧凑三列、级别与分类筛选、跨天分隔 |
 | ![订阅日历](docs/screenshots/calendar.jpg) | ![媒体整理](docs/screenshots/history.jpg) |
 | **订阅日历**：月 / 周视图、分类筛选、今日更新与本周待播 | **媒体整理**：剧集封面卡片，站点图标、转移详情一目了然 |
 
