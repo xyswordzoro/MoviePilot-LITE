@@ -1,0 +1,503 @@
+
+/* stylelint-disable selector-pseudo-class-no-unknown */
+.logging-view[data-v-ca50ab6c] {
+  --logging-shell-backdrop-filter: none;
+  --logging-shell-background: linear-gradient(180deg, var(--logging-shell-bg), rgba(var(--v-theme-surface), 0.9));
+  --logging-shell-bg: rgba(var(--v-theme-surface), 0.96);
+  --logging-record-bg-even: rgba(var(--v-theme-surface-variant), 0.01);
+  --logging-record-bg-odd: rgba(var(--v-theme-surface-variant), 0.005);
+  --logging-text: rgba(var(--v-theme-on-surface), 0.88);
+  --logging-toolbar-control-size: 2rem;
+  --logging-muted: rgba(var(--v-theme-on-surface), 0.56);
+
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 20rem;
+}
+.logging-view.is-dark-theme[data-v-ca50ab6c] {
+  --logging-shell-bg: rgba(var(--v-theme-surface), 0.72);
+  --logging-record-bg-even: rgba(var(--v-theme-on-surface), 0.02);
+  --logging-record-bg-odd: rgba(var(--v-theme-on-surface), 0.008);
+  --logging-border: rgba(var(--v-theme-on-surface), 0.12);
+  --logging-shadow: inset 0 1px 0 rgba(255, 255, 255, 4%);
+}
+.logging-view.is-transparent-theme[data-v-ca50ab6c] {
+  --logging-shell-bg: transparent;
+  --logging-record-bg-even: transparent;
+  --logging-record-bg-odd: transparent;
+  --logging-border: rgba(var(--v-theme-on-surface), 0.1);
+  --logging-shadow: none;
+}
+.logging-toolbar[data-v-ca50ab6c] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.logging-search[data-v-ca50ab6c] {
+  flex: 1 1 9rem;
+  min-inline-size: 5rem;
+}
+.logging-stream-action[data-v-ca50ab6c] {
+  color: var(--logging-muted);
+}
+.logging-stream-action.is-live[data-v-ca50ab6c] {
+  color: rgb(var(--v-theme-success));
+}
+
+/* 等级与分类之间的竖分隔 */
+.logging-toolbar-divider[data-v-ca50ab6c] {
+  flex: 0 0 1px;
+  align-self: center;
+  background: rgba(var(--v-theme-on-surface), 0.1);
+  block-size: 18px;
+  inline-size: 1px;
+}
+
+/* 类别筛选按钮：与等级按钮同为浅灰圆角，筛选生效时高亮 */
+.logging-category-pill[data-v-ca50ab6c] {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(var(--v-theme-on-surface), 0.045);
+  color: var(--logging-muted);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 600;
+  block-size: 1.75rem;
+  padding-inline: 0.625rem;
+  white-space: nowrap;
+}
+.logging-category-pill[data-v-ca50ab6c]:hover {
+  background: rgba(var(--v-theme-on-surface), 0.085);
+}
+.logging-category-pill.is-filtered[data-v-ca50ab6c] {
+  background: rgba(var(--v-theme-primary), 0.11);
+  color: rgb(var(--v-theme-primary));
+}
+.logging-category-menu[data-v-ca50ab6c] {
+  min-inline-size: 9rem;
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+  background-color: rgb(var(--v-theme-surface)) !important;
+  box-shadow: 0 8px 24px rgba(16, 20, 30, 0.12);
+}
+.logging-category-swatch[data-v-ca50ab6c] {
+  display: inline-block;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  block-size: 0.625rem;
+  inline-size: 0.625rem;
+  margin-inline-end: 0.75rem;
+}
+.logging-search[data-v-ca50ab6c] .v-field {
+  border-radius: 999px;
+  background: rgba(var(--v-theme-on-surface), 0.045) !important;
+  box-shadow: none !important;
+}
+.logging-search[data-v-ca50ab6c] .v-field__outline,
+.logging-search[data-v-ca50ab6c] .v-field__overlay {
+  display: none;
+}
+.logging-search[data-v-ca50ab6c] .v-field__input {
+  font-size: 0.72rem;
+  padding-inline-start: 0;
+}
+.logging-level-select[data-v-ca50ab6c] {
+  flex: 0 0 7rem;
+  min-inline-size: 7rem;
+}
+.logging-level-toggle[data-v-ca50ab6c] {
+  flex: 0 0 auto;
+  overflow: hidden;
+  gap: 2px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  block-size: 1.75rem;
+  box-shadow: none !important;
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button {
+  border: 0 !important;
+  border-radius: 8px;
+  block-size: 1.75rem;
+  color: var(--logging-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  min-inline-size: auto;
+  padding-inline: 0.7rem;
+  text-transform: none;
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button--debug {
+  color: rgb(var(--v-theme-secondary));
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button--info {
+  color: rgb(var(--v-theme-success));
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button--warning {
+  color: rgb(var(--v-theme-warning));
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button--error {
+  color: rgb(var(--v-theme-error));
+}
+.logging-level-toggle[data-v-ca50ab6c] .logging-level-toggle__button--active {
+  background: rgba(var(--v-theme-primary), 0.16);
+  color: rgb(var(--v-theme-primary));
+}
+.logging-level-select[data-v-ca50ab6c] .v-field {
+  border-radius: var(--app-field-radius);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.logging-level-select[data-v-ca50ab6c] .v-field__outline,
+.logging-level-select[data-v-ca50ab6c] .v-field__overlay {
+  display: none;
+}
+.logging-level-select[data-v-ca50ab6c] .v-field__input {
+  padding-inline: 0;
+}
+@media (width >= 960px) {
+.logging-toolbar[data-v-ca50ab6c] {
+    padding-block-start: 0.25rem;
+}
+.logging-search[data-v-ca50ab6c],
+  .logging-stream-action[data-v-ca50ab6c] {
+    align-self: center;
+}
+.logging-search[data-v-ca50ab6c] .v-field {
+    display: flex;
+    align-items: center;
+    block-size: var(--logging-toolbar-control-size);
+    min-block-size: var(--logging-toolbar-control-size);
+}
+.logging-search[data-v-ca50ab6c] .v-field__field,
+  .logging-search[data-v-ca50ab6c] .v-field__input,
+  .logging-search[data-v-ca50ab6c] .v-field__prepend-inner,
+  .logging-search[data-v-ca50ab6c] .v-field__clearable {
+    align-items: center;
+    min-block-size: var(--logging-toolbar-control-size);
+}
+.logging-search[data-v-ca50ab6c] .v-field__input {
+    padding-block: 0;
+}
+.logging-search[data-v-ca50ab6c] .v-field__prepend-inner,
+  .logging-search[data-v-ca50ab6c] .v-field__clearable {
+    padding-block: 0;
+}
+.logging-stream-action[data-v-ca50ab6c] {
+    block-size: var(--logging-toolbar-control-size);
+    inline-size: var(--logging-toolbar-control-size);
+}
+}
+.logging-shell[data-v-ca50ab6c] {
+  position: relative;
+  overflow: auto;
+  flex: 1 1 auto;
+  padding: 0.875rem;
+  border: 1px solid var(--logging-border);
+  backdrop-filter: var(--logging-shell-backdrop-filter);
+  background: var(--logging-shell-background);
+  box-shadow: var(--logging-shadow);
+}
+
+/* 键盘翻页（PageUp/PageDown/Home/End）需要在视口聚焦时生效，聚焦态给出正向反馈 */
+.logging-shell[data-v-ca50ab6c]:focus {
+  outline: none;
+  border-color: rgba(var(--v-theme-primary), 0.55);
+}
+.logging-shell[data-v-ca50ab6c]:focus-visible {
+  outline: 2px solid rgba(var(--v-theme-primary), 0.45);
+  outline-offset: -2px;
+}
+
+/* 首屏滚动到底完成前隐藏内容，避免打开日志时的闪动 */
+.logging-shell.is-initializing[data-v-ca50ab6c] {
+  visibility: hidden;
+}
+.logging-view.is-transparent-theme .logging-shell[data-v-ca50ab6c] {
+  backdrop-filter: none;
+  background: transparent;
+}
+.logging-loading-overlay[data-v-ca50ab6c] {
+  position: sticky;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  background: linear-gradient(180deg, rgba(var(--v-theme-surface), 0.72), rgba(var(--v-theme-surface), 0.64));
+  inset-block-start: 0;
+  margin-block-end: 0.75rem;
+  margin-inline: -0.875rem;
+  padding-block: 0.5rem 0.75rem;
+  padding-inline: 0.875rem;
+}
+.logging-view.is-dark-theme .logging-loading-overlay[data-v-ca50ab6c] {
+  background: linear-gradient(180deg, rgba(var(--v-theme-surface), 0.62), rgba(var(--v-theme-surface), 0.52));
+}
+.logging-view.is-transparent-theme .logging-loading-overlay[data-v-ca50ab6c] {
+  backdrop-filter: none;
+  background: transparent;
+}
+.logging-loading-overlay[data-v-ca50ab6c] .initial-loading-container {
+  min-block-size: 10rem;
+}
+.logging-live-progress[data-v-ca50ab6c] .v-progress-linear__background {
+  opacity: 0.12;
+}
+.logging-empty[data-v-ca50ab6c] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  color: var(--logging-muted);
+  gap: 0.5rem;
+  min-block-size: 16rem;
+}
+.logging-list[data-v-ca50ab6c] {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-inline-size: 100%;
+}
+.logging-day[data-v-ca50ab6c] {
+  position: sticky;
+  z-index: 2;
+  inset-block-start: 0;
+  margin-inline: -0.75rem;
+  padding: 0.3rem 0.75rem;
+  border-block-end: 1px solid rgba(var(--v-theme-on-surface), 0.06);
+  background: rgba(var(--v-theme-surface), 0.96);
+  color: var(--logging-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(6px);
+}
+.logging-record[data-v-ca50ab6c] {
+  display: grid;
+  align-items: start;
+  border-block-end: 1px solid rgba(var(--v-theme-on-surface), 0.055);
+  grid-template-columns: 4.6rem minmax(0, 1fr);
+}
+.logging-record--restart[data-v-ca50ab6c] {
+  display: block;
+  border-block-end: 0;
+}
+.logging-record--restart .logging-restart-divider[data-v-ca50ab6c] {
+  grid-column: auto;
+}
+
+/* 重启分隔横幅：跨全宽展示，醒目区分本次启动前后的日志 */
+.logging-restart-divider[data-v-ca50ab6c] {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  grid-column: 1 / -1;
+  margin-block: 0.375rem;
+  padding-block: 0.375rem;
+  color: rgb(var(--v-theme-primary));
+}
+.logging-restart-divider__rule[data-v-ca50ab6c] {
+  flex: 1 1 auto;
+  block-size: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+.logging-restart-divider__text[data-v-ca50ab6c] {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+.logging-record-time[data-v-ca50ab6c] {
+  color: var(--logging-muted);
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.6;
+  padding-block: 0.3rem;
+  white-space: nowrap;
+}
+.logging-record-panel[data-v-ca50ab6c] {
+  display: flex;
+  align-items: stretch;
+  border: 0;
+  border-radius: 0;
+  gap: 0;
+  min-inline-size: 0;
+  padding: 0;
+}
+.logging-record-panel.is-even[data-v-ca50ab6c],
+.logging-record-panel.is-odd[data-v-ca50ab6c] {
+  background: transparent;
+}
+
+/* 异常级别整行淡色底 + 左侧色条，方便快速扫到 */
+.logging-record-panel.is-level-error[data-v-ca50ab6c] {
+  background: rgba(var(--v-theme-error), 0.035);
+  box-shadow: inset 2px 0 0 rgb(var(--v-theme-error));
+}
+.logging-record-panel.is-level-warning[data-v-ca50ab6c] {
+  background: rgba(var(--v-theme-warning), 0.035);
+  box-shadow: inset 2px 0 0 rgb(var(--v-theme-warning));
+}
+.logging-view.is-dark-theme .logging-record-panel[data-v-ca50ab6c] {
+  border-color: rgba(var(--v-theme-on-surface), 0.08);
+}
+.logging-record-accent[data-v-ca50ab6c] {
+  display: none;
+}
+.logging-record-lines[data-v-ca50ab6c] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+.logging-record-line[data-v-ca50ab6c] {
+  display: flex;
+  align-items: flex-start;
+  color: var(--logging-text);
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.72rem;
+  gap: 0.5rem;
+  line-height: 1.55;
+  min-inline-size: -moz-max-content;
+  min-inline-size: max-content;
+  padding-block: 0.18rem;
+}
+.logging-shell.is-wrap .logging-record-line[data-v-ca50ab6c] {
+  min-inline-size: 0;
+}
+
+/* 行首类别色轨：其他类别透明，保证所有行左侧对齐 */
+.logging-record-rail[data-v-ca50ab6c] {
+  display: none;
+}
+
+/* 类别图标占位：其他类别不显示图标但保留宽度，消息正文保持对齐 */
+.logging-record-category[data-v-ca50ab6c] {
+  display: none;
+}
+
+/* 关键事件不再加粗，保持统一字号 */
+.logging-record-line.is-key-event .logging-record-body[data-v-ca50ab6c] {
+  font-weight: inherit;
+}
+.logging-record-level[data-v-ca50ab6c] {
+  flex: 0 0 3.6rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  min-inline-size: 3.6rem;
+  padding-block-start: 0.1em;
+}
+.logging-record-body[data-v-ca50ab6c] {
+  color: var(--logging-text);
+  min-inline-size: 0;
+  white-space: pre;
+}
+.logging-record-app[data-v-ca50ab6c] {
+  flex: 0 0 auto;
+  color: var(--logging-muted);
+  color: rgba(var(--v-theme-on-surface), 0.72);
+}
+.logging-shell.is-wrap .logging-record-body[data-v-ca50ab6c] {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.logging-record-level.level-trace[data-v-ca50ab6c],
+.logging-record-level.level-debug[data-v-ca50ab6c] {
+  color: rgb(var(--v-theme-secondary));
+}
+.logging-record-level.level-info[data-v-ca50ab6c] {
+  color: rgb(var(--v-theme-success));
+}
+.logging-record-level.level-warning[data-v-ca50ab6c] {
+  color: rgb(var(--v-theme-warning));
+}
+.logging-record-level.level-error[data-v-ca50ab6c],
+.logging-record-level.level-critical[data-v-ca50ab6c] {
+  color: rgb(var(--v-theme-error));
+}
+.logging-record-level.level-plain[data-v-ca50ab6c] {
+  color: var(--logging-muted);
+}
+.logging-record-accent.level-trace[data-v-ca50ab6c],
+.logging-record-accent.level-debug[data-v-ca50ab6c] {
+  background-color: rgb(var(--v-theme-secondary));
+}
+.logging-record-accent.level-info[data-v-ca50ab6c] {
+  background-color: rgb(var(--v-theme-success));
+}
+.logging-record-accent.level-warning[data-v-ca50ab6c] {
+  background-color: rgb(var(--v-theme-warning));
+}
+.logging-record-accent.level-error[data-v-ca50ab6c],
+.logging-record-accent.level-critical[data-v-ca50ab6c] {
+  background-color: rgb(var(--v-theme-error));
+}
+.logging-record-accent.level-plain[data-v-ca50ab6c] {
+  background-color: rgba(var(--v-theme-on-surface), 0.24);
+}
+.logging-latest-action[data-v-ca50ab6c] {
+  position: sticky;
+  display: flex;
+  justify-content: flex-end;
+  inset-block-end: 0.75rem;
+  margin-block-start: 0.75rem;
+  pointer-events: none;
+}
+.logging-latest-action[data-v-ca50ab6c] .v-btn {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 16%);
+  pointer-events: auto;
+}
+@media (width <= 960px) {
+.logging-view[data-v-ca50ab6c] {
+    flex: 1 1 auto;
+    block-size: auto;
+    min-block-size: 0;
+}
+.logging-record[data-v-ca50ab6c] {
+    gap: 0.375rem;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+}
+.logging-record-level[data-v-ca50ab6c] {
+    flex-basis: 4.75rem;
+    min-inline-size: 4.75rem;
+}
+}
+@media (width <= 640px) {
+.logging-view[data-v-ca50ab6c] {
+    gap: 0.5rem;
+    min-block-size: 0;
+}
+.logging-record[data-v-ca50ab6c] {
+    gap: 0.25rem;
+    grid-template-columns: minmax(0, 1fr);
+}
+.logging-record-time[data-v-ca50ab6c] {
+    padding-block: 0;
+}
+.logging-record-panel[data-v-ca50ab6c] {
+    padding-block: 0.5rem;
+    padding-inline: 0.625rem;
+}
+.logging-record-line[data-v-ca50ab6c] {
+    gap: 0.5rem;
+}
+.logging-shell[data-v-ca50ab6c] {
+    padding: 0.625rem;
+}
+.logging-loading-overlay[data-v-ca50ab6c] {
+    margin-inline: -0.625rem;
+    padding-inline: 0.625rem;
+}
+}
