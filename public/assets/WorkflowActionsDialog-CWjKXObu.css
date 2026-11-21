@@ -1,0 +1,782 @@
+.workflow-sidebar[data-v-d24df475] {
+  position: absolute;
+  z-index: 100;
+  overflow: hidden;
+  background-color: rgb(var(--v-theme-background));
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+  inline-size: 280px;
+  inset-block: 0;
+  inset-inline-start: 0;
+  transition: all 0.3s ease;
+}
+.workflow-sidebar.sidebar-collapsed[data-v-d24df475] {
+  inline-size: 70px;
+}
+.workflow-sidebar.sidebar-mobile[data-v-d24df475] {
+  inline-size: 240px;
+  transform: translateX(-100%);
+}
+.workflow-sidebar.sidebar-mobile.sidebar-mobile-open[data-v-d24df475] {
+  transform: translateX(0);
+}
+.sidebar-container[data-v-d24df475] {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+}
+.sidebar-header[data-v-d24df475] {
+  flex-shrink: 0;
+  padding: 16px;
+  background-color: rgb(var(--v-theme-background));
+  border-block-end: 1px solid rgba(var(--v-theme-on-background), 0.06);
+}
+.sidebar-header .header-content[data-v-d24df475] {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.sidebar-header .workflow-logo[data-v-d24df475] {
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  margin-inline-end: 10px;
+}
+.sidebar-header .header-title[data-v-d24df475] {
+  color: rgb(var(--v-theme-on-background));
+  font-size: 18px;
+  font-weight: 600;
+}
+.sidebar-header .collapse-btn[data-v-d24df475] {
+  position: absolute;
+  color: rgb(var(--v-theme-primary));
+  inset-block-start: 0;
+  inset-inline-end: 0;
+}
+.components-container[data-v-d24df475] {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+.components-container[data-v-d24df475]::-webkit-scrollbar {
+  inline-size: 5px;
+}
+.components-container[data-v-d24df475]::-webkit-scrollbar-track {
+  background: transparent;
+}
+.components-container[data-v-d24df475]::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(var(--v-theme-primary), 0.3);
+}
+.component-item[data-v-d24df475] {
+  cursor: grab;
+  margin-block-end: 10px;
+}
+.component-item[data-v-d24df475]:active {
+  cursor: grabbing;
+}
+.component-card[data-v-d24df475] {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(var(--v-theme-surface-variant));
+  transition: all 0.2s ease;
+}
+.component-card[data-v-d24df475]:hover {
+  background-color: rgb(var(--v-theme-surface-variant));
+  transform: translateY(-2px);
+}
+.component-avatar[data-v-d24df475] {
+  flex-shrink: 0;
+  background-color: rgb(var(--v-theme-primary));
+  color: white;
+  margin-inline-end: 12px;
+}
+.component-avatar .v-icon[data-v-d24df475] {
+  color: white !important;
+  opacity: 1 !important;
+}
+.component-info[data-v-d24df475] {
+  overflow: hidden;
+  max-inline-size: calc(100% - 48px);
+}
+.component-name[data-v-d24df475] {
+  overflow: hidden;
+  color: rgb(var(--v-theme-on-background));
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.component-desc[data-v-d24df475] {
+  overflow: hidden;
+  color: #71717a;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-footer[data-v-d24df475] {
+  flex-shrink: 0;
+  padding: 12px;
+  background-color: rgb(var(--v-theme-background));
+  border-block-start: 1px solid rgba(0, 0, 0, 0.06);
+}
+.sidebar-footer .drag-btn[data-v-d24df475] {
+  background-color: rgb(var(--v-theme-primary));
+  block-size: 44px;
+  color: white;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.sidebar-footer .drag-btn .btn-content[data-v-d24df475] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+}
+.sidebar-footer .drag-btn .footer-icon[data-v-d24df475] {
+  font-size: 20px;
+}
+.workflow-sidebar-trigger[data-v-d24df475] {
+  position: fixed;
+  z-index: 100;
+}
+.workflow-sidebar-fab[data-v-d24df475] {
+  background-color: rgb(var(--v-theme-primary));
+  box-shadow: 0 4px 10px rgba(var(--v-theme-primary), 40%);
+  color: white;
+}
+.workflow-sidebar-fab[data-v-d24df475]:hover {
+  background-color: rgb(123.4322033898, 63.9406779661, 243.5593220339);
+}
+.sidebar-collapsed .component-card[data-v-d24df475] {
+  justify-content: center;
+  padding: 8px;
+}
+.sidebar-collapsed .component-avatar[data-v-d24df475] {
+  block-size: 40px !important;
+  inline-size: 40px !important;
+  margin-inline-end: 0;
+}
+.sidebar-collapsed .component-avatar .v-icon[data-v-d24df475] {
+  font-size: 20px !important;
+}
+.sidebar-collapsed .sidebar-footer[data-v-d24df475] {
+  padding-block: 10px;
+  padding-inline: 6px;
+}
+.sidebar-collapsed .sidebar-footer .drag-btn[data-v-d24df475] {
+  padding: 0;
+  border-radius: 10px;
+  block-size: 48px;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.sidebar-collapsed .sidebar-footer .drag-btn .btn-content[data-v-d24df475] {
+  inline-size: 100%;
+}
+@media (width <= 600px) {
+.component-card[data-v-d24df475] {
+    padding: 8px;
+}
+.component-item[data-v-d24df475] {
+    margin-block-end: 8px;
+}
+.components-container[data-v-d24df475] {
+    padding: 8px;
+}
+.sidebar-header[data-v-d24df475] {
+    padding: 12px;
+}
+.sidebar-footer[data-v-d24df475] {
+    padding: 8px;
+}
+.sidebar-footer .drag-btn[data-v-d24df475] {
+    block-size: 40px;
+}
+}.vue-flow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  direction: ltr;
+}
+.vue-flow__container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+.vue-flow__pane {
+  z-index: 1;
+}
+.vue-flow__pane.draggable {
+     cursor: grab;
+}
+.vue-flow__pane.selection {
+     cursor: pointer;
+}
+.vue-flow__pane.dragging {
+    cursor: grabbing;
+}
+.vue-flow__transformationpane {
+  transform-origin: 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.vue-flow__viewport {
+  z-index: 4;
+  overflow: clip;
+}
+.vue-flow__selection {
+  z-index: 6;
+}
+.vue-flow__edge-labels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.vue-flow__nodesselection-rect:focus,
+.vue-flow__nodesselection-rect:focus-visible {
+  outline: none;
+}
+.vue-flow .vue-flow__edges {
+  pointer-events: none;
+  overflow: visible;
+}
+.vue-flow__edge-path,
+.vue-flow__connection-path {
+  stroke: #b1b1b7;
+  stroke-width: 1;
+  fill: none;
+}
+.vue-flow__edge {
+  pointer-events: visibleStroke;
+  cursor: pointer;
+}
+.vue-flow__edge.animated path {
+     stroke-dasharray: 5;
+     animation: dashdraw 0.5s linear infinite;
+}
+.vue-flow__edge.animated path.vue-flow__edge-interaction {
+     stroke-dasharray: none;
+     animation: none;
+}
+.vue-flow__edge.inactive {
+     pointer-events: none;
+}
+.vue-flow__edge.selected,
+  .vue-flow__edge:focus,
+  .vue-flow__edge:focus-visible {
+     outline: none;
+}
+.vue-flow__edge.selected .vue-flow__edge-path,
+  .vue-flow__edge:focus .vue-flow__edge-path,
+  .vue-flow__edge:focus-visible .vue-flow__edge-path {
+     stroke: #555;
+}
+.vue-flow__edge-textwrapper {
+     pointer-events: all;
+}
+.vue-flow__edge-textbg {
+     fill: white;
+}
+.vue-flow__edge-text {
+    pointer-events: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+}
+.vue-flow__connection {
+  pointer-events: none;
+}
+.vue-flow__connection .animated {
+     stroke-dasharray: 5;
+     animation: dashdraw 0.5s linear infinite;
+}
+.vue-flow__connectionline {
+  z-index: 1001;
+}
+.vue-flow__nodes {
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+.vue-flow__node-default,
+.vue-flow__node-input,
+.vue-flow__node-output {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb;
+}
+.vue-flow__node-default.selected,
+  .vue-flow__node-default:focus,
+  .vue-flow__node-default:focus-visible,
+  .vue-flow__node-input.selected,
+  .vue-flow__node-input:focus,
+  .vue-flow__node-input:focus-visible,
+  .vue-flow__node-output.selected,
+  .vue-flow__node-output:focus,
+  .vue-flow__node-output:focus-visible {
+     outline: none;
+     border: 1px solid #555;
+}
+.vue-flow__node {
+  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: all;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+  cursor: default;
+}
+.vue-flow__node.draggable {
+    cursor: grab;
+    pointer-events: all;
+}
+.vue-flow__node.draggable.dragging {
+      cursor: grabbing;
+}
+.vue-flow__nodesselection {
+  z-index: 3;
+  transform-origin: left top;
+  pointer-events: none;
+}
+.vue-flow__nodesselection-rect {
+     position: absolute;
+     pointer-events: all;
+     cursor: grab;
+}
+.vue-flow__nodesselection-rect.dragging {
+          cursor: grabbing;
+}
+.vue-flow__handle {
+  position: absolute;
+  pointer-events: none;
+  min-width: 5px;
+  min-height: 5px;
+}
+.vue-flow__handle.connectable {
+     pointer-events: all;
+     cursor: crosshair;
+}
+.vue-flow__handle-bottom {
+     left: 50%;
+     bottom: 0;
+     transform: translate(-50%, 50%);
+}
+.vue-flow__handle-top {
+     left: 50%;
+     top: 0;
+     transform: translate(-50%, -50%);
+}
+.vue-flow__handle-left {
+     top: 50%;
+     left: 0;
+     transform: translate(-50%, -50%);
+}
+.vue-flow__handle-right {
+     top: 50%;
+     right: 0;
+     transform: translate(50%, -50%);
+}
+.vue-flow__edgeupdater {
+  cursor: move;
+  pointer-events: all;
+}
+.vue-flow__panel {
+  position: absolute;
+  z-index: 5;
+  margin: 15px;
+}
+.vue-flow__panel.top {
+     top: 0;
+}
+.vue-flow__panel.bottom {
+     bottom: 0;
+}
+.vue-flow__panel.left {
+     left: 0;
+}
+.vue-flow__panel.right {
+     right: 0;
+}
+.vue-flow__panel.center {
+     left: 50%;
+     transform: translateX(-50%);
+}
+@keyframes dashdraw {
+from {
+    stroke-dashoffset: 10;
+}
+}
+:root {
+  --vf-node-bg: #fff;
+  --vf-node-text: #222;
+  --vf-connection-path:  #b1b1b7;
+  --vf-handle: #555;
+}
+.vue-flow__edge.updating .vue-flow__edge-path {
+      stroke: #777;
+}
+.vue-flow__edge-text {
+  font-size: 10px;
+}
+.vue-flow__edge-textbg {
+  fill: #fff;
+}
+.vue-flow__connection-path {
+  stroke: var(--vf-connection-path);
+}
+.vue-flow__node {
+  cursor: grab;
+}
+.vue-flow__node.selectable:focus,
+  .vue-flow__node.selectable:focus-visible {
+     outline: none;
+}
+.vue-flow__node-default,
+.vue-flow__node-input,
+.vue-flow__node-output {
+  padding: 10px;
+  border-radius: 3px;
+  width: 150px;
+  font-size: 12px;
+  text-align: center;
+  border-width: 1px;
+  border-style: solid;
+  color: var(--vf-node-text);
+  background-color: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
+}
+.vue-flow__node-default.selected,
+  .vue-flow__node-default.selected:hover,
+  .vue-flow__node-input.selected,
+  .vue-flow__node-input.selected:hover,
+  .vue-flow__node-output.selected,
+  .vue-flow__node-output.selected:hover {
+     box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
+}
+.vue-flow__node-default .vue-flow__handle, .vue-flow__node-input .vue-flow__handle, .vue-flow__node-output .vue-flow__handle {
+    background: var(--vf-handle);
+}
+.vue-flow__node-default.selectable:hover, .vue-flow__node-input.selectable:hover, .vue-flow__node-output.selectable:hover {
+    box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+}
+.vue-flow__node-input {
+  --vf-node-color: var(--vf-node-color, #0041d0);
+  --vf-handle: var(--vf-node-color, #0041d0);
+  --vf-box-shadow: var(--vf-node-color, #0041d0);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color, #0041d0);
+}
+.vue-flow__node-input.selected,
+  .vue-flow__node-input:focus,
+  .vue-flow__node-input:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #0041d0);
+}
+.vue-flow__node-default {
+  --vf-handle: var(--vf-node-color, #1a192b);
+  --vf-box-shadow: var(--vf-node-color, #1a192b);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color, #1a192b);
+}
+.vue-flow__node-default.selected,
+  .vue-flow__node-default:focus,
+  .vue-flow__node-default:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #1a192b);
+}
+.vue-flow__node-output {
+  --vf-handle: var(--vf-node-color, #ff0072);
+  --vf-box-shadow: var(--vf-node-color, #ff0072);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color, #ff0072);
+}
+.vue-flow__node-output.selected,
+  .vue-flow__node-output:focus,
+  .vue-flow__node-output:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #ff0072);
+}
+.vue-flow__nodesselection-rect,
+.vue-flow__selection {
+  background: rgba(0, 89, 220, 0.08);
+  border: 1px dotted rgba(0, 89, 220, 0.8);
+}
+.vue-flow__nodesselection-rect:focus,
+  .vue-flow__nodesselection-rect:focus-visible,
+  .vue-flow__selection:focus,
+  .vue-flow__selection:focus-visible {
+     outline: none;
+}
+.vue-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: var(--vf-handle);
+  border: 1px solid #fff;
+  border-radius: 100%;
+}
+.vue-flow__controls {
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+}
+.vue-flow__controls-button {
+  background: #fefefe;
+  border: none;
+  border-bottom: 1px solid #eee;
+  box-sizing: content-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  padding: 5px;
+}
+.vue-flow__controls-button svg {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+}
+.vue-flow__controls-button:hover {
+  background: #f4f4f4;
+}
+.vue-flow__controls-button:disabled {
+  pointer-events: none;
+}
+.vue-flow__controls-button:disabled svg {
+  fill-opacity: 0.4;
+}
+.vue-flow__minimap {
+  background-color: #fff;
+}
+.vue-flow__minimap.pannable {
+  cursor: grab;
+}
+.vue-flow__minimap.dragging {
+  cursor: grabbing;
+}
+.vue-flow__minimap-mask.pannable {
+  cursor: grab;
+}
+.vue-flow__resize-control {
+  position: absolute;
+}
+.vue-flow__resize-control.left,
+.vue-flow__resize-control.right {
+  cursor: ew-resize;
+}
+.vue-flow__resize-control.top,
+.vue-flow__resize-control.bottom {
+  cursor: ns-resize;
+}
+.vue-flow__resize-control.top.left,
+.vue-flow__resize-control.bottom.right {
+  cursor: nwse-resize;
+}
+.vue-flow__resize-control.bottom.left,
+.vue-flow__resize-control.top.right {
+  cursor: nesw-resize;
+}
+
+/* handle styles */
+.vue-flow__resize-control.handle {
+  width: 4px;
+  height: 4px;
+  border: 1px solid #fff;
+  border-radius: 1px;
+  background-color: #3367d9;
+  transform: translate(-50%, -50%);
+}
+.vue-flow__resize-control.handle.left {
+  left: 0;
+  top: 50%;
+}
+.vue-flow__resize-control.handle.right {
+  left: 100%;
+  top: 50%;
+}
+.vue-flow__resize-control.handle.top {
+  left: 50%;
+  top: 0;
+}
+.vue-flow__resize-control.handle.bottom {
+  left: 50%;
+  top: 100%;
+}
+.vue-flow__resize-control.handle.top.left {
+  left: 0;
+}
+.vue-flow__resize-control.handle.bottom.left {
+  left: 0;
+}
+.vue-flow__resize-control.handle.top.right {
+  left: 100%;
+}
+.vue-flow__resize-control.handle.bottom.right {
+  left: 100%;
+}
+
+/* line styles */
+.vue-flow__resize-control.line {
+  border-color: #3367d9;
+  border-width: 0;
+  border-style: solid;
+}
+.vue-flow__resize-control.line.left,
+.vue-flow__resize-control.line.right {
+  width: 1px;
+  transform: translate(-50%, 0);
+  top: 0;
+  height: 100%;
+}
+.vue-flow__resize-control.line.left {
+  left: 0;
+  border-left-width: 1px;
+}
+.vue-flow__resize-control.line.right {
+  left: 100%;
+  border-right-width: 1px;
+}
+.vue-flow__resize-control.line.top,
+.vue-flow__resize-control.line.bottom {
+  height: 1px;
+  transform: translate(0, -50%);
+  left: 0;
+  width: 100%;
+}
+.vue-flow__resize-control.line.top {
+  top: 0;
+  border-top-width: 1px;
+}
+.vue-flow__resize-control.line.bottom {
+  border-bottom-width: 1px;
+  top: 100%;
+}
+.workflow-dialog {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  block-size: 100%;
+}
+.workflow-content {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+}
+.workflow-canvas {
+  position: relative;
+  block-size: 100%;
+  inline-size: 100%;
+}
+.workflow-edge-panel {
+  position: absolute;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: rgb(var(--v-theme-surface));
+  gap: 14px;
+  inline-size: min(360px, 100vw - 32px);
+  inset-block-start: 20px;
+  inset-inline-end: 20px;
+  max-block-size: calc(100% - 40px);
+  overflow-y: auto;
+}
+.edge-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.edge-panel-title {
+  display: flex;
+  align-items: center;
+  color: rgb(var(--v-theme-on-surface));
+  font-size: 16px;
+  font-weight: 600;
+  gap: 8px;
+}
+.edge-route {
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background-color: rgba(var(--v-theme-primary), 0.08);
+  color: rgb(var(--v-theme-on-surface));
+  font-size: 13px;
+  gap: 8px;
+  padding-block: 8px;
+  padding-inline: 10px;
+}
+.edge-route span {
+  overflow: hidden;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.edge-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vue-flow__minimap {
+  overflow: hidden;
+  background-color: rgba(var(--v-theme-surface), 0.8);
+  inset-block-end: 20px;
+  inset-inline-end: 20px;
+  transform: scale(75%);
+  transform-origin: bottom right;
+}
+.vue-flow__handle {
+  border-radius: 4px;
+  block-size: 24px;
+  inline-size: 8px;
+}
+.vue-flow__edge-path,
+.vue-flow__connection-path {
+  stroke-width: 3;
+}
+.vue-flow__handle-left {
+  background-color: rgb(var(--v-theme-info));
+}
+.vue-flow__handle-right {
+  background-color: rgb(var(--v-theme-error));
+}
+.vue-flow__node:hover {
+  transform: translateY(-2px);
+}
+.vue-flow__node.selected {
+  box-shadow: 0 0 0 1px rgb(var(--v-theme-primary));
+}
+.vue-flow__edge.animation .vue-flow__edge-path {
+  stroke: rgb(var(--v-theme-primary));
+}
+.vue-flow__edge.animation.selected .vue-flow__edge-path {
+  stroke: rgb(var(--v-theme-primary));
+  stroke-width: 4;
+}
+.vue-flow__edge.workflow-conditional-edge .vue-flow__edge-path {
+  stroke: rgb(var(--v-theme-warning));
+}
+@media screen and (width <= 600px) {
+.vue-flow__minimap {
+    display: none;
+}
+.workflow-edge-panel {
+    inline-size: auto;
+    inset-block: auto 88px;
+    inset-inline: 16px;
+    max-block-size: min(72vh, 100% - 112px);
+}
+}

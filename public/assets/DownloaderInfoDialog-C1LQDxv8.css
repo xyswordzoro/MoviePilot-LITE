@@ -1,0 +1,9 @@
+
+.path-mapping-card[data-v-74c7e478] {
+  border-color: rgba(var(--v-border-color), 0.08) !important;
+}
+@media (max-width: 599.98px) {
+.path-storage-select-col[data-v-74c7e478] {
+    margin-block-end: 8px;
+}
+}

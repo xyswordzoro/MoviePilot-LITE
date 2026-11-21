@@ -1,0 +1,137 @@
+.app-settings-container[data-v-b6476f86] {
+  inline-size: 100%;
+  margin-block: 0;
+  margin-inline: auto;
+  max-inline-size: 960px;
+  overflow-x: hidden;
+}
+.settings-section[data-v-b6476f86] {
+  margin-block-end: 12px;
+}
+.settings-section-title[data-v-b6476f86] {
+  padding-inline-start: 4px;
+}
+.settings-section-card[data-v-b6476f86] {
+  overflow: hidden;
+  border: var(--app-grouped-list-border);
+  backdrop-filter: var(--app-grouped-list-backdrop-filter);
+  background-color: var(--app-grouped-list-background);
+  box-shadow: var(--app-surface-shadow);
+  transition: border-color 0.2s ease, border-width 0.2s ease, box-shadow 0.2s ease;
+}
+.settings-list[data-v-b6476f86] {
+  padding: 0;
+}
+.settings-list-item[data-v-b6476f86] {
+  padding-block: 8px;
+  padding-inline: 12px;
+  transition: background-color 0.2s;
+}
+.settings-list-item[data-v-b6476f86]:not(:last-child) {
+  border-block-end: 1px solid rgba(var(--v-border-color), 0.12);
+}
+.settings-list-item[data-v-b6476f86]:hover {
+  background-color: var(--app-grouped-list-hover-background);
+}
+@media (width <= 768px) {
+.app-settings-content[data-v-b6476f86] {
+    box-sizing: border-box;
+    max-inline-size: 100%;
+    overflow-x: hidden;
+    padding-block: 8px calc(24px + env(safe-area-inset-bottom));
+    padding-inline: 12px;
+}
+.settings-section[data-v-b6476f86] {
+    margin-block-end: 18px;
+}
+.settings-section[data-v-b6476f86]:last-child {
+    margin-block-end: 0;
+}
+.settings-section-title[data-v-b6476f86] {
+    min-block-size: auto;
+    padding-block: 0 7px;
+    padding-inline: 12px;
+    color: var(--app-grouped-list-header-color);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.015em;
+    line-height: 1.25rem;
+    text-transform: none;
+}
+.settings-section-card[data-v-b6476f86] {
+    max-inline-size: 100%;
+    overflow-x: hidden;
+    border-radius: var(--app-grouped-list-radius) !important;
+}
+.settings-list[data-v-b6476f86] {
+    max-inline-size: 100%;
+    overflow-x: hidden;
+    background: transparent;
+    border-radius: inherit !important;
+}
+.settings-list-item[data-v-b6476f86] {
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: 58px;
+    overflow: hidden;
+    padding-block: 7px;
+    padding-inline: 12px 9px;
+    border-block-end: 0 !important;
+    border-radius: 0 !important;
+}
+.settings-list-separator[data-v-b6476f86] {
+    position: absolute;
+    background-color: var(--app-grouped-list-separator-color);
+    block-size: 1px;
+    inset-block-end: 0;
+    inset-inline: var(--app-grouped-list-content-offset) 0;
+    pointer-events: none;
+    z-index: 2;
+}
+.settings-list-item[data-v-b6476f86]:active {
+    background-color: var(--app-grouped-list-active-background);
+}
+.settings-list-icon[data-v-b6476f86] {
+    --app-grouped-list-icon-rgb: var(--app-grouped-list-icon-primary-rgb);
+    block-size: var(--app-grouped-list-icon-size) !important;
+    inline-size: var(--app-grouped-list-icon-size) !important;
+    border-radius: max(var(--app-control-radius), 8px) !important;
+    background: rgba(var(--app-grouped-list-icon-rgb), var(--app-grouped-list-icon-opacity)) !important;
+    color: var(--app-grouped-list-icon-foreground) !important;
+}
+.settings-list-icon--tone-info[data-v-b6476f86] {
+    --app-grouped-list-icon-rgb: var(--app-grouped-list-icon-info-rgb);
+}
+.settings-list-icon--tone-success[data-v-b6476f86] {
+    --app-grouped-list-icon-rgb: var(--app-grouped-list-icon-success-rgb);
+}
+.settings-list-icon--tone-warning[data-v-b6476f86] {
+    --app-grouped-list-icon-rgb: var(--app-grouped-list-icon-warning-rgb);
+}
+.settings-list-icon--tone-secondary[data-v-b6476f86] {
+    --app-grouped-list-icon-rgb: var(--app-grouped-list-icon-secondary-rgb);
+}
+.settings-list-item[data-v-b6476f86] .v-list-item__content {
+    min-inline-size: 0;
+    overflow: hidden;
+}
+.settings-list-icon[data-v-b6476f86] .v-icon {
+    font-size: var(--app-grouped-list-icon-glyph-size) !important;
+}
+.settings-list-title[data-v-b6476f86] {
+    font-size: 1rem;
+    font-weight: 500 !important;
+    letter-spacing: 0;
+    line-height: 1.375rem;
+}
+.settings-list-subtitle[data-v-b6476f86] {
+    margin-block-start: 2px;
+    color: rgba(var(--v-theme-on-surface), 0.58);
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+.settings-list-chevron[data-v-b6476f86] {
+    color: var(--app-grouped-list-chevron-color);
+    font-size: 1.375rem;
+}
+}

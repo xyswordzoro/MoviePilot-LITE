@@ -1,0 +1,30 @@
+
+.site-checkbox-wrapper[data-v-ce00fc21] {
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+  border-radius: var(--app-surface-radius);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+@media (min-width: 600px) {
+.site-dialog__content[data-v-ce00fc21] {
+    max-block-size: 420px;
+}
+}
+.site-checkbox-wrapper[data-v-ce00fc21]:hover {
+  transform: translateY(-2px);
+}
+.site-name[data-v-ce00fc21] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.site-selected[data-v-ce00fc21] {
+  border-color: rgba(var(--v-theme-primary), 0.2);
+  background-color: rgba(var(--v-theme-primary), 0.08);
+  color: rgb(var(--v-theme-primary));
+}
+.site-hover[data-v-ce00fc21] {
+  background-color: rgba(var(--v-theme-primary), 0.04);
+}

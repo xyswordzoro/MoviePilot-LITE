@@ -1,0 +1,40 @@
+.dashboard-work-card[data-v-d8501fbc] {
+  display: flex;
+  flex-direction: column;
+  block-size: auto;
+  min-block-size: 0;
+}
+.card-list[data-v-d8501fbc] {
+  --v-card-list-gap: 0.15rem;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow: auto;
+}
+.dashboard-work-content[data-v-d8501fbc] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-block-size: 0;
+  overflow: hidden;
+}
+.dashboard-speed-number[data-v-d8501fbc] {
+  font-variant-numeric: tabular-nums;
+}
+.dashboard-speed-overview[data-v-d8501fbc] {
+  display: grid;
+  gap: 0.6rem;
+}
+.dashboard-speed-rate[data-v-d8501fbc] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+}
+.dashboard-speed-rate strong[data-v-d8501fbc] {
+  font-size: 1.35rem;
+  line-height: 1.5;
+}
+.dashboard-speed-rate span[data-v-d8501fbc] {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.72rem;
+}

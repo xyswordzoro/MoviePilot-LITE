@@ -1,0 +1,23 @@
+
+.drag-handle[data-v-a64c6ae5] {
+  cursor: grab;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+.drag-handle[data-v-a64c6ae5]:hover {
+  opacity: 1;
+}
+.drag-handle[data-v-a64c6ae5]:active {
+  cursor: grabbing;
+}
+.add-category-btn[data-v-a64c6ae5] {
+  border-style: dashed !important;
+  transition: all 0.2s ease;
+}
+.add-category-btn[data-v-a64c6ae5]:hover {
+  border-style: solid !important;
+  transform: translateY(-1px);
+}
+.disable-tab-transition[data-v-a64c6ae5] > * {
+  transition: none !important;
+}

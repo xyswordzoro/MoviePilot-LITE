@@ -1,0 +1,451 @@
+@charset "UTF-8";
+/*
+  TODO: Add docs on when to use placeholder vs when to use SASS variable
+
+  Placeholder
+    - When we want to keep customization to our self between templates use it
+
+  Variables
+    - When we want to allow customization from both user and our side
+    - You can also use variable for consistency (e.g. mx 1 rem should be applied to both vertical nav items and vertical nav header)
+*/
+.text-xs[data-v-ce5db7b9] {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+.text-sm[data-v-ce5db7b9] {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-base[data-v-ce5db7b9] {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+.text-lg[data-v-ce5db7b9] {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-xl[data-v-ce5db7b9] {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-2xl[data-v-ce5db7b9] {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-3xl[data-v-ce5db7b9] {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-4xl[data-v-ce5db7b9] {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+.text-5xl[data-v-ce5db7b9] {
+  font-size: 3rem;
+  line-height: 1;
+}
+.text-6xl[data-v-ce5db7b9] {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+.text-7xl[data-v-ce5db7b9] {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+.text-8xl[data-v-ce5db7b9] {
+  font-size: 6rem;
+  line-height: 1;
+}
+.text-9xl[data-v-ce5db7b9] {
+  font-size: 8rem;
+  line-height: 1;
+}
+.truncate[data-v-ce5db7b9] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gap-0[data-v-ce5db7b9] {
+  gap: 0;
+}
+.gap-x-0[data-v-ce5db7b9] {
+  -moz-column-gap: 0;
+       column-gap: 0;
+}
+.gap-y-0[data-v-ce5db7b9] {
+  row-gap: 0;
+}
+.gap-1[data-v-ce5db7b9] {
+  gap: 0.25rem;
+}
+.gap-x-1[data-v-ce5db7b9] {
+  -moz-column-gap: 0.25rem;
+       column-gap: 0.25rem;
+}
+.gap-y-1[data-v-ce5db7b9] {
+  row-gap: 0.25rem;
+}
+.gap-2[data-v-ce5db7b9] {
+  gap: 0.5rem;
+}
+.gap-x-2[data-v-ce5db7b9] {
+  -moz-column-gap: 0.5rem;
+       column-gap: 0.5rem;
+}
+.gap-y-2[data-v-ce5db7b9] {
+  row-gap: 0.5rem;
+}
+.gap-3[data-v-ce5db7b9] {
+  gap: 0.75rem;
+}
+.gap-x-3[data-v-ce5db7b9] {
+  -moz-column-gap: 0.75rem;
+       column-gap: 0.75rem;
+}
+.gap-y-3[data-v-ce5db7b9] {
+  row-gap: 0.75rem;
+}
+.gap-4[data-v-ce5db7b9] {
+  gap: 1rem;
+}
+.gap-x-4[data-v-ce5db7b9] {
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
+}
+.gap-y-4[data-v-ce5db7b9] {
+  row-gap: 1rem;
+}
+.gap-5[data-v-ce5db7b9] {
+  gap: 1.25rem;
+}
+.gap-x-5[data-v-ce5db7b9] {
+  -moz-column-gap: 1.25rem;
+       column-gap: 1.25rem;
+}
+.gap-y-5[data-v-ce5db7b9] {
+  row-gap: 1.25rem;
+}
+.gap-6[data-v-ce5db7b9] {
+  gap: 1.5rem;
+}
+.gap-x-6[data-v-ce5db7b9] {
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+}
+.gap-y-6[data-v-ce5db7b9] {
+  row-gap: 1.5rem;
+}
+.gap-7[data-v-ce5db7b9] {
+  gap: 1.75rem;
+}
+.gap-x-7[data-v-ce5db7b9] {
+  -moz-column-gap: 1.75rem;
+       column-gap: 1.75rem;
+}
+.gap-y-7[data-v-ce5db7b9] {
+  row-gap: 1.75rem;
+}
+.gap-8[data-v-ce5db7b9] {
+  gap: 2rem;
+}
+.gap-x-8[data-v-ce5db7b9] {
+  -moz-column-gap: 2rem;
+       column-gap: 2rem;
+}
+.gap-y-8[data-v-ce5db7b9] {
+  row-gap: 2rem;
+}
+.gap-9[data-v-ce5db7b9] {
+  gap: 2.25rem;
+}
+.gap-x-9[data-v-ce5db7b9] {
+  -moz-column-gap: 2.25rem;
+       column-gap: 2.25rem;
+}
+.gap-y-9[data-v-ce5db7b9] {
+  row-gap: 2.25rem;
+}
+.gap-10[data-v-ce5db7b9] {
+  gap: 2.5rem;
+}
+.gap-x-10[data-v-ce5db7b9] {
+  -moz-column-gap: 2.5rem;
+       column-gap: 2.5rem;
+}
+.gap-y-10[data-v-ce5db7b9] {
+  row-gap: 2.5rem;
+}
+.gap-11[data-v-ce5db7b9] {
+  gap: 2.75rem;
+}
+.gap-x-11[data-v-ce5db7b9] {
+  -moz-column-gap: 2.75rem;
+       column-gap: 2.75rem;
+}
+.gap-y-11[data-v-ce5db7b9] {
+  row-gap: 2.75rem;
+}
+.gap-12[data-v-ce5db7b9] {
+  gap: 3rem;
+}
+.gap-x-12[data-v-ce5db7b9] {
+  -moz-column-gap: 3rem;
+       column-gap: 3rem;
+}
+.gap-y-12[data-v-ce5db7b9] {
+  row-gap: 3rem;
+}
+.gap-14[data-v-ce5db7b9] {
+  gap: 3.5rem;
+}
+.gap-x-14[data-v-ce5db7b9] {
+  -moz-column-gap: 3.5rem;
+       column-gap: 3.5rem;
+}
+.gap-y-14[data-v-ce5db7b9] {
+  row-gap: 3.5rem;
+}
+.gap-16[data-v-ce5db7b9] {
+  gap: 4rem;
+}
+.gap-x-16[data-v-ce5db7b9] {
+  -moz-column-gap: 4rem;
+       column-gap: 4rem;
+}
+.gap-y-16[data-v-ce5db7b9] {
+  row-gap: 4rem;
+}
+.gap-20[data-v-ce5db7b9] {
+  gap: 5rem;
+}
+.gap-x-20[data-v-ce5db7b9] {
+  -moz-column-gap: 5rem;
+       column-gap: 5rem;
+}
+.gap-y-20[data-v-ce5db7b9] {
+  row-gap: 5rem;
+}
+.gap-24[data-v-ce5db7b9] {
+  gap: 6rem;
+}
+.gap-x-24[data-v-ce5db7b9] {
+  -moz-column-gap: 6rem;
+       column-gap: 6rem;
+}
+.gap-y-24[data-v-ce5db7b9] {
+  row-gap: 6rem;
+}
+.gap-28[data-v-ce5db7b9] {
+  gap: 7rem;
+}
+.gap-x-28[data-v-ce5db7b9] {
+  -moz-column-gap: 7rem;
+       column-gap: 7rem;
+}
+.gap-y-28[data-v-ce5db7b9] {
+  row-gap: 7rem;
+}
+.gap-32[data-v-ce5db7b9] {
+  gap: 8rem;
+}
+.gap-x-32[data-v-ce5db7b9] {
+  -moz-column-gap: 8rem;
+       column-gap: 8rem;
+}
+.gap-y-32[data-v-ce5db7b9] {
+  row-gap: 8rem;
+}
+.gap-36[data-v-ce5db7b9] {
+  gap: 9rem;
+}
+.gap-x-36[data-v-ce5db7b9] {
+  -moz-column-gap: 9rem;
+       column-gap: 9rem;
+}
+.gap-y-36[data-v-ce5db7b9] {
+  row-gap: 9rem;
+}
+.gap-40[data-v-ce5db7b9] {
+  gap: 10rem;
+}
+.gap-x-40[data-v-ce5db7b9] {
+  -moz-column-gap: 10rem;
+       column-gap: 10rem;
+}
+.gap-y-40[data-v-ce5db7b9] {
+  row-gap: 10rem;
+}
+.gap-44[data-v-ce5db7b9] {
+  gap: 11rem;
+}
+.gap-x-44[data-v-ce5db7b9] {
+  -moz-column-gap: 11rem;
+       column-gap: 11rem;
+}
+.gap-y-44[data-v-ce5db7b9] {
+  row-gap: 11rem;
+}
+.gap-48[data-v-ce5db7b9] {
+  gap: 12rem;
+}
+.gap-x-48[data-v-ce5db7b9] {
+  -moz-column-gap: 12rem;
+       column-gap: 12rem;
+}
+.gap-y-48[data-v-ce5db7b9] {
+  row-gap: 12rem;
+}
+.gap-52[data-v-ce5db7b9] {
+  gap: 13rem;
+}
+.gap-x-52[data-v-ce5db7b9] {
+  -moz-column-gap: 13rem;
+       column-gap: 13rem;
+}
+.gap-y-52[data-v-ce5db7b9] {
+  row-gap: 13rem;
+}
+.gap-56[data-v-ce5db7b9] {
+  gap: 14rem;
+}
+.gap-x-56[data-v-ce5db7b9] {
+  -moz-column-gap: 14rem;
+       column-gap: 14rem;
+}
+.gap-y-56[data-v-ce5db7b9] {
+  row-gap: 14rem;
+}
+.gap-60[data-v-ce5db7b9] {
+  gap: 15rem;
+}
+.gap-x-60[data-v-ce5db7b9] {
+  -moz-column-gap: 15rem;
+       column-gap: 15rem;
+}
+.gap-y-60[data-v-ce5db7b9] {
+  row-gap: 15rem;
+}
+.gap-64[data-v-ce5db7b9] {
+  gap: 16rem;
+}
+.gap-x-64[data-v-ce5db7b9] {
+  -moz-column-gap: 16rem;
+       column-gap: 16rem;
+}
+.gap-y-64[data-v-ce5db7b9] {
+  row-gap: 16rem;
+}
+.gap-72[data-v-ce5db7b9] {
+  gap: 18rem;
+}
+.gap-x-72[data-v-ce5db7b9] {
+  -moz-column-gap: 18rem;
+       column-gap: 18rem;
+}
+.gap-y-72[data-v-ce5db7b9] {
+  row-gap: 18rem;
+}
+.gap-80[data-v-ce5db7b9] {
+  gap: 20rem;
+}
+.gap-x-80[data-v-ce5db7b9] {
+  -moz-column-gap: 20rem;
+       column-gap: 20rem;
+}
+.gap-y-80[data-v-ce5db7b9] {
+  row-gap: 20rem;
+}
+.gap-96[data-v-ce5db7b9] {
+  gap: 24rem;
+}
+.gap-x-96[data-v-ce5db7b9] {
+  -moz-column-gap: 24rem;
+       column-gap: 24rem;
+}
+.gap-y-96[data-v-ce5db7b9] {
+  row-gap: 24rem;
+}
+
+/*
+  ℹ️ This function is helpful when we have multi dimensional value
+
+  Assume we have padding variable `$nav-padding-horizontal: 10px;`
+  With above variable let's say we use it in some style:
+  ```scss
+  .selector {
+    margin-left: $nav-padding-horizontal;
+  }
+  ```
+
+  Now, problem is we can also have value as `$nav-padding-horizontal: 10px 15px;`
+  In this case above style will be invalid.
+
+  This function will extract the left most value from the variable value.
+
+  $nav-padding-horizontal: 10px; => 10px;
+  $nav-padding-horizontal: 10px 15px; => 10px;
+
+  This is safe:
+  ```scss
+  .selector {
+    margin-left: get-first-value($nav-padding-horizontal);
+  }
+  ```
+*/
+/*
+    ❗ Heads up
+    ==================
+    Here we assume we will always use shorthand property which will apply same padding on four side
+    This is because this have been used as value of top property by `.popper-content`
+*/
+.v-card .storage-image[data-v-ce5db7b9] {
+  position: absolute;
+  filter: hue-rotate(225deg) saturate(0.72);
+  inline-size: clamp(3.6rem, 18%, 4.5rem);
+  inset-block-start: 2.7rem;
+  inset-inline-end: 1.35rem;
+}
+.dashboard-summary-card[data-v-ce5db7b9] {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 160px;
+}
+.dashboard-summary-content[data-v-ce5db7b9] {
+  flex: 1 1 auto;
+  min-block-size: 0;
+  padding-block: 0 0.7rem;
+}
+.animated-storage-value[data-v-ce5db7b9],
+.animated-storage-meta[data-v-ce5db7b9],
+.animated-storage-caption[data-v-ce5db7b9] {
+  padding-inline-end: 4.75rem;
+}
+.animated-storage-value[data-v-ce5db7b9] {
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  font-size: clamp(1.5rem, 1.8vw, 1.75rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.animated-storage-meta[data-v-ce5db7b9] {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.875rem;
+  line-height: 1.2;
+  margin-block-start: 0.3rem;
+}
+.animated-storage-progress-wrap[data-v-ce5db7b9] {
+  margin-block-start: 0.4rem;
+}
+.animated-storage-progress[data-v-ce5db7b9] {
+  overflow: hidden;
+}
+.animated-storage-caption[data-v-ce5db7b9] {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  font-size: 0.68rem;
+  margin-block-start: 0.35rem;
+  white-space: nowrap;
+}

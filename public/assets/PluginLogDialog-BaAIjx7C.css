@@ -1,0 +1,17 @@
+
+@media (width <= 960px) {
+.logging-dialog-card[data-v-3c43c020] {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    block-size: 100%;
+}
+.logging-dialog-content[data-v-3c43c020] {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    inline-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+}
+}
