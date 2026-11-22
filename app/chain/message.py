@@ -1320,31 +1320,50 @@ class MediaInteractionChain(ChainBase):
             return
 
         contexts = TorrentHelper().sort_torrents(contexts)
-        logger.info("用户 %s 开始自动择优下载 ...", userid)
         request.phase = "torrent"
         request.page = 0
         request.title = mediainfo.title
         request.items = list(contexts)
-        if self._prompt_download_dir_selection(
+
+        # 远程自动下载用户：配置在"远程搜索自动下载用户"中的用户选完媒体后直接择优下载
+        auto_download_user = settings.AUTO_DOWNLOAD_USER
+        auto_users = [
+            user.strip() for user in (auto_download_user or "").split(",") if user.strip()
+        ]
+        if auto_download_user == "all" or str(userid) in auto_users:
+            logger.info("用户 %s 在自动下载用户中，开始自动择优下载 ...", userid)
+            if self._prompt_download_dir_selection(
+                    request=request,
+                    download_mode="auto",
+                    channel=channel,
+                    source=source,
+                    userid=userid,
+                    username=username,
+                    no_exists=no_exists,
+                    original_message_id=original_message_id,
+                    original_chat_id=original_chat_id,
+            ):
+                return
+            self._auto_download(
                 request=request,
-                download_mode="auto",
+                cache_list=contexts,
                 channel=channel,
                 source=source,
                 userid=userid,
                 username=username,
                 no_exists=no_exists,
-                original_message_id=original_message_id,
-                original_chat_id=original_chat_id,
-        ):
+            )
             return
-        self._auto_download(
+
+        # 其他用户发送资源选择列表，回复序号下载（0 = 自动择优）
+        logger.info("搜索到 %s 条资源，发送资源选择列表 ...", len(contexts))
+        self._render_interaction(
             request=request,
-            cache_list=contexts,
             channel=channel,
             source=source,
             userid=userid,
-            username=username,
-            no_exists=no_exists,
+            original_message_id=original_message_id,
+            original_chat_id=original_chat_id,
         )
 
     def _subscribe_media(
