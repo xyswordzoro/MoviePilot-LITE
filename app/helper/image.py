@@ -32,6 +32,8 @@ class WallpaperHelper(metaclass=Singleton):
             return self.get_customize_wallpaper()
         elif settings.WALLPAPER == "tmdb":
             return self.get_tmdb_wallpaper()
+        elif settings.WALLPAPER == "pure":
+            return "/wallpaper-pure.jpg"
         return ''
 
     def get_wallpapers(self, num: int = 10) -> List[str]:
@@ -46,6 +48,8 @@ class WallpaperHelper(metaclass=Singleton):
             return self.get_customize_wallpapers()
         elif settings.WALLPAPER == "tmdb":
             return self.get_tmdb_wallpapers(num)
+        elif settings.WALLPAPER == "pure":
+            return ["/wallpaper-pure.jpg"]
         return []
 
     @cached(maxsize=1, ttl=3600)
