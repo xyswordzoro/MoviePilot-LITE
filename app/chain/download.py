@@ -1701,7 +1701,11 @@ class DownloadChain(ChainBase):
         _summary = f"成功下载种子数：{len(downloaded_list)}，剩余未下载剧集：{_left_count} 集"
         if unsuitable_pack_count:
             _summary += f"，跳过不适用整季包 {unsuitable_pack_count} 个"
-        logger.info(_summary)
+        # 只有真正下到种子才打 INFO；纯空跑（如缺失集尚未播出）降为 DEBUG，避免每轮刷新刷屏
+        if downloaded_list:
+            logger.info(_summary)
+        else:
+            logger.debug(_summary)
         return downloaded_list, no_exists
 
     def get_no_exists_info(self, meta: MetaBase,
