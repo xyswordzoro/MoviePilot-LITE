@@ -28,6 +28,7 @@ config/plugins/
 config/temp/
 config/cache/
 config/.cache/
+config/.resource_secret
 .runtime/
 # LITE 版把构建好的前端一并纳入仓库，Docker 构建时直接使用
 .moviepilot.env
