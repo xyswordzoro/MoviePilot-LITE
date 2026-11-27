@@ -184,7 +184,7 @@ AniList 榜单、探索、详情、人物和推荐接口优先通过 `anilist-ch
 
 | 方法 | 路径 | 说明 |
 | :--- | :--- | :--- |
-| GET | `/api/v1/download/` | 查询正在下载的任务，参数：`name`；关联下载历史时返回媒体类型、来源站点 `site_name`，以及 `media.poster` 海报和 `media.backdrop` 背景图；兼容字段 `media.image` 与 `media.poster` 相同 |
+| GET | `/api/v1/download/` | 查询下载器中的任务，参数：`name`、`status`（`all`/`transfer`/`downloading`/`completed`/`paused`，缺省仅下载中）、`include_all_tags`（是否包含未打内置标签的任务，缺省 `false`）；关联下载历史时返回媒体类型、来源站点 `site_name`，以及 `media.poster` 海报和 `media.backdrop` 背景图；兼容字段 `media.image` 与 `media.poster` 相同 |
 | POST | `/api/v1/download/` | 添加含媒体信息的下载任务，请求体包含媒体信息和种子信息 |
 | POST | `/api/v1/download/add` | 添加不含媒体信息的下载任务，请求体包含 `torrent_in`，可选 `media_source` + `media_id`；继续兼容四种专用 ID，并支持 `downloader`、`save_path` |
 | POST | `/api/v1/download/subtitle` | 下载字幕到识别出的媒体下载目录，请求体包含 `subtitle_in`，可选 `media_source` + `media_id`；继续兼容四种专用 ID，并支持 `save_path` |
@@ -192,7 +192,7 @@ AniList 榜单、探索、详情、人物和推荐接口优先通过 `anilist-ch
 | GET | `/api/v1/download/stop/{hashString}` | 暂停下载任务，参数：`name` |
 | GET | `/api/v1/download/clients` | 查询可用下载器 |
 | GET | `/api/v1/download/paths` | 查询可用于下载接口 `save_path` 参数的下载路径 |
-| DELETE | `/api/v1/download/{hashString}` | 删除下载任务，参数：`name` |
+| DELETE | `/api/v1/download/{hashString}` | 删除下载任务，参数：`name`、`delete_file`（是否同时删除已下载文件，缺省 `true`） |
 
 #### 历史
 

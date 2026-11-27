@@ -1881,11 +1881,21 @@ class DownloadChain(ChainBase):
             save_history=False,
         ))
 
-    def downloading(self, name: Optional[str] = None) -> List[DownloaderTorrent]:
+    def downloading(self, name: Optional[str] = None,
+                    status: Optional[Union[TorrentStatus, str]] = None,
+                    include_all_tags: bool = False) -> List[DownloaderTorrent]:
         """
-        查询正在下载的任务
+        查询下载器中的任务
+
+        :param name: 下载器名称，为空时查询所有已启用的下载器
+        :param status: 任务状态，支持 all/transfer/downloading/completed/paused，为空时仅查询下载中的任务
+        :param include_all_tags: 是否包含未打内置标签的任务，默认仅返回本系统创建的任务
         """
-        torrents = self.list_torrents(downloader=name, status=TorrentStatus.DOWNLOADING)
+        torrents = self.list_torrents(
+            downloader=name,
+            status=status or TorrentStatus.DOWNLOADING,
+            include_all_tags=include_all_tags,
+        )
         if not torrents:
             return []
 
@@ -1924,11 +1934,16 @@ class DownloadChain(ChainBase):
             return self.stop_torrents(hashs=[hash_str], downloader=name)
         return False
 
-    def remove_downloading(self, hash_str: str, name: Optional[str] = None) -> bool:
+    def remove_downloading(self, hash_str: str, name: Optional[str] = None,
+                           delete_file: bool = True) -> bool:
         """
         删除下载任务
+
+        :param hash_str: 种子Hash
+        :param name: 下载器名称，为空时由各下载器自行匹配
+        :param delete_file: 是否同时删除已下载的文件，默认删除以保持原有行为
         """
-        return self.remove_torrents(hashs=[hash_str], downloader=name)
+        return self.remove_torrents(hashs=[hash_str], downloader=name, delete_file=delete_file)
 
     @eventmanager.register(EventType.DownloadFileDeleted)
     def download_file_deleted(self, event: Event):

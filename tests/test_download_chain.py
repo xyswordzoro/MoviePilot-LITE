@@ -10,7 +10,7 @@ from app.core.config import settings
 from app.core.context import Context, MediaInfo, SubtitleInfo, TorrentInfo
 from app.core.metainfo import MetaInfo
 from app.schemas import DownloaderTorrent, FileItem, NotExistMediaInfo, TransferDirectoryConf
-from app.schemas.types import MediaType
+from app.schemas.types import MediaType, TorrentStatus
 
 
 @pytest.fixture(autouse=True)
@@ -1079,3 +1079,74 @@ def test_downloading_includes_media_type_and_source_site(monkeypatch):
     assert torrent.site_name == "示例站点"
     assert torrent.userid == "user-1"
     assert torrent.username == "tester"
+
+
+def test_downloading_forwards_status_and_tag_scope(monkeypatch):
+    """下载任务查询应把状态与标签范围透传给下载器模块。"""
+    captured = {}
+
+    def fake_list_torrents(**kwargs):
+        captured.update(kwargs)
+        return []
+
+    chain = DownloadChain.__new__(DownloadChain)
+    monkeypatch.setattr(chain, "list_torrents", fake_list_torrents)
+
+    assert chain.downloading(name="qb-main", status="all", include_all_tags=True) == []
+    assert captured == {
+        "downloader": "qb-main",
+        "status": "all",
+        "include_all_tags": True,
+    }
+
+
+def test_downloading_keeps_default_scope(monkeypatch):
+    """缺省查询保持原有行为：仅下载中、仅本系统任务。"""
+    captured = {}
+
+    def fake_list_torrents(**kwargs):
+        captured.update(kwargs)
+        return []
+
+    chain = DownloadChain.__new__(DownloadChain)
+    monkeypatch.setattr(chain, "list_torrents", fake_list_torrents)
+
+    chain.downloading()
+
+    assert captured["status"] == TorrentStatus.DOWNLOADING
+    assert captured["include_all_tags"] is False
+
+
+def test_remove_downloading_forwards_delete_file(monkeypatch):
+    """删除任务时应把 delete_file 原样透传，供调用方决定是否保留文件。"""
+    captured = {}
+
+    def fake_remove_torrents(**kwargs):
+        captured.update(kwargs)
+        return True
+
+    chain = DownloadChain.__new__(DownloadChain)
+    monkeypatch.setattr(chain, "remove_torrents", fake_remove_torrents)
+
+    assert chain.remove_downloading("hash-1", name="qb-main", delete_file=False) is True
+    assert captured == {
+        "hashs": ["hash-1"],
+        "downloader": "qb-main",
+        "delete_file": False,
+    }
+
+
+def test_remove_downloading_keeps_default_delete_file(monkeypatch):
+    """缺省删除保持原有行为：同时删除已下载文件。"""
+    captured = {}
+
+    def fake_remove_torrents(**kwargs):
+        captured.update(kwargs)
+        return True
+
+    chain = DownloadChain.__new__(DownloadChain)
+    monkeypatch.setattr(chain, "remove_torrents", fake_remove_torrents)
+
+    chain.remove_downloading("hash-2")
+
+    assert captured["delete_file"] is True

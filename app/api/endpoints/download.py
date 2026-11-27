@@ -1,6 +1,8 @@
+from pathlib import Path
 from typing import Any, List, Annotated, Literal, Optional
 
 from fastapi import APIRouter, Depends, Body
+from fastapi.responses import FileResponse
 
 from app import schemas
 from app.chain.download import DownloadChain
@@ -18,6 +20,8 @@ from app.utils.security import SecurityUtils
 
 router = APIRouter()
 MediaSource = Literal["themoviedb", "douban", "bangumi", "anilist"]
+# 独立下载管理页面，供不想进 SPA 的场景直接打开
+_DOWNLOAD_PAGE = Path(__file__).parents[2] / "assets" / "download.html"
 
 
 def _prepare_subtitle_download(subtitle: SubtitleInfo) -> tuple[bool, str]:
@@ -45,14 +49,23 @@ def _prepare_subtitle_download(subtitle: SubtitleInfo) -> tuple[bool, str]:
     return True, ""
 
 
-@router.get("/", summary="正在下载", response_model=List[schemas.DownloaderTorrent])
+@router.get("/", summary="查询下载任务", response_model=List[schemas.DownloaderTorrent])
 def current(
-    name: Optional[str] = None, _: schemas.TokenPayload = Depends(verify_token)
+    name: Optional[str] = None,
+    status: Optional[str] = None,
+    include_all_tags: bool = False,
+    _: schemas.TokenPayload = Depends(verify_token),
 ) -> Any:
     """
-    查询正在下载的任务
+    查询下载器中的任务
+
+    :param name: 下载器名称，为空时查询所有已启用的下载器
+    :param status: 任务状态，支持 all/transfer/downloading/completed/paused，为空时仅查询下载中的任务
+    :param include_all_tags: 是否包含未打内置标签的任务，默认仅返回本系统创建的任务
     """
-    return DownloadChain().downloading(name)
+    return DownloadChain().downloading(
+        name, status=status, include_all_tags=include_all_tags
+    )
 
 
 @router.post("/", summary="添加下载（含媒体信息）", response_model=schemas.Response)
@@ -216,6 +229,14 @@ def stop(
     return schemas.Response(success=True if ret else False)
 
 
+@router.get("/page", summary="下载管理页面", include_in_schema=False)
+def download_page():
+    """
+    返回下载管理独立页面
+    """
+    return FileResponse(_DOWNLOAD_PAGE, media_type="text/html")
+
+
 @router.get("/clients", summary="查询可用下载器", response_model=List[dict])
 async def clients(_: schemas.TokenPayload = Depends(verify_token)) -> Any:
     """
@@ -260,10 +281,17 @@ def paths(_: schemas.TokenPayload = Depends(verify_token)) -> Any:
 def delete(
     hashString: str,
     name: Optional[str] = None,
+    delete_file: bool = True,
     _: schemas.TokenPayload = Depends(verify_token),
 ) -> Any:
     """
     删除下载任务
+
+    :param hashString: 种子Hash
+    :param name: 下载器名称，为空时由各下载器自行匹配
+    :param delete_file: 是否同时删除已下载的文件，默认删除以保持原有行为
     """
-    ret = DownloadChain().remove_downloading(hashString, name=name)
+    ret = DownloadChain().remove_downloading(
+        hashString, name=name, delete_file=delete_file
+    )
     return schemas.Response(success=True if ret else False)
