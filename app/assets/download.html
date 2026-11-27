@@ -330,21 +330,23 @@
     var q = new URLSearchParams(location.search);
     var t = q.get('token');
     if (t) { authMode = t.split('.').length === 3 ? 'jwt' : 'api'; return t; }
-    t = localStorage.getItem(TOKEN_KEY);
-    if (t) { authMode = 'jwt'; return t; }
+    // 优先复用同源已登录令牌（SPA 主应用会写入 localStorage.auth 等）
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var key = localStorage.key(i);
         var val = localStorage.getItem(key) || '';
         if (/token/i.test(key) && val.length > 50 && val.indexOf('.') > 0) { authMode = 'jwt'; return val; }
         if (val.charAt(0) === '{') {
-          var obj = JSON.parse(val);
+          var obj = null;
+          try { obj = JSON.parse(val); } catch (e2) { obj = null; }
           if (obj && typeof obj.token === 'string' && obj.token.length > 50 && obj.token.indexOf('.') > 0) {
             authMode = 'jwt'; return obj.token;
           }
         }
       }
-    } catch (e) { /* 忽略非法 JSON，回退登录 */ }
+    } catch (e) { /* 忽略非法 JSON，回退本页缓存 */ }
+    t = localStorage.getItem(TOKEN_KEY);
+    if (t) { authMode = 'jwt'; return t; }
     return '';
   }
 
@@ -365,9 +367,20 @@
   function showLogin(on) { document.getElementById('login').style.display = on ? 'flex' : 'none'; }
 
   // 令牌失效统一处理：后端对无效 JWT 返回 403，API_TOKEN 校验失败返回 401，两种都要重新登录
+  var authRetried = false;
+
   function handleAuthFailure(res) {
     if (res.status !== 401 && res.status !== 403) return false;
     localStorage.removeItem(TOKEN_KEY);
+    var fresh = getToken();
+    if (fresh && !authRetried) {
+      // 本页缓存令牌失效时，回退到同源主应用令牌重试一次
+      authRetried = true;
+      token = fresh;
+      lastPayload = '';
+      loadAll();
+      return true;
+    }
     token = '';
     stopAuto();
     showLogin(true);
@@ -489,7 +502,7 @@
 
     var mainAct = b === 'paused'
       ? '<button class="act primary" data-act="start" title="继续">▶</button>'
-      : '<button class="act" data-act="stop" title="暂停">⏸</button>';
+      : '<button class="act" data-act="stop" title="暂停">||</button>';
 
     return '<article class="card' + (selected[it.hash] ? ' sel' : '') + '" data-hash="' + esc(it.hash) + '">'
       + '<div class="cbox"></div>'
