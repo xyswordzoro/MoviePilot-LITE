@@ -1,8 +1,6 @@
-from pathlib import Path
 from typing import Any, List, Annotated, Literal, Optional
 
 from fastapi import APIRouter, Depends, Body
-from fastapi.responses import FileResponse
 
 from app import schemas
 from app.chain.download import DownloadChain
@@ -20,8 +18,6 @@ from app.utils.security import SecurityUtils
 
 router = APIRouter()
 MediaSource = Literal["themoviedb", "douban", "bangumi", "anilist"]
-# 独立下载管理页面，供不想进 SPA 的场景直接打开
-_DOWNLOAD_PAGE = Path(__file__).parents[2] / "assets" / "download.html"
 
 
 def _prepare_subtitle_download(subtitle: SubtitleInfo) -> tuple[bool, str]:
@@ -227,14 +223,6 @@ def stop(
     """
     ret = DownloadChain().set_downloading(hashString, "stop", name=name)
     return schemas.Response(success=True if ret else False)
-
-
-@router.get("/page", summary="下载管理页面", include_in_schema=False)
-def download_page():
-    """
-    返回下载管理独立页面
-    """
-    return FileResponse(_DOWNLOAD_PAGE, media_type="text/html")
 
 
 @router.get("/clients", summary="查询可用下载器", response_model=List[dict])
