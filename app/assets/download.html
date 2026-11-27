@@ -197,6 +197,11 @@
     .app { padding-bottom: 80px; }
     .stats { gap: 8px; }
   }
+
+  /* ---------- 嵌入 SPA 时（?embed=1）：去掉自带的标题与外边距，填满内容区 ---------- */
+  body.embed .title { display: none; }
+  body.embed .app { max-width: none; padding: 2px 2px 16px; }
+  body.embed .topbar { padding-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -768,6 +773,8 @@
   });
 
   /* ---------- 启动 ---------- */
+  // 被 SPA 的下载管理页以 iframe 嵌入时隐藏自有标题，避免与侧栏标题重复
+  if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
   onlyTag = localStorage.getItem(ONLY_TAG_KEY) === '1';
   document.getElementById('onlyTag').checked = onlyTag;
   token = getToken();
